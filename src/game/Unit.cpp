@@ -49,6 +49,7 @@
 #include "DBCStores.h"
 #include "VMapFactory.h"
 #include "MovementGenerator.h"
+#include "EventSystemMgr.h"
 
 #include <math.h>
 #include <stdarg.h>
@@ -790,6 +791,13 @@ uint32 Unit::DealDamage(Unit *pVictim, uint32 damage, CleanDamage const* cleanDa
         // clean InHateListOf
         if (pVictim->GetTypeId() == TYPEID_PLAYER)
         {
+            if (GetTypeId() == TYPEID_PLAYER) { // PvP situation
+                sEventSystemMgr.TriggerEvent(EVENT_PLAYER_KILLED_OTHER_PLAYER, 0, 0, this, pVictim);
+                sEventSystemMgr.TriggerEvent(EVENT_PLAYER_KILLED_BY_PLAYER, 0, 0, pVictim, this);
+            } else { // PvE situation
+                sEventSystemMgr.TriggerEvent(EVENT_PLAYER_KILLED_BY_CREATURE, 0, 0, pVictim, this);
+            }
+
             // only if not player and not controlled by player pet. And not at BG
             if (durabilityLoss && !player_tap && !((Player*)pVictim)->InBattleGround())
             {
@@ -802,6 +810,9 @@ uint32 Unit::DealDamage(Unit *pVictim, uint32 damage, CleanDamage const* cleanDa
         }
         else                                                // creature died
         {
+            sEventSystemMgr.TriggerEvent(EVENT_PLAYER_KILLED_OTHER_CREATURE, 0, 0, this, pVictim);
+            // EVENT_CREATURE_DIED is handled in Creature.cpp
+
             DEBUG_FILTER_LOG(LOG_FILTER_DAMAGE,"DealDamageNotPlayer");
             Creature *cVictim = (Creature*)pVictim;
 
@@ -8484,6 +8495,9 @@ void Unit::SetInCombatState(bool PvP, Unit* enemy)
 
         if (InstanceData* mapInstance = GetInstanceData())
             mapInstance->OnCreatureEnterCombat((Creature*)this);
+
+        if(((Creature*)this)->GetCreatureInfo()->rank == 3) // Creature is a World Boss
+            sEventSystemMgr.TriggerEvent(EVENT_BOSS_EVENT_STARTED, 0, 0, this);
     }
 }
 
@@ -9439,6 +9453,8 @@ bool Unit::SelectHostileTarget()
 
     if (InstanceData* mapInstance = GetInstanceData())
         mapInstance->OnCreatureEvade((Creature*)this);
+
+    sEventSystemMgr.TriggerEvent(EVENT_CREATURE_EVADED, 0, 0, this);
 
     return false;
 }
