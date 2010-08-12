@@ -8497,7 +8497,7 @@ void Unit::SetInCombatState(bool PvP, Unit* enemy)
             mapInstance->OnCreatureEnterCombat((Creature*)this);
 
         if(((Creature*)this)->GetCreatureInfo()->rank == 3) // Creature is a World Boss
-            sEventSystemMgr.TriggerBossEvent(EVENT_BOSS_AGGRO, *((Creature*)this));
+            sEventSystemMgr.TriggerBossAggroed(*((Creature*)this));
     }
 }
 
@@ -9455,7 +9455,7 @@ bool Unit::SelectHostileTarget()
         mapInstance->OnCreatureEvade((Creature*)this);
 
     if (((Creature*)this)->GetCreatureInfo()->rank == 3) // Creature is a World Boss
-        sEventSystemMgr.TriggerBossEvent(EVENT_BOSS_EVADED, *((Creature*)this));
+        sEventSystemMgr.TriggerBossEvaded(*((Creature*)this));
 
     return false;
 }

@@ -795,7 +795,7 @@ void BattleGround::EndBattleGround(uint32 winner)
         alliance = sObjectMgr.GetArenaTeamById(GetArenaTeamIdForTeam(ALLIANCE));
         horde = sObjectMgr.GetArenaTeamById(GetArenaTeamIdForTeam(HORDE));
     }
-    sEventSystemMgr.TriggerBattleGroundEvent(EVENT_BATTLEGROUND_ENDED, *this, winner, alliance, horde);
+    sEventSystemMgr.TriggerBattleGroundEnded(*this, winner, alliance, horde);
 
     if (winmsg_id)
         SendMessageToAll(winmsg_id, CHAT_MSG_BG_SYSTEM_NEUTRAL);
@@ -1132,7 +1132,7 @@ void BattleGround::StartBattleGround()
         alliance = sObjectMgr.GetArenaTeamById(GetArenaTeamIdForTeam(ALLIANCE));
         horde = sObjectMgr.GetArenaTeamById(GetArenaTeamIdForTeam(HORDE));
     }
-    sEventSystemMgr.TriggerBattleGroundEvent(EVENT_BATTLEGROUND_STARTED, *this, 0, alliance, horde);
+    sEventSystemMgr.TriggerBattleGroundStarted(*this, alliance, horde);
 }
 
 void BattleGround::AddPlayer(Player *plr)
@@ -1631,7 +1631,7 @@ void BattleGround::SendYell2ToAll(int32 entry, uint32 language, uint64 const& gu
 
 void BattleGround::EndNow()
 {
-    sEventSystemMgr.TriggerBattleGroundEvent(EVENT_BATTLEGROUND_ENDED, *this);
+    sEventSystemMgr.TriggerBattleGroundEnded(*this, NULL, NULL);
     RemoveFromBGFreeSlotQueue();
     SetStatus(STATUS_WAIT_LEAVE);
     SetEndTime(0);
