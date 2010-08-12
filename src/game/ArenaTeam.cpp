@@ -22,6 +22,7 @@
 #include "ArenaTeam.h"
 #include "World.h"
 #include "Player.h"
+#include "EventSystemMgr.h"
 
 void ArenaTeamMember::ModifyPersonalRating(Player* plr, int32 mod, uint32 slot)
 {
@@ -96,6 +97,7 @@ bool ArenaTeam::Create(ObjectGuid captainGuid, uint32 type, std::string arenaTea
     CharacterDatabase.CommitTransaction();
 
     AddMember(m_CaptainGuid);
+    sEventSystemMgr.TriggerArenaTeamEvent(EVENT_ARENA_TEAM_CREATED, *this, sObjectMgr.GetPlayer(captainGuid));
     return true;
 }
 
@@ -322,6 +324,8 @@ void ArenaTeam::Disband(WorldSession *session)
         // probably only 1 string required...
         BroadcastEvent(ERR_ARENA_TEAM_DISBANDED_S, session->GetPlayerName(), GetName().c_str());
     }
+
+    sEventSystemMgr.TriggerArenaTeamEvent(EVENT_ARENA_TEAM_DISBANDED, *this, session->GetPlayer());
 
     while (!m_members.empty())
     {
@@ -583,7 +587,7 @@ void ArenaTeam::FinishGame(int32 mod)
             ++m_stats.rank;
     }
 
-
+    sEventSystemMgr.TriggerArenaTeamEvent(EVENT_ARENA_TEAM_RATING_GAINED, *this, NULL, mod);
 }
 
 int32 ArenaTeam::WonAgainst(uint32 againstRating)

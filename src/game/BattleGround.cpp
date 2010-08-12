@@ -33,6 +33,7 @@
 #include "Util.h"
 #include "Formulas.h"
 #include "GridNotifiersImpl.h"
+#include "EventSystemMgr.h"
 
 namespace MaNGOS
 {
@@ -788,6 +789,14 @@ void BattleGround::EndBattleGround(uint32 winner)
         loser_arena_team->NotifyStatsChanged();
     }
 
+    ArenaTeam *alliance = NULL, *horde = NULL;
+    if (isArena())
+    {
+        alliance = sObjectMgr.GetArenaTeamById(GetArenaTeamIdForTeam(ALLIANCE));
+        horde = sObjectMgr.GetArenaTeamById(GetArenaTeamIdForTeam(HORDE));
+    }
+    sEventSystemMgr.TriggerBattleGroundEvent(EVENT_BATTLEGROUND_ENDED, *this, winner, alliance, horde);
+
     if (winmsg_id)
         SendMessageToAll(winmsg_id, CHAT_MSG_BG_SYSTEM_NEUTRAL);
 }
@@ -1117,6 +1126,13 @@ void BattleGround::StartBattleGround()
 {
     ///this method should spawn spirit guides and so on
     SetStartTime(0);
+    ArenaTeam *alliance = NULL, *horde = NULL;
+    if (isArena())
+    {
+        alliance = sObjectMgr.GetArenaTeamById(GetArenaTeamIdForTeam(ALLIANCE));
+        horde = sObjectMgr.GetArenaTeamById(GetArenaTeamIdForTeam(HORDE));
+    }
+    sEventSystemMgr.TriggerBattleGroundEvent(EVENT_BATTLEGROUND_STARTED, *this, 0, alliance, horde);
 }
 
 void BattleGround::AddPlayer(Player *plr)
@@ -1615,6 +1631,7 @@ void BattleGround::SendYell2ToAll(int32 entry, uint32 language, uint64 const& gu
 
 void BattleGround::EndNow()
 {
+    sEventSystemMgr.TriggerBattleGroundEvent(EVENT_BATTLEGROUND_ENDED, *this);
     RemoveFromBGFreeSlotQueue();
     SetStatus(STATUS_WAIT_LEAVE);
     SetEndTime(0);
