@@ -22,7 +22,7 @@
 #include "ArenaTeam.h"
 #include "World.h"
 #include "Player.h"
-#include "EventSystemMgr.h"
+#include "EventArenaTeamMgr.h"
 
 void ArenaTeamMember::ModifyPersonalRating(Player* plr, int32 mod, uint32 slot)
 {
@@ -97,7 +97,8 @@ bool ArenaTeam::Create(ObjectGuid captainGuid, uint32 type, std::string arenaTea
     CharacterDatabase.CommitTransaction();
 
     AddMember(m_CaptainGuid);
-    sEventSystemMgr.TriggerArenaTeamCreated(*this, sObjectMgr.GetPlayer(captainGuid));
+    sEventArenaTeamMgr.TriggerEvent(EventInfoArenaTeamStatus(*this, sObjectMgr.GetPlayer(captainGuid)),
+                                    &ListenerArenaTeam::EventArenaTeamCreated);
     return true;
 }
 
@@ -325,7 +326,8 @@ void ArenaTeam::Disband(WorldSession *session)
         BroadcastEvent(ERR_ARENA_TEAM_DISBANDED_S, session->GetPlayerName(), GetName().c_str());
     }
 
-    sEventSystemMgr.TriggerArenaTeamDisbanded(*this, session->GetPlayer());
+    sEventArenaTeamMgr.TriggerEvent(EventInfoArenaTeamStatus(*this, session->GetPlayer()),
+                                    &ListenerArenaTeam::EventArenaTeamDisbanded);
 
     while (!m_members.empty())
     {
@@ -587,7 +589,7 @@ void ArenaTeam::FinishGame(int32 mod)
             ++m_stats.rank;
     }
 
-    sEventSystemMgr.TriggerArenaTeamRatingGained(*this, mod);
+    sEventArenaTeamMgr.TriggerEvent(EventInfoArenaTeamRating(*this, mod), &ListenerArenaTeam::EventArenaTeamRatingGained);
 }
 
 int32 ArenaTeam::WonAgainst(uint32 againstRating)

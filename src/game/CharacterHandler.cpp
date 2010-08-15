@@ -37,7 +37,7 @@
 #include "Util.h"
 #include "ArenaTeam.h"
 #include "Language.h"
-#include "EventSystemMgr.h"
+#include "EventCharacterMgr.h"
 
 // config option SkipCinematics supported values
 enum CinematicsSkipMode
@@ -378,7 +378,7 @@ void WorldSession::HandleCharCreateOpcode( WorldPacket & recv_data )
     std::string IP_str = GetRemoteAddress();
     BASIC_LOG("Account: %d (IP: %s) Create Character:[%s] (guid: %u)", GetAccountId(), IP_str.c_str(), name.c_str(), pNewChar->GetGUIDLow());
     sLog.outChar("Account: %d (IP: %s) Create Character:[%s] (guid: %u)", GetAccountId(), IP_str.c_str(), name.c_str(), pNewChar->GetGUIDLow());
-    sEventSystemMgr.TriggerCharacterCreated(name, GetAccountId(), IP_str);
+    sEventCharacterMgr.TriggerEvent(EventInfoCharacter(name, GetAccountId(), IP_str), &ListenerCharacter::EventCharacterCreated);
 
     delete pNewChar;                                        // created only to call SaveToDB()
 }
@@ -431,7 +431,7 @@ void WorldSession::HandleCharDeleteOpcode( WorldPacket & recv_data )
     std::string IP_str = GetRemoteAddress();
     BASIC_LOG("Account: %d (IP: %s) Delete Character:[%s] (guid: %u)", GetAccountId(), IP_str.c_str(), name.c_str(), lowguid);
     sLog.outChar("Account: %d (IP: %s) Delete Character:[%s] (guid: %u)", GetAccountId(), IP_str.c_str(), name.c_str(), lowguid);
-    sEventSystemMgr.TriggerCharacterDeleted(name, GetAccountId(), IP_str);
+    sEventCharacterMgr.TriggerEvent(EventInfoCharacter(name, GetAccountId(), IP_str), &ListenerCharacter::EventCharacterDeleted);
 
     if(sLog.IsOutCharDump())                                // optimize GetPlayerDump call
     {
@@ -676,7 +676,7 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder * holder)
     std::string IP_str = GetRemoteAddress();
     sLog.outChar("Account: %d (IP: %s) Login Character:[%s] (guid: %u)",
         GetAccountId(), IP_str.c_str(), pCurrChar->GetName(), pCurrChar->GetGUIDLow());
-    sEventSystemMgr.TriggerCharacterLogin(pCurrChar->GetName(), GetAccountId(), IP_str);
+    sEventCharacterMgr.TriggerEvent(EventInfoCharacter(pCurrChar->GetName(), GetAccountId(), IP_str), &ListenerCharacter::EventCharacterLogin);
 
     m_playerLoading = false;
     delete holder;
@@ -840,7 +840,8 @@ void WorldSession::HandleChangePlayerNameOpcodeCallBack(QueryResult *result, uin
     CharacterDatabase.PExecute("DELETE FROM character_declinedname WHERE guid ='%u'", guidLow);
 
     sLog.outChar("Account: %d (IP: %s) Character:[%s] (guid:%u) Changed name to: %s", session->GetAccountId(), session->GetRemoteAddress().c_str(), oldname.c_str(), guidLow, newname.c_str());
-    sEventSystemMgr.TriggerCharacterRenamed(newname, oldname, session->GetAccountId(), session->GetRemoteAddress());
+    sEventCharacterMgr.TriggerEvent(EventInfoCharacterRenamed(newname, oldname, session->GetAccountId(), session->GetRemoteAddress()),
+                                    &ListenerCharacter::EventCharacterRenamed);
 
     WorldPacket data(SMSG_CHAR_RENAME, 1+8+(newname.size()+1));
     data << uint8(RESPONSE_SUCCESS);

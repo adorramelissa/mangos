@@ -27,7 +27,7 @@
 #include "Spell.h"
 #include "ScriptCalls.h"
 #include "Totem.h"
-#include "EventSystemMgr.h"
+#include "EventPlayerItemMgr.h"
 
 void WorldSession::HandleUseItemOpcode(WorldPacket& recvPacket)
 {
@@ -170,7 +170,7 @@ void WorldSession::HandleUseItemOpcode(WorldPacket& recvPacket)
     }
 
     uint16 position = (bagIndex << 8) | slot;
-    sEventSystemMgr.TriggerPlayerItemUsed(*pUser, *pItem, position);
+    sEventPlayerItemMgr.TriggerEvent(EventInfoPlayerItem(*pUser, *pItem, position), &ListenerPlayerItem::EventPlayerItemUsed);
 }
 
 #define OPEN_CHEST 11437

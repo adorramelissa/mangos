@@ -58,7 +58,8 @@
 #include "Spell.h"
 #include "SocialMgr.h"
 #include "Mail.h"
-#include "EventSystemMgr.h"
+#include "EventPlayerItemMgr.h"
+#include "EventPlayerLevelMgr.h"
 
 #include <cmath>
 
@@ -2492,7 +2493,7 @@ void Player::GiveLevel(uint32 level)
     if (Pet* pet = GetPet())
         pet->SynchronizeLevelWithOwner();
 
-    sEventSystemMgr.TriggerPlayerLevelReached(*this, level, level - oldlevel);
+    sEventPlayerLevelMgr.TriggerEvent(EventInfoPlayerLevel(*this, level, level - oldlevel), &ListenerPlayerLevel::EventPlayerLevelReached);
 }
 
 void Player::UpdateFreeTalentPoints(bool resetIfNeed)
@@ -3657,7 +3658,7 @@ bool Player::resetTalents(bool no_cost)
     //FIXME: remove pet before or after unlearn spells? for now after unlearn to allow removing of talent related, pet affecting auras
     RemovePet(NULL,PET_SAVE_NOT_IN_SLOT, true);
 
-    sEventSystemMgr.TriggerPlayerTalentsReseted(*this);
+    sEventPlayerLevelMgr.TriggerEvent(EventInfoPlayer(*this), &ListenerPlayerLevel::EventPlayerTalentsReseted);
 
     return true;
 }
@@ -10102,11 +10103,11 @@ Item* Player::StoreNewItem( ItemPosCountVec const& dest, uint32 item, bool updat
             pItem->SetItemRandomProperties(randomPropertyId);
         pItem = StoreItem( dest, pItem, update );
 
-        sEventSystemMgr.TriggerPlayerItemReceived(*this, *pItem, dest.begin()->pos);
+        sEventPlayerItemMgr.TriggerEvent(EventInfoPlayerItem(*this, *pItem, dest.begin()->pos), &ListenerPlayerItem::EventPlayerItemReceived);
         const ItemPrototype *itemProt = pItem->GetProto();
         if (itemProt && itemProt->Quality > ITEM_QUALITY_NORMAL)
         { // At least green item
-            sEventSystemMgr.TriggerPlayerItemColoredReceived(*this, *pItem, dest.begin()->pos);
+            sEventPlayerItemMgr.TriggerEvent(EventInfoPlayerItem(*this, *pItem, dest.begin()->pos), &ListenerPlayerItem::EventPlayerItemColoredReceived);
         }
     }
     return pItem;
@@ -10334,11 +10335,11 @@ Item* Player::EquipItem( uint16 pos, Item *pItem, bool update )
         ApplyEquipCooldown(pItem2);
 
         // FIXME: What is this else block for? Not sure but trigger nevertheless
-        sEventSystemMgr.TriggerPlayerItemEquipped(*this, *pItem, pos);
+        sEventPlayerItemMgr.TriggerEvent(EventInfoPlayerItem(*this, *pItem, pos), &ListenerPlayerItem::EventPlayerItemEquipped);
         return pItem2;
     }
 
-    sEventSystemMgr.TriggerPlayerItemEquipped(*this, *pItem, pos);
+    sEventPlayerItemMgr.TriggerEvent(EventInfoPlayerItem(*this, *pItem, pos), &ListenerPlayerItem::EventPlayerItemEquipped);
     return pItem;
 }
 

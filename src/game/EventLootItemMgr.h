@@ -1,0 +1,51 @@
+/*
+ *  EventLootItemMgr.h
+ *  MaNGOS
+ *
+ *  Created by cipherCOM on 03.08.10.
+ *  Copyright 2010 Back2Basics. All rights reserved.
+ *
+ */
+
+#ifndef __EVENTLOOTITEMMGR_H__
+#define __EVENTLOOTITEMMGR_H__
+
+#include "EventSystemMgr.h"
+
+struct LootItem;
+struct Loot;
+
+struct EventInfoLootItem : public EventInfo
+{
+    const LootItem &item;
+    const Loot &loot;
+
+    EventInfoLootItem(const LootItem &item_, const Loot &loot_)
+    : EventInfo(), item(item_), loot(loot_) {}
+};
+
+class ListenerLootItem : public Listener
+{
+public:
+    virtual void EventLootItemColoredDropped(const EventInfoLootItem &) {}
+    virtual void EventLootItemQuestDropped(const EventInfoLootItem &) {}
+};
+
+class EventLootItemMgr : public EventSystemMgr<ListenerLootItem> {};
+
+#define sEventLootItemMgr MaNGOS::Singleton<EventLootItemMgr>::Instance()
+
+// Debug purposes:
+class EventDebugLootItem : public ListenerLootItem
+{
+public:
+    EventDebugLootItem()
+    {
+        sEventLootItemMgr.Listener += this;
+    }
+    void EventLootItemColoredDropped(const EventInfoLootItem &) { sLog.outDebug("============EventLootItemColoredDropped============"); }
+    void EventLootItemQuestDropped(const EventInfoLootItem &) { sLog.outDebug("============EventLootItemQuestDropped============"); }
+};
+extern EventDebugLootItem eventDebugLootItem;
+
+#endif // __EVENTLOOTITEMMGR_H__

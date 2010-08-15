@@ -49,7 +49,7 @@
 #include "DBCStores.h"
 #include "VMapFactory.h"
 #include "MovementGenerator.h"
-#include "EventSystemMgr.h"
+#include "EventBossMgr.h"
 
 #include <math.h>
 #include <stdarg.h>
@@ -8497,7 +8497,7 @@ void Unit::SetInCombatState(bool PvP, Unit* enemy)
             mapInstance->OnCreatureEnterCombat((Creature*)this);
 
         if(((Creature*)this)->GetCreatureInfo()->rank == 3) // Creature is a World Boss
-            sEventSystemMgr.TriggerBossAggroed(*((Creature*)this));
+            sEventBossMgr.TriggerEvent(EventInfoBoss(*((Creature*)this)), &ListenerBoss::EventBossAggroed);
     }
 }
 
@@ -9455,7 +9455,7 @@ bool Unit::SelectHostileTarget()
         mapInstance->OnCreatureEvade((Creature*)this);
 
     if (((Creature*)this)->GetCreatureInfo()->rank == 3) // Creature is a World Boss
-        sEventSystemMgr.TriggerBossEvaded(*((Creature*)this));
+        sEventBossMgr.TriggerEvent(EventInfoBoss(*((Creature*)this)), &ListenerBoss::EventBossEvaded);
 
     return false;
 }

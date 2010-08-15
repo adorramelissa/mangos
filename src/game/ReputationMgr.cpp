@@ -21,7 +21,7 @@
 #include "Player.h"
 #include "WorldPacket.h"
 #include "ObjectMgr.h"
-#include "EventSystemMgr.h"
+#include "EventPlayerLevelMgr.h"
 
 const int32 ReputationMgr::PointsInRank[MAX_REPUTATION_RANK] = {36000, 3000, 3000, 3000, 6000, 12000, 21000, 1000};
 
@@ -310,7 +310,7 @@ bool ReputationMgr::SetOneFactionReputation(FactionEntry const* factionEntry, in
             SetAtWar(&itr->second,true);
 
         m_player->ReputationChanged(factionEntry);
-        sEventSystemMgr.TriggerPlayerReputationLevelReached(*m_player, standing, increaseAmount);
+        sEventPlayerLevelMgr.TriggerEvent(EventInfoPlayerLevel(*m_player, standing, increaseAmount), &ListenerPlayerLevel::EventPlayerReputationLevelReached);
 
         return true;
     }

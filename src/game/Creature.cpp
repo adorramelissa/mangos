@@ -42,7 +42,8 @@
 #include "GridNotifiers.h"
 #include "GridNotifiersImpl.h"
 #include "CellImpl.h"
-#include "EventSystemMgr.h"
+#include "EventCreatureMgr.h"
+#include "EventBossMgr.h"
 
 // apply implementation of the singletons
 #include "Policies/SingletonImp.h"
@@ -1364,15 +1365,15 @@ void Creature::SetDeathState(DeathState s)
 {
     if (s == JUST_DIED)
     {
-        sEventSystemMgr.TriggerCreatureDied(*this);
+        sEventCreatureMgr.TriggerEvent(EventInfoCreature(*this), &ListenerCreature::EventCreatureDied);
         if (GetCreatureInfo()->rank == 3)
         { // Creature is a World Boss
-            sEventSystemMgr.TriggerBossDied(*this);
+            sEventBossMgr.TriggerEvent(EventInfoBoss(*this), &ListenerBoss::EventBossDied);
         }
     }
     else if (s == JUST_ALIVED)
     {
-        sEventSystemMgr.TriggerCreatureSpawned(*this);
+        sEventCreatureMgr.TriggerEvent(EventInfoCreature(*this), &ListenerCreature::EventCreatureSpawned);
     }
 
     if ((s == JUST_DIED && !m_isDeadByDefault) || (s == JUST_ALIVED && m_isDeadByDefault))

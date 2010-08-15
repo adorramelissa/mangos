@@ -33,7 +33,7 @@
 #include "Util.h"
 #include "Formulas.h"
 #include "GridNotifiersImpl.h"
-#include "EventSystemMgr.h"
+#include "EventBattleGroundMgr.h"
 
 namespace MaNGOS
 {
@@ -795,7 +795,7 @@ void BattleGround::EndBattleGround(uint32 winner)
         alliance = sObjectMgr.GetArenaTeamById(GetArenaTeamIdForTeam(ALLIANCE));
         horde = sObjectMgr.GetArenaTeamById(GetArenaTeamIdForTeam(HORDE));
     }
-    sEventSystemMgr.TriggerBattleGroundEnded(*this, winner, alliance, horde);
+    sEventBattleGroundMgr.TriggerEvent(EventInfoBattleGroundEnded(*this, winner, alliance, horde), &ListenerBattleGround::EventBattleGroundEnded);
 
     if (winmsg_id)
         SendMessageToAll(winmsg_id, CHAT_MSG_BG_SYSTEM_NEUTRAL);
@@ -1132,7 +1132,7 @@ void BattleGround::StartBattleGround()
         alliance = sObjectMgr.GetArenaTeamById(GetArenaTeamIdForTeam(ALLIANCE));
         horde = sObjectMgr.GetArenaTeamById(GetArenaTeamIdForTeam(HORDE));
     }
-    sEventSystemMgr.TriggerBattleGroundStarted(*this, alliance, horde);
+    sEventBattleGroundMgr.TriggerEvent(EventInfoBattleGround(*this, alliance, horde), &ListenerBattleGround::EventBattleGroundStarted);
 }
 
 void BattleGround::AddPlayer(Player *plr)
@@ -1631,7 +1631,7 @@ void BattleGround::SendYell2ToAll(int32 entry, uint32 language, uint64 const& gu
 
 void BattleGround::EndNow()
 {
-    sEventSystemMgr.TriggerBattleGroundEnded(*this, NULL, NULL);
+    sEventBattleGroundMgr.TriggerEvent(EventInfoBattleGroundEnded(*this, 0, NULL, NULL), &ListenerBattleGround::EventBattleGroundEnded);
     RemoveFromBGFreeSlotQueue();
     SetStatus(STATUS_WAIT_LEAVE);
     SetEndTime(0);

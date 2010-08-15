@@ -34,12 +34,12 @@
 #include "SpellMgr.h"
 #include "PoolManager.h"
 #include "GameEventMgr.h"
-#include "EventSystemMgr.h"
+#include "EventCommandMgr.h"
 
 // Supported shift-links (client generated and server side)
 // |color|Harea:area_id|h[name]|h|r
 // |color|Hareatrigger:id|h[name]|h|r
-// |color|Hareatrigger_target:id|h[name]|h|r                
+// |color|Hareatrigger_target:id|h[name]|h|r
 // |color|Hcreature:creature_guid|h[name]|h|r
 // |color|Hcreature_entry:creature_id|h[name]|h|r
 // |color|Henchant:recipe_spell_id|h[prof_name: recipe_name]|h|r          - client, at shift click in recipes list dialog
@@ -1122,11 +1122,13 @@ void ChatHandler::ExecuteCommand(const char* text)
                             fullcmd.c_str(),GetAccountId(),GetAccountId() ? "RA-connection" : "Console");
                     }
 
-                    sEventSystemMgr.TriggerCommandGMUsed(*command, GetAccountId(), m_session ? m_session->GetPlayer() : NULL);
+                    sEventCommandMgr.TriggerEvent(EventInfoCommand(*command, GetAccountId(), m_session ? m_session->GetPlayer() : NULL),
+                                                  &ListenerCommand::EventCommandGMUsed);
                 }
                 else
                 {
-                    sEventSystemMgr.TriggerCommandUsed(*command, GetAccountId(), m_session ? m_session->GetPlayer() : NULL);
+                    sEventCommandMgr.TriggerEvent(EventInfoCommand(*command, GetAccountId(), m_session ? m_session->GetPlayer() : NULL),
+                                                        &ListenerCommand::EventCommandUsed);
                 }
 
             }
