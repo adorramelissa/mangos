@@ -27,6 +27,7 @@
 #include "Spell.h"
 #include "ScriptCalls.h"
 #include "Totem.h"
+#include "EventSystemMgr.h"
 
 void WorldSession::HandleUseItemOpcode(WorldPacket& recvPacket)
 {
@@ -167,6 +168,9 @@ void WorldSession::HandleUseItemOpcode(WorldPacket& recvPacket)
         // no script or script not process request by self
         pUser->CastItemUseSpell(pItem,targets,cast_count);
     }
+
+    uint16 position = (bagIndex << 8) | slot;
+    sEventSystemMgr.TriggerPlayerItemUsed(*pUser, *pItem, position);
 }
 
 #define OPEN_CHEST 11437

@@ -141,15 +141,15 @@ void EventSystemMgr::TriggerGameEventStopped(uint16 id, const GameEventData &gam
     GameEventEvents.InformListener(event, &ListenerGameEvent::EventGameEventStopped);
 }
 
-void EventSystemMgr::TriggerLootItemColoredDropped(const Player &player)
+void EventSystemMgr::TriggerLootItemColoredDropped(const LootItem &item, const Loot &loot)
 {
-    EventInfoLootItem event();
+    EventInfoLootItem event(item, loot);
     LootItemEvents.InformListener(event, &ListenerLootItem::EventLootItemColoredDropped);
 }
 
-void EventSystemMgr::TriggerLootItemQuestDropped(const Player &player)
+void EventSystemMgr::TriggerLootItemQuestDropped(const LootItem &item, const Loot &loot)
 {
-    EventInfoLootItem event();
+    EventInfoLootItem event(item, loot);
     LootItemEvents.InformListener(event, &ListenerLootItem::EventLootItemQuestDropped);
 }
 
@@ -175,25 +175,25 @@ void EventSystemMgr::TriggerPlayerTalentsReseted(const Player &player)
     PlayerLevelEvents.InformListener(event, &ListenerPlayerLevel::EventPlayerTalentsReseted);
 }
 
-void EventSystemMgr::TriggerPlayerItemUsed(const Player &player, const Item &item, const ItemPosCountVec &position)
+void EventSystemMgr::TriggerPlayerItemUsed(const Player &player, const Item &item, uint16 position)
 {
     EventInfoPlayerItem event(player, item, position);
     PlayerItemEvents.InformListener(event, &ListenerPlayerItem::EventPlayerItemUsed);
 }
 
-void EventSystemMgr::TriggerPlayerItemEquipped(const Player &player, const Item &item, const ItemPosCountVec &position)
+void EventSystemMgr::TriggerPlayerItemEquipped(const Player &player, const Item &item, uint16 position)
 {
     EventInfoPlayerItem event(player, item, position);
     PlayerItemEvents.InformListener(event, &ListenerPlayerItem::EventPlayerItemEquipped);
 }
 
-void EventSystemMgr::TriggerPlayerItemReceived(const Player &player, const Item &item, const ItemPosCountVec &position)
+void EventSystemMgr::TriggerPlayerItemReceived(const Player &player, const Item &item, uint16 position)
 {
     EventInfoPlayerItem event(player, item, position);
     PlayerItemEvents.InformListener(event, &ListenerPlayerItem::EventPlayerItemReceived);
 }
 
-void EventSystemMgr::TriggerPlayerItemColoredReceived(const Player &player, const Item &item, const ItemPosCountVec &position)
+void EventSystemMgr::TriggerPlayerItemColoredReceived(const Player &player, const Item &item, uint16 position)
 {
     EventInfoPlayerItem event(player, item, position);
     PlayerItemEvents.InformListener(event, &ListenerPlayerItem::EventPlayerItemColoredReceived);
@@ -202,7 +202,8 @@ void EventSystemMgr::TriggerPlayerItemColoredReceived(const Player &player, cons
 // Debug purposes:
 // Regex for creation: (void ([^(]+)[^\{]+\{)\}    ->    \1 sLog.outDebug("============\\n\2"); }
 class PrintEvents : public ListenerArenaTeam, public ListenerBattleGround, public ListenerBoss, public ListenerCharacter,
-public ListenerCommand, public ListenerCreature, public ListenerGameEvent, public ListenerPlayerLevel
+public ListenerCommand, public ListenerCreature, public ListenerGameEvent, public ListenerLootItem, public ListenerPlayerLevel,
+public ListenerPlayerItem
 {
 public:
     PrintEvents()
@@ -214,6 +215,7 @@ public:
         sEventSystemMgr.CommandEvents += this;
         sEventSystemMgr.CreatureEvents += this;
         sEventSystemMgr.GameEventEvents += this;
+        sEventSystemMgr.LootItemEvents += this;
         sEventSystemMgr.PlayerLevelEvents += this;
         sEventSystemMgr.PlayerItemEvents += this;
     }
@@ -237,6 +239,8 @@ public:
     void EventCreatureDied(const EventInfoCreature &) { sLog.outDebug("============EventCreatureDied============"); }
     void EventGameEventStarted(const EventInfoGameEvent &) { sLog.outDebug("============EventGameEventStarted============"); }
     void EventGameEventStopped(const EventInfoGameEvent &) { sLog.outDebug("============EventGameEventStopped============"); }
+    void EventLootItemColoredDropped(const EventInfoLootItem &) { sLog.outDebug("============EventLootItemColoredDropped============"); }
+    void EventLootItemQuestDropped(const EventInfoLootItem &) { sLog.outDebug("============EventLootItemQuestDropped============"); }
     void EventPlayerLevelReached(const EventInfoPlayerLevel &) { sLog.outDebug("============EventPlayerLevelReached============"); }
     //    void EventPlayerSkillLevelReached(const EventInfoPlayerLevel &) { sLog.outDebug("============EventPlayerSkillLevelReached============"); }
     void EventPlayerReputationLevelReached(const EventInfoPlayerLevel &) { sLog.outDebug("============EventPlayerReputationLevelReached============"); }

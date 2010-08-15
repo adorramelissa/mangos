@@ -14,15 +14,16 @@
 #include "Utilities/UnorderedMap.h"
 #include "Utilities/UnorderedSet.h"
 #include "Timer.h"
+#include "Player.h"
 
-class Player;
 class Creature;
 class ChatCommand;
-class GameEventData;
+struct GameEventData;
 class BattleGround;
 class ArenaTeam;
 class Item;
-class ItemPosCountVec;
+struct Loot;
+struct LootItem;
 
 struct EventInfo
 {
@@ -32,16 +33,16 @@ struct EventInfo
 };
 
 template <typename U>
-struct EventInfoUnit : public EventInfo
+struct EventInfoSubject : public EventInfo
 {
     const U &subject;
 
-    EventInfoUnit(const U &subject_)
+    EventInfoSubject(const U &subject_)
     : EventInfo(), subject(subject_) {}
 };
-typedef EventInfoUnit<Creature> EventInfoCreature;
-typedef EventInfoUnit<Player> EventInfoPlayer;
-typedef EventInfoUnit<ArenaTeam> EventInfoArenaTeam;
+typedef EventInfoSubject<Creature> EventInfoCreature;
+typedef EventInfoSubject<Player> EventInfoPlayer;
+typedef EventInfoSubject<ArenaTeam> EventInfoArenaTeam;
 
 struct EventInfoArenaTeamStatus : public EventInfoArenaTeam
 {
@@ -114,6 +115,15 @@ struct EventInfoGameEvent : public EventInfo
     : EventInfo(), id(id_), gameEvent(gameEvent_) {}
 };
 
+struct EventInfoLootItem : public EventInfo
+{
+    const LootItem &item;
+    const Loot &loot;
+
+    EventInfoLootItem(const LootItem &item_, const Loot &loot_)
+    : EventInfo(), item(item_), loot(loot_) {}
+};
+
 struct EventInfoPlayerLevel : public EventInfoPlayer
 {
     uint32 level, increase;
@@ -125,11 +135,11 @@ struct EventInfoPlayerLevel : public EventInfoPlayer
 struct EventInfoPlayerItem : public EventInfoPlayer
 {
     const Item &item;
-    const ItemPosCountVec &position;
+    uint16 position;
 
-    EventInfoPlayerItem(const Player &player_, const Item &item_, const ItemPosCountVec &position_)
+    EventInfoPlayerItem(const Player &player_, const Item &item_, uint16 position_)
     : EventInfoPlayer(player_), item(item_), position(position_) {}
-}
+};
 
 class Listener {};
 
@@ -188,6 +198,13 @@ public:
     virtual void EventGameEventStopped(const EventInfoGameEvent &) {}
 };
 
+class ListenerLootItem : public Listener
+{
+public:
+    virtual void EventLootItemColoredDropped(const EventInfoLootItem &) {}
+    virtual void EventLootItemQuestDropped(const EventInfoLootItem &) {}
+};
+
 class ListenerPlayerLevel : public Listener
 {
 public:
@@ -205,7 +222,7 @@ public:
     virtual void EventPlayerItemEquipped(const EventInfoPlayerItem &) {}
     virtual void EventPlayerItemReceived(const EventInfoPlayerItem &) {}
     virtual void EventPlayerItemColoredReceived(const EventInfoPlayerItem &) {}
-}
+};
 
 template<typename L>
 struct ListenerSet {
@@ -277,8 +294,8 @@ public:
     void TriggerGameEventStarted(uint16 id, const GameEventData &gameEvent);
     void TriggerGameEventStopped(uint16 id, const GameEventData &gameEvent);
 
-    void TriggerLootItemColoredDropped(const Player &player); // TODO: suuport
-    void TriggerLootItemQuestDropped(const Player &player); // TODO: support
+    void TriggerLootItemColoredDropped(const LootItem &item, const Loot &loot);
+    void TriggerLootItemQuestDropped(const LootItem &item, const Loot &loot);
 
     void TriggerPlayerLevelReached(const Player &player, uint32 level, uint32 increase);
 //    void TriggerPlayerSkillLevelReached(const Player &player, uint32 level, uint32 increase);
@@ -307,10 +324,10 @@ public:
     void TriggerPlayerKilledOtherPlayer(const Player &player); // TODO: support
     void TriggerPlayerKilledOtherCreature(const Player &player); // TODO: support
 
-    void TriggerPlayerItemUsed(const Player &player, const Item &item, const ItemPosCountVec &position); // TODO: support
-    void TriggerPlayerItemEquipped(const Player &player, const Item &item, const ItemPosCountVec &position); // TODO: support
-    void TriggerPlayerItemReceived(const Player &player, const Item &item, const ItemPosCountVec &position); // TODO: test
-    void TriggerPlayerItemColoredReceived(const Player &player, const Item &item, const ItemPosCountVec &position); // TODO: test
+    void TriggerPlayerItemUsed(const Player &player, const Item &item, uint16 position);
+    void TriggerPlayerItemEquipped(const Player &player, const Item &item, uint16 position);
+    void TriggerPlayerItemReceived(const Player &player, const Item &item, uint16 position);
+    void TriggerPlayerItemColoredReceived(const Player &player, const Item &item, uint16 position);
 
     void TriggerPlayerQuestCompleted(const Player &player); // TODO: support
     void TriggerPlayerQuestAbandoned(const Player &player); // TODO: support
@@ -340,8 +357,6 @@ public:
     void TriggerRaidCreated(const Player &player); // TODO: support
     void TriggerRaidDisbanded(const Player &player); // TODO: support
 
-    std::string NameOfEventType(EventType type) const;
-
     EventConnect<ListenerArenaTeam> ArenaTeamEvents;
     EventConnect<ListenerBattleGround> BattleGroundEvents;
     EventConnect<ListenerBoss> BossEvents;
@@ -349,6 +364,7 @@ public:
     EventConnect<ListenerCommand> CommandEvents;
     EventConnect<ListenerCreature> CreatureEvents;
     EventConnect<ListenerGameEvent> GameEventEvents;
+    EventConnect<ListenerLootItem> LootItemEvents;
     EventConnect<ListenerPlayerLevel> PlayerLevelEvents;
     EventConnect<ListenerPlayerItem> PlayerItemEvents;
 };

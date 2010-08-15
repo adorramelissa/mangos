@@ -6107,7 +6107,7 @@ void Player::RewardReputation(Quest const *pQuest)
         if (!pQuest->RewRepFaction[i])
             continue;
 
-        if (pQuest->RewRepValue[i])           
+        if (pQuest->RewRepValue[i])
         {
             int32 rep = CalculateReputationGain(REPUTATION_SOURCE_QUEST,  pQuest->RewRepValue[i], pQuest->RewRepFaction[i], GetQuestLevel(pQuest));
 
@@ -10101,11 +10101,12 @@ Item* Player::StoreNewItem( ItemPosCountVec const& dest, uint32 item, bool updat
         if(randomPropertyId)
             pItem->SetItemRandomProperties(randomPropertyId);
         pItem = StoreItem( dest, pItem, update );
-        sEventSystemMgr.TriggerPlayerItemReceived(*this, *pItem, dest);
-        const ItemPrototype *itemProt = pItem->getProto();
+
+        sEventSystemMgr.TriggerPlayerItemReceived(*this, *pItem, dest.begin()->pos);
+        const ItemPrototype *itemProt = pItem->GetProto();
         if (itemProt && itemProt->Quality > ITEM_QUALITY_NORMAL)
         { // At least green item
-            sEventSystemMgr.TriggerPlayerItemColoredReceived(*this, *pItem, dest);
+            sEventSystemMgr.TriggerPlayerItemColoredReceived(*this, *pItem, dest.begin()->pos);
         }
     }
     return pItem;
@@ -10332,9 +10333,12 @@ Item* Player::EquipItem( uint16 pos, Item *pItem, bool update )
 
         ApplyEquipCooldown(pItem2);
 
+        // FIXME: What is this else block for? Not sure but trigger nevertheless
+        sEventSystemMgr.TriggerPlayerItemEquipped(*this, *pItem, pos);
         return pItem2;
     }
 
+    sEventSystemMgr.TriggerPlayerItemEquipped(*this, *pItem, pos);
     return pItem;
 }
 
