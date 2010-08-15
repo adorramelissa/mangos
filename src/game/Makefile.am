@@ -108,6 +108,26 @@ libmangosgame_a_SOURCES = \
 	DuelHandler.cpp \
 	DynamicObject.cpp \
 	DynamicObject.h \
+	EventArenaTeamMgr.cpp \
+    EventArenaTeamMgr.h \
+    EventBattleGroundMgr.cpp \
+    EventBattleGroundMgr.h \
+    EventBossMgr.cpp \
+    EventBossMgr.h \
+    EventCharacterMgr.cpp \
+    EventCharacterMgr.h \
+    EventCommandMgr.cpp \
+    EventCommandMgr.h \
+    EventCreatureMgr.cpp \
+    EventCreatureMgr.h \
+    EventGameEventMgr.cpp \
+    EventGameEventMgr.h \
+    EventLootItemMgr.cpp \
+    EventLootItemMgr.h \
+    EventPlayerItemMgr.cpp \
+    EventPlayerItemMgr.h \
+    EventPlayerLevelMgr.cpp \
+    EventPlayerLevelMgr.h \
 	EventSystemMgr.cpp \
 	EventSystemMgr.h \
 	FleeingMovementGenerator.cpp \
