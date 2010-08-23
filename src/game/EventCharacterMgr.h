@@ -14,20 +14,22 @@
 
 struct EventInfoCharacter : public EventInfo
 {
+    uint32 guid;
     const std::string &name;
     uint32 accountId;
     const std::string &ip;
 
-    EventInfoCharacter(const std::string &name_, uint32 accountId_, const std::string &ip_)
-    : EventInfo(), name(name_), accountId(accountId_), ip(ip_) {}
+    EventInfoCharacter(uint32 guid_, const std::string &name_, uint32 accountId_, const std::string &ip_)
+    : EventInfo(), guid(guid_), name(name_), accountId(accountId_), ip(ip_) {}
 };
 
 struct EventInfoCharacterRenamed : public EventInfoCharacter
 {
     const std::string &oldname;
 
-    EventInfoCharacterRenamed(const std::string &name_, const std::string &oldname_, uint32 accountId_, const std::string &ip_)
-    : EventInfoCharacter(name_, accountId_, ip_), oldname(oldname_) {}
+    EventInfoCharacterRenamed(uint32 guid_, const std::string &name_, const std::string &oldname_,
+                              uint32 accountId_, const std::string &ip_)
+    : EventInfoCharacter(guid_, name_, accountId_, ip_), oldname(oldname_) {}
 };
 
 class EventListenerCharacter : public EventListener
