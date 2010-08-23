@@ -97,8 +97,8 @@ bool ArenaTeam::Create(ObjectGuid captainGuid, uint32 type, std::string arenaTea
     CharacterDatabase.CommitTransaction();
 
     AddMember(m_CaptainGuid);
-    sEventArenaTeamMgr.TriggerEvent(EventInfoArenaTeamStatus(*this, sObjectMgr.GetPlayer(captainGuid)),
-                                    &ListenerArenaTeam::EventArenaTeamCreated);
+    sEventSystemMgr(EventListenerArenaTeam).TriggerEvent(EventInfoArenaTeamStatus(*this, sObjectMgr.GetPlayer(captainGuid)),
+                                    &EventListenerArenaTeam::EventArenaTeamCreated);
     return true;
 }
 
@@ -326,8 +326,8 @@ void ArenaTeam::Disband(WorldSession *session)
         BroadcastEvent(ERR_ARENA_TEAM_DISBANDED_S, session->GetPlayerName(), GetName().c_str());
     }
 
-    sEventArenaTeamMgr.TriggerEvent(EventInfoArenaTeamStatus(*this, session->GetPlayer()),
-                                    &ListenerArenaTeam::EventArenaTeamDisbanded);
+    sEventSystemMgr(EventListenerArenaTeam).TriggerEvent(EventInfoArenaTeamStatus(*this, session->GetPlayer()),
+                                    &EventListenerArenaTeam::EventArenaTeamDisbanded);
 
     while (!m_members.empty())
     {
@@ -589,7 +589,8 @@ void ArenaTeam::FinishGame(int32 mod)
             ++m_stats.rank;
     }
 
-    sEventArenaTeamMgr.TriggerEvent(EventInfoArenaTeamRating(*this, mod), &ListenerArenaTeam::EventArenaTeamRatingGained);
+    sEventSystemMgr(EventListenerArenaTeam).TriggerEvent(EventInfoArenaTeamRating(*this, mod),
+                                                         &EventListenerArenaTeam::EventArenaTeamRatingGained);
 }
 
 int32 ArenaTeam::WonAgainst(uint32 againstRating)

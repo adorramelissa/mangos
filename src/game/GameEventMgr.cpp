@@ -489,7 +489,8 @@ uint32 GameEventMgr::Update()                               // return the next e
 void GameEventMgr::UnApplyEvent(uint16 event_id)
 {
     sLog.outString("GameEvent %u \"%s\" removed.", event_id, mGameEvent[event_id].description.c_str());
-    sEventGameEventMgr.TriggerEvent(EventInfoGameEvent(event_id, mGameEvent[event_id]), &ListenerGameEvent::EventGameEventStopped);
+    sEventSystemMgr(EventListenerGameEvent).TriggerEvent(EventInfoGameEvent(event_id, mGameEvent[event_id]),
+                                                         &EventListenerGameEvent::EventGameEventStopped);
     // un-spawn positive event tagged objects
     GameEventUnspawn(event_id);
     // spawn negative event tagget objects
@@ -507,7 +508,8 @@ void GameEventMgr::ApplyNewEvent(uint16 event_id)
         sWorld.SendWorldText(LANG_EVENTMESSAGE, mGameEvent[event_id].description.c_str());
 
     sLog.outString("GameEvent %u \"%s\" started.", event_id, mGameEvent[event_id].description.c_str());
-    sEventGameEventMgr.TriggerEvent(EventInfoGameEvent(event_id, mGameEvent[event_id]), &ListenerGameEvent::EventGameEventStarted);
+    sEventSystemMgr(EventListenerGameEvent).TriggerEvent(EventInfoGameEvent(event_id, mGameEvent[event_id]),
+                                                         &EventListenerGameEvent::EventGameEventStarted);
     // spawn positive event tagget objects
     GameEventSpawn(event_id);
     // un-spawn negative event tagged objects

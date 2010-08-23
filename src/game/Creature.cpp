@@ -1365,15 +1365,18 @@ void Creature::SetDeathState(DeathState s)
 {
     if (s == JUST_DIED)
     {
-        sEventCreatureMgr.TriggerEvent(EventInfoCreature(*this), &ListenerCreature::EventCreatureDied);
+        sEventSystemMgr(EventListenerCreature).TriggerEvent(EventInfoCreature(*this),
+                                                            &EventListenerCreature::EventCreatureDied);
         if (GetCreatureInfo()->rank == 3)
         { // Creature is a World Boss
-            sEventBossMgr.TriggerEvent(EventInfoBoss(*this), &ListenerBoss::EventBossDied);
+            sEventSystemMgr(EventListenerBoss).TriggerEvent(EventInfoBoss(*this),
+                                                                &EventListenerBoss::EventBossDied);
         }
     }
     else if (s == JUST_ALIVED)
     {
-        sEventCreatureMgr.TriggerEvent(EventInfoCreature(*this), &ListenerCreature::EventCreatureSpawned);
+        sEventSystemMgr(EventListenerCreature).TriggerEvent(EventInfoCreature(*this),
+                                                            &EventListenerCreature::EventCreatureSpawned);
     }
 
     if ((s == JUST_DIED && !m_isDeadByDefault) || (s == JUST_ALIVED && m_isDeadByDefault))

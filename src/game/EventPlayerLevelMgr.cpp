@@ -10,5 +10,5 @@
 #include "EventPlayerLevelMgr.h"
 #include "Policies/SingletonImp.h"
 
-INSTANTIATE_SINGLETON_1(EventPlayerLevelMgr);
+INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerPlayerLevel>);
 EventDebugPlayerLevel eventDebugPlayerLevel;

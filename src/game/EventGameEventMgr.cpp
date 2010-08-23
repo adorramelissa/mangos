@@ -10,5 +10,5 @@
 #include "EventGameEventMgr.h"
 #include "Policies/SingletonImp.h"
 
-INSTANTIATE_SINGLETON_1(EventGameEventMgr);
+INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerGameEvent>);
 EventDebugGameEvent eventDebugGameEvent;

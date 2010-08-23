@@ -11,12 +11,9 @@
 #define __EVENTSYSTEMMGR_H__
 
 #include "Policies/Singleton.h"
-#include "Utilities/UnorderedMap.h"
 #include "Utilities/UnorderedSet.h"
 #include "Timer.h"
-#include "Player.h"
-
-class PrintEvents;
+#include "Log.h"
 
 struct EventInfo
 {
@@ -34,53 +31,30 @@ struct EventInfoSubject : public EventInfo
     : EventInfo(), subject(subject_) {}
 };
 
-class Listener {};
-
-template<typename ListenerType>
-struct ListenerSet {
-    typedef UNORDERED_SET<ListenerType *> Type;
-};
-
-template<typename ListenerType>
-struct EventConnect
-{
-public:
-    inline EventConnect& operator+=(ListenerType *listener)
-    {
-        RegisterListener(listener);
-        return *this;
-    }
-
-    inline void RegisterListener(ListenerType *listener)
-    {
-        list.insert(listener);
-    }
-
-    template<typename EventType>
-    void InformListener(const EventType &event, void (ListenerType::*func)(const EventType&))
-    {
-        for (typename ListenerSet<ListenerType>::Type::const_iterator it = list.begin(); it != list.end(); ++it)
-        {
-            ((*it)->*func)(event);
-        }
-    }
-private:
-    typename ListenerSet<ListenerType>::Type list;
-};
+class EventListener {};
 
 template<typename ListenerType>
 class EventSystemMgr
 {
 public:
-    template<typename EventType>
-    inline void TriggerEvent(const EventType &event, void (ListenerType::*func)(const EventType&))
+    inline void RegisterListener(ListenerType *listener)
     {
-        Listener.InformListener(event, func);
+        _list.insert(listener);
     }
 
-    EventConnect<ListenerType> Listener;
+    template<typename EventType>
+    void TriggerEvent(const EventType &event, void (ListenerType::*func)(const EventType &))
+    {
+        for (typename UNORDERED_SET<ListenerType *>::const_iterator it = _list.begin(); it != _list.end(); ++it)
+        {
+            ((*it)->*func)(event);
+        }
+    }
+
+private:
+    UNORDERED_SET<ListenerType *> _list;
 };
 
-// #define sEventSystemMgr MaNGOS::Singleton<EventSystemMgr>::Instance()
+#define sEventSystemMgr(Type) MaNGOS::Singleton<EventSystemMgr<Type> >::Instance()
 
 #endif // __EVENTSYSTEMMGR_H__

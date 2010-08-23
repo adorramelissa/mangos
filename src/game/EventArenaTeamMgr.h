@@ -33,7 +33,7 @@ struct EventInfoArenaTeamRating : public EventInfoArenaTeam
     : EventInfoArenaTeam(team_), amount(amount_) {}
 };
 
-class ListenerArenaTeam : public Listener
+class EventListenerArenaTeam : public EventListener
 {
 public:
     virtual void EventArenaTeamCreated(const EventInfoArenaTeamStatus &) {}
@@ -41,17 +41,13 @@ public:
     virtual void EventArenaTeamRatingGained(const EventInfoArenaTeamRating &) {}
 };
 
-class EventArenaTeamMgr : public EventSystemMgr<ListenerArenaTeam> {};
-
-#define sEventArenaTeamMgr MaNGOS::Singleton<EventArenaTeamMgr>::Instance()
-
 // Debug purposes:
-class EventDebugArenaTeam : public ListenerArenaTeam
+class EventDebugArenaTeam : public EventListenerArenaTeam
 {
 public:
     EventDebugArenaTeam()
     {
-        sEventArenaTeamMgr.Listener += this;
+        sEventSystemMgr(EventListenerArenaTeam).RegisterListener(this);
     }
     void EventArenaTeamCreated(const EventInfoArenaTeamStatus &) { sLog.outDebug("============EventArenaTeamCreated============"); }
     void EventArenaTeamDisbanded(const EventInfoArenaTeamStatus &) { sLog.outDebug("============EventArenaTeamDisbanded============"); }

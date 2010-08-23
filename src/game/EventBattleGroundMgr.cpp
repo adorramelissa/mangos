@@ -10,5 +10,5 @@
 #include "EventBattleGroundMgr.h"
 #include "Policies/SingletonImp.h"
 
-INSTANTIATE_SINGLETON_1(EventBattleGroundMgr);
+INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerBattleGround>);
 EventDebugBattleGround eventDebugBattleGround;

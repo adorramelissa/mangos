@@ -11,10 +11,7 @@
 #define __EVENTPLAYERLEVELMGR_H__
 
 #include "EventSystemMgr.h"
-
-class Player;
-
-typedef EventInfoSubject<Player> EventInfoPlayer;
+#include "EventPlayerDefines.h"
 
 struct EventInfoPlayerLevel : public EventInfoPlayer
 {
@@ -24,7 +21,7 @@ struct EventInfoPlayerLevel : public EventInfoPlayer
     : EventInfoPlayer(player_), level(level_), increase(increase_) {}
 };
 
-class ListenerPlayerLevel : public Listener
+class EventListenerPlayerLevel : public EventListener
 {
 public:
     virtual void EventPlayerLevelReached(const EventInfoPlayerLevel &) {}
@@ -34,17 +31,13 @@ public:
     virtual void EventPlayerTalentsReseted(const EventInfoPlayer &) {}
 };
 
-class EventPlayerLevelMgr : public EventSystemMgr<ListenerPlayerLevel> {};
-
-#define sEventPlayerLevelMgr MaNGOS::Singleton<EventPlayerLevelMgr>::Instance()
-
 // Debug purposes:
-class EventDebugPlayerLevel : public ListenerPlayerLevel
+class EventDebugPlayerLevel : public EventListenerPlayerLevel
 {
 public:
     EventDebugPlayerLevel()
     {
-        sEventPlayerLevelMgr.Listener += this;
+        sEventSystemMgr(EventListenerPlayerLevel).RegisterListener(this);
     }
     void EventPlayerLevelReached(const EventInfoPlayerLevel &) { sLog.outDebug("============EventPlayerLevelReached============"); }
     //    void EventPlayerSkillLevelReached(const EventInfoPlayerLevel &) { sLog.outDebug("============EventPlayerSkillLevelReached============"); }

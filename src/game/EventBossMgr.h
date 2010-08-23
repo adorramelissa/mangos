@@ -16,7 +16,7 @@ class Creature;
 
 typedef EventInfoSubject<Creature> EventInfoBoss;
 
-class ListenerBoss : public Listener
+class EventListenerBoss : public EventListener
 {
 public:
     virtual void EventBossAggroed(const EventInfoBoss &) {}
@@ -24,17 +24,13 @@ public:
     virtual void EventBossEvaded(const EventInfoBoss &) {}
 };
 
-class EventBossMgr : public EventSystemMgr<ListenerBoss> {};
-
-#define sEventBossMgr MaNGOS::Singleton<EventBossMgr>::Instance()
-
 // Debug purposes:
-class EventDebugBoss : public ListenerBoss
+class EventDebugBoss : public EventListenerBoss
 {
 public:
     EventDebugBoss()
     {
-        sEventBossMgr.Listener += this;
+        sEventSystemMgr(EventListenerBoss).RegisterListener(this);
     }
     void EventBossAggroed(const EventInfoBoss &) { sLog.outDebug("============EventBossAggroed============"); }
     void EventBossDied(const EventInfoBoss &) { sLog.outDebug("============EventBossDied============"); }

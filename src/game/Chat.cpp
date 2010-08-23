@@ -1122,13 +1122,13 @@ void ChatHandler::ExecuteCommand(const char* text)
                             fullcmd.c_str(),GetAccountId(),GetAccountId() ? "RA-connection" : "Console");
                     }
 
-                    sEventCommandMgr.TriggerEvent(EventInfoCommand(*command, GetAccountId(), m_session ? m_session->GetPlayer() : NULL),
-                                                  &ListenerCommand::EventCommandGMUsed);
+                    sEventSystemMgr(EventListenerCommand).TriggerEvent(EventInfoCommand(*command, GetAccountId(), m_session ? m_session->GetPlayer() : NULL),
+                                                                       &EventListenerCommand::EventCommandGMUsed);
                 }
                 else
                 {
-                    sEventCommandMgr.TriggerEvent(EventInfoCommand(*command, GetAccountId(), m_session ? m_session->GetPlayer() : NULL),
-                                                        &ListenerCommand::EventCommandUsed);
+                    sEventSystemMgr(EventListenerCommand).TriggerEvent(EventInfoCommand(*command, GetAccountId(), m_session ? m_session->GetPlayer() : NULL),
+                                                                       &EventListenerCommand::EventCommandUsed);
                 }
 
             }

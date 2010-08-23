@@ -10,5 +10,5 @@
 #include "EventCommandMgr.h"
 #include "Policies/SingletonImp.h"
 
-INSTANTIATE_SINGLETON_1(EventCommandMgr);
+INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerCommand>);
 EventDebugCommand eventDebugCommand;

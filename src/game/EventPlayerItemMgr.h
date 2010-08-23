@@ -11,11 +11,9 @@
 #define __EVENTPLAYERITEMMGR_H__
 
 #include "EventSystemMgr.h"
+#include "EventPlayerDefines.h"
 
-class Player;
 class Item;
-
-typedef EventInfoSubject<Player> EventInfoPlayer;
 
 struct EventInfoPlayerItem : public EventInfoPlayer
 {
@@ -26,31 +24,37 @@ struct EventInfoPlayerItem : public EventInfoPlayer
     : EventInfoPlayer(player_), item(item_), position(position_) {}
 };
 
-class ListenerPlayerItem : public Listener
+struct EventInfoPlayerMoney : public EventInfoPlayer
+{
+    uint32 amount;
+
+    EventInfoPlayerMoney(const Player &player_, uint32 amount_)
+    : EventInfoPlayer(player_), amount(amount_) {}
+};
+
+class EventListenerPlayerItem : public EventListener
 {
 public:
     virtual void EventPlayerItemUsed(const EventInfoPlayerItem &) {}
     virtual void EventPlayerItemEquipped(const EventInfoPlayerItem &) {}
     virtual void EventPlayerItemReceived(const EventInfoPlayerItem &) {}
     virtual void EventPlayerItemColoredReceived(const EventInfoPlayerItem &) {}
+    virtual void EventPlayerMoneyGained(const EventInfoPlayerMoney &) {}
 };
 
-class EventPlayerItemMgr : public EventSystemMgr<ListenerPlayerItem> {};
-
-#define sEventPlayerItemMgr MaNGOS::Singleton<EventPlayerItemMgr>::Instance()
-
 // Debug purposes:
-class EventDebugPlayerItem : public ListenerPlayerItem
+class EventDebugPlayerItem : public EventListenerPlayerItem
 {
 public:
     EventDebugPlayerItem()
     {
-        sEventPlayerItemMgr.Listener += this;
+        sEventSystemMgr(EventListenerPlayerItem).RegisterListener(this);
     }
     void EventPlayerItemUsed(const EventInfoPlayerItem &) { sLog.outDebug("============EventPlayerItemUsed============"); }
     void EventPlayerItemEquipped(const EventInfoPlayerItem &) { sLog.outDebug("============EventPlayerItemEquipped============"); }
     void EventPlayerItemReceived(const EventInfoPlayerItem &) { sLog.outDebug("============EventPlayerItemReceived============"); }
     void EventPlayerItemColoredReceived(const EventInfoPlayerItem &) { sLog.outDebug("============EventPlayerItemColoredReceived============"); }
+    void EventPlayerMoneyGained(const EventInfoPlayerMoney &) { sLog.outDebug("============EventPlayerMoneyGained============"); }
 };
 extern EventDebugPlayerItem eventDebugPlayerItem;
 

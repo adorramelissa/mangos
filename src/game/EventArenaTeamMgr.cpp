@@ -10,5 +10,5 @@
 #include "EventArenaTeamMgr.h"
 #include "Policies/SingletonImp.h"
 
-INSTANTIATE_SINGLETON_1(EventArenaTeamMgr);
+INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerArenaTeam>);
 EventDebugArenaTeam eventDebugArenaTeam;

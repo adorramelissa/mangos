@@ -10,5 +10,5 @@
 #include "EventLootItemMgr.h"
 #include "Policies/SingletonImp.h"
 
-INSTANTIATE_SINGLETON_1(EventLootItemMgr);
+INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerLootItem>);
 EventDebugLootItem eventDebugLootItem;

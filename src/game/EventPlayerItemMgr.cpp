@@ -10,5 +10,5 @@
 #include "EventPlayerItemMgr.h"
 #include "Policies/SingletonImp.h"
 
-INSTANTIATE_SINGLETON_1(EventPlayerItemMgr);
+INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerPlayerItem>);
 EventDebugPlayerItem eventDebugPlayerItem;

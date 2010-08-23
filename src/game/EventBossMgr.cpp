@@ -10,5 +10,5 @@
 #include "EventBossMgr.h"
 #include "Policies/SingletonImp.h"
 
-INSTANTIATE_SINGLETON_1(EventBossMgr);
+INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerBoss>);
 EventDebugBoss eventDebugBoss;

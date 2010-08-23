@@ -24,24 +24,20 @@ struct EventInfoLootItem : public EventInfo
     : EventInfo(), item(item_), loot(loot_) {}
 };
 
-class ListenerLootItem : public Listener
+class EventListenerLootItem : public EventListener
 {
 public:
     virtual void EventLootItemColoredDropped(const EventInfoLootItem &) {}
     virtual void EventLootItemQuestDropped(const EventInfoLootItem &) {}
 };
 
-class EventLootItemMgr : public EventSystemMgr<ListenerLootItem> {};
-
-#define sEventLootItemMgr MaNGOS::Singleton<EventLootItemMgr>::Instance()
-
 // Debug purposes:
-class EventDebugLootItem : public ListenerLootItem
+class EventDebugLootItem : public EventListenerLootItem
 {
 public:
     EventDebugLootItem()
     {
-        sEventLootItemMgr.Listener += this;
+        sEventSystemMgr(EventListenerLootItem).RegisterListener(this);
     }
     void EventLootItemColoredDropped(const EventInfoLootItem &) { sLog.outDebug("============EventLootItemColoredDropped============"); }
     void EventLootItemQuestDropped(const EventInfoLootItem &) { sLog.outDebug("============EventLootItemQuestDropped============"); }

@@ -170,7 +170,8 @@ void WorldSession::HandleUseItemOpcode(WorldPacket& recvPacket)
     }
 
     uint16 position = (bagIndex << 8) | slot;
-    sEventPlayerItemMgr.TriggerEvent(EventInfoPlayerItem(*pUser, *pItem, position), &ListenerPlayerItem::EventPlayerItemUsed);
+    sEventSystemMgr(EventListenerPlayerItem).TriggerEvent(EventInfoPlayerItem(*pUser, *pItem, position),
+                                                          &EventListenerPlayerItem::EventPlayerItemUsed);
 }
 
 #define OPEN_CHEST 11437

@@ -10,5 +10,5 @@
 #include "EventCharacterMgr.h"
 #include "Policies/SingletonImp.h"
 
-INSTANTIATE_SINGLETON_1(EventCharacterMgr);
+INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerCharacter>);
 EventDebugCharacter eventDebugCharacter;

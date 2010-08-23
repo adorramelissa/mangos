@@ -10,5 +10,5 @@
 #include "EventCreatureMgr.h"
 #include "Policies/SingletonImp.h"
 
-INSTANTIATE_SINGLETON_1(EventCreatureMgr);
+INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerCreature>);
 EventDebugCreature eventDebugCreature;

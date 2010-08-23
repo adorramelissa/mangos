@@ -389,11 +389,13 @@ void Loot::AddItem(LootStoreItem const & item)
     const ItemPrototype *itemProt = sObjectMgr.GetItemPrototype(item.itemid);
     if(itemProt->Quality > ITEM_QUALITY_NORMAL)
     {
-        sEventLootItemMgr.TriggerEvent(EventInfoLootItem(items.back(), *this), &ListenerLootItem::EventLootItemColoredDropped);
+        sEventSystemMgr(EventListenerLootItem).TriggerEvent(EventInfoLootItem(items.back(), *this),
+                                                            &EventListenerLootItem::EventLootItemColoredDropped);
     }
     if(itemProt->Class == ITEM_CLASS_QUEST)
     {
-        sEventLootItemMgr.TriggerEvent(EventInfoLootItem(items.back(), *this), &ListenerLootItem::EventLootItemQuestDropped);
+        sEventSystemMgr(EventListenerLootItem).TriggerEvent(EventInfoLootItem(items.back(), *this),
+                                                            &EventListenerLootItem::EventLootItemQuestDropped);
     }
 }
 

@@ -30,7 +30,7 @@ struct EventInfoCharacterRenamed : public EventInfoCharacter
     : EventInfoCharacter(name_, accountId_, ip_), oldname(oldname_) {}
 };
 
-class ListenerCharacter : public Listener
+class EventListenerCharacter : public EventListener
 {
 public:
     virtual void EventCharacterLogin(const EventInfoCharacter &) {}
@@ -41,17 +41,13 @@ public:
     virtual void EventCharacterDeletedFinally(const EventInfoCharacter &) {}
 };
 
-class EventCharacterMgr : public EventSystemMgr<ListenerCharacter> {};
-
-#define sEventCharacterMgr MaNGOS::Singleton<EventCharacterMgr>::Instance()
-
 // Debug purposes:
-class EventDebugCharacter : public ListenerCharacter
+class EventDebugCharacter : public EventListenerCharacter
 {
 public:
     EventDebugCharacter()
     {
-        sEventCharacterMgr.Listener += this;
+        sEventSystemMgr(EventListenerCharacter).RegisterListener(this);
     }
     void EventCharacterLogin(const EventInfoCharacter &) { sLog.outDebug("============EventCharacterLogin============"); }
     void EventCharacterLogout(const EventInfoCharacter &) { sLog.outDebug("============EventCharacterLogout============"); }

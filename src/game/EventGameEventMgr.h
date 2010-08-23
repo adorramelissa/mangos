@@ -23,24 +23,20 @@ struct EventInfoGameEvent : public EventInfo
     : EventInfo(), id(id_), gameEvent(gameEvent_) {}
 };
 
-class ListenerGameEvent : public Listener
+class EventListenerGameEvent : public EventListener
 {
 public:
     virtual void EventGameEventStarted(const EventInfoGameEvent &) {}
     virtual void EventGameEventStopped(const EventInfoGameEvent &) {}
 };
 
-class EventGameEventMgr : public EventSystemMgr<ListenerGameEvent> {};
-
-#define sEventGameEventMgr MaNGOS::Singleton<EventGameEventMgr>::Instance()
-
 // Debug purposes:
-class EventDebugGameEvent : public ListenerGameEvent
+class EventDebugGameEvent : public EventListenerGameEvent
 {
 public:
     EventDebugGameEvent()
     {
-        sEventGameEventMgr.Listener += this;
+        sEventSystemMgr(EventListenerGameEvent).RegisterListener(this);
     }
     void EventGameEventStarted(const EventInfoGameEvent &) { sLog.outDebug("============EventGameEventStarted============"); }
     void EventGameEventStopped(const EventInfoGameEvent &) { sLog.outDebug("============EventGameEventStopped============"); }

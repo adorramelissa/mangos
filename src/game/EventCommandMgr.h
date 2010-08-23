@@ -25,24 +25,20 @@ struct EventInfoCommand : public EventInfo
     : EventInfo(), command(command_), accountId(accountId_), player(player_) {}
 };
 
-class ListenerCommand : public Listener
+class EventListenerCommand : public EventListener
 {
 public:
     virtual void EventCommandUsed(const EventInfoCommand &) {}
     virtual void EventCommandGMUsed(const EventInfoCommand &) {}
 };
 
-class EventCommandMgr : public EventSystemMgr<ListenerCommand> {};
-
-#define sEventCommandMgr MaNGOS::Singleton<EventCommandMgr>::Instance()
-
 // Debug purposes:
-class EventDebugCommand : public ListenerCommand
+class EventDebugCommand : public EventListenerCommand
 {
 public:
     EventDebugCommand()
     {
-        sEventCommandMgr.Listener += this;
+        sEventSystemMgr(EventListenerCommand).RegisterListener(this);
     }
     void EventCommandUsed(const EventInfoCommand &) { sLog.outDebug("============EventCommandUsed============"); }
     void EventCommandGMUsed(const EventInfoCommand &) { sLog.outDebug("============EventCommandGMUsed============"); }

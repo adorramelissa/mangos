@@ -33,24 +33,20 @@ struct EventInfoBattleGroundEnded : public EventInfoBattleGround
     : EventInfoBattleGround(battleGround_, alliance_, horde_), winnerFaction(winnerFaction_) {}
 };
 
-class ListenerBattleGround : public Listener
+class EventListenerBattleGround : public EventListener
 {
 public:
     virtual void EventBattleGroundStarted(const EventInfoBattleGround &) {}
     virtual void EventBattleGroundEnded(const EventInfoBattleGroundEnded &) {}
 };
 
-class EventBattleGroundMgr : public EventSystemMgr<ListenerBattleGround> {};
-
-#define sEventBattleGroundMgr MaNGOS::Singleton<EventBattleGroundMgr>::Instance()
-
 // Debug purposes:
-class EventDebugBattleGround : public ListenerBattleGround
+class EventDebugBattleGround : public EventListenerBattleGround
 {
 public:
     EventDebugBattleGround()
     {
-        sEventBattleGroundMgr.Listener += this;
+        sEventSystemMgr(EventListenerBattleGround).RegisterListener(this);
     }
     void EventBattleGroundStarted(const EventInfoBattleGround &) { sLog.outDebug("============EventBattleGroundStarted============"); }
     void EventBattleGroundEnded(const EventInfoBattleGroundEnded &) { sLog.outDebug("============EventBattleGroundEnded============"); }

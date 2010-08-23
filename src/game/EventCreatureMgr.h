@@ -16,24 +16,20 @@ class Creature;
 
 typedef EventInfoSubject<Creature> EventInfoCreature;
 
-class ListenerCreature : public Listener
+class EventListenerCreature : public EventListener
 {
 public:
     virtual void EventCreatureSpawned(const EventInfoCreature &) {}
     virtual void EventCreatureDied(const EventInfoCreature &) {}
 };
 
-class EventCreatureMgr : public EventSystemMgr<ListenerCreature> {};
-
-#define sEventCreatureMgr MaNGOS::Singleton<EventCreatureMgr>::Instance()
-
 // Debug purposes:
-class EventDebugCreature : public ListenerCreature
+class EventDebugCreature : public EventListenerCreature
 {
 public:
     EventDebugCreature()
     {
-        sEventCreatureMgr.Listener += this;
+        sEventSystemMgr(EventListenerCreature).RegisterListener(this);
     }
     void EventCreatureSpawned(const EventInfoCreature &) { sLog.outDebug("============EventCreatureSpawned============"); }
     void EventCreatureDied(const EventInfoCreature &) { sLog.outDebug("============EventCreatureDied============"); }
