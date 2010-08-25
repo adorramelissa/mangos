@@ -4161,7 +4161,7 @@ void Player::DeleteOldCharacters(uint32 keepDays)
         {
             Field *charFields = resultChars->Fetch();
             ObjectGuid guid = ObjectGuid(HIGHGUID_PLAYER, charFields[0].GetUInt32());
-            sEventSystemMgr(EventListenerCharacter).TriggerEvent(EventInfoCharacter(charFields[0].GetUInt32(), charFields[2].GetCppString(), 0, "127.0.0.1"),
+            sEventSystemMgr(EventListenerCharacter).TriggerEvent(EventInfoCharacter(charFields[0].GetUInt32(), charFields[2].GetCppString(), charFields[1].GetUInt32(), "127.0.0.1"),
                                          &EventListenerCharacter::EventCharacterDeletedFinally);
             Player::DeleteFromDB(guid, charFields[1].GetUInt32(), true, true);
         } while(resultChars->NextRow());
