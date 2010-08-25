@@ -60,6 +60,7 @@
 #include "Mail.h"
 #include "EventPlayerItemMgr.h"
 #include "EventPlayerLevelMgr.h"
+#include "EventCharacterMgr.h"
 
 #include <cmath>
 
@@ -4152,7 +4153,7 @@ void Player::DeleteOldCharacters(uint32 keepDays)
 {
     sLog.outString("Player::DeleteOldChars: Deleting all characters which have been deleted %u days before...", keepDays);
 
-    QueryResult *resultChars = CharacterDatabase.PQuery("SELECT guid, deleteInfos_Account FROM characters WHERE deleteDate IS NOT NULL AND deleteDate < '" UI64FMTD "'", uint64(time(NULL) - time_t(keepDays * DAY)));
+    QueryResult *resultChars = CharacterDatabase.PQuery("SELECT guid, deleteInfos_Account, name FROM characters WHERE deleteDate IS NOT NULL AND deleteDate < '" UI64FMTD "'", uint64(time(NULL) - time_t(keepDays * DAY)));
     if (resultChars)
     {
         sLog.outString("Player::DeleteOldChars: Found %u character(s) to delete",uint32(resultChars->GetRowCount()));
@@ -4160,6 +4161,8 @@ void Player::DeleteOldCharacters(uint32 keepDays)
         {
             Field *charFields = resultChars->Fetch();
             ObjectGuid guid = ObjectGuid(HIGHGUID_PLAYER, charFields[0].GetUInt32());
+            sEventSystemMgr(EventListenerCharacter).TriggerEvent(EventInfoCharacter(charFields[0].GetUInt32(), charFields[2].GetCppString(), 0, "127.0.0.1"),
+                                         &EventListenerCharacter::EventCharacterDeletedFinally);
             Player::DeleteFromDB(guid, charFields[1].GetUInt32(), true, true);
         } while(resultChars->NextRow());
         delete resultChars;
