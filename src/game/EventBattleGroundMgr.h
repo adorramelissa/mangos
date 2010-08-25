@@ -48,8 +48,8 @@ public:
     {
         sEventSystemMgr(EventListenerBattleGround).RegisterListener(this);
     }
-    void EventBattleGroundStarted(const EventInfoBattleGround &) { sLog.outDebug("============EventBattleGroundStarted============"); }
-    void EventBattleGroundEnded(const EventInfoBattleGroundEnded &) { sLog.outDebug("============EventBattleGroundEnded============"); }
+    void EventBattleGroundStarted(const EventInfoBattleGround &info);
+    void EventBattleGroundEnded(const EventInfoBattleGroundEnded &info);
 };
 extern EventDebugBattleGround eventDebugBattleGround;
 

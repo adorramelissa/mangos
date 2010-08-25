@@ -35,7 +35,7 @@ public:
     {
         sEventSystemMgr(EventListenerPlayerLearn).RegisterListener(this);
     }
-    void EventPlayerSpellLearned(const EventInfoPlayerLearn &) { sLog.outDebug("============EventPlayerSpellLearned============"); }
+    void EventPlayerSpellLearned(const EventInfoPlayerLearn &info);
 };
 extern EventDebugPlayerLearn eventDebugPlayerLearn;
 

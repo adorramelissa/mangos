@@ -14,7 +14,13 @@
 
 class Creature;
 
-typedef EventInfoSubject<Creature> EventInfoCreature;
+struct EventInfoCreature : public EventInfo
+{
+    const Creature &creature;
+    
+    EventInfoCreature(const Creature &creature_)
+    : EventInfo(), creature(creature_) {}
+};
 
 class EventListenerCreature : public EventListener
 {
@@ -31,8 +37,8 @@ public:
     {
         sEventSystemMgr(EventListenerCreature).RegisterListener(this);
     }
-    void EventCreatureSpawned(const EventInfoCreature &) { sLog.outDebug("============EventCreatureSpawned============"); }
-    void EventCreatureDied(const EventInfoCreature &) { sLog.outDebug("============EventCreatureDied============"); }
+    void EventCreatureSpawned(const EventInfoCreature &info);
+    void EventCreatureDied(const EventInfoCreature &info);
 };
 extern EventDebugCreature eventDebugCreature;
 

@@ -9,6 +9,22 @@
 
 #include "EventPlayerQuestMgr.h"
 #include "Policies/SingletonImp.h"
+#include "Player.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerPlayerQuest>);
 EventDebugPlayerQuest eventDebugPlayerQuest;
+
+void EventDebugPlayerQuest::EventPlayerQuestCompleted(const EventInfoPlayerQuest &info)
+{
+    EVENTLOG("EventPlayerQuestCompleted - id:%u", info.player.GetGUIDLow());
+}
+
+void EventDebugPlayerQuest::EventPlayerQuestAbandoned(const EventInfoPlayerQuest &info)
+{
+    EVENTLOG("EventPlayerQuestAbandoned - id:%u", info.player.GetGUIDLow());
+}
+
+void EventDebugPlayerQuest::EventPlayerQuestItemCollected(const EventInfoPlayerQuest &info)
+{
+    EVENTLOG("EventPlayerQuestItemCollected - id:%u", info.player.GetGUIDLow());
+}

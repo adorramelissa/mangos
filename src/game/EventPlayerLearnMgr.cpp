@@ -9,6 +9,12 @@
 
 #include "EventPlayerLearnMgr.h"
 #include "Policies/SingletonImp.h"
+#include "Player.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerPlayerLearn>);
 EventDebugPlayerLearn eventDebugPlayerLearn;
+
+void EventDebugPlayerLearn::EventPlayerSpellLearned(const EventInfoPlayerLearn &info)
+{
+    EVENTLOG("EventPlayerSpellLearned - id:%u", info.player.GetGUIDLow()); 
+}

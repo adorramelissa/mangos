@@ -9,6 +9,17 @@
 
 #include "EventCreatureMgr.h"
 #include "Policies/SingletonImp.h"
+#include "Creature.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerCreature>);
 EventDebugCreature eventDebugCreature;
+
+void EventDebugCreature::EventCreatureSpawned(const EventInfoCreature &info)
+{
+    EVENTLOG("EventCreatureSpawned - guid:%u", info.creature.GetGUIDLow());
+}
+
+void EventDebugCreature::EventCreatureDied(const EventInfoCreature &info)
+{
+    EVENTLOG("EventCreatureDied - guid:%u", info.creature.GetGUIDLow()); 
+}

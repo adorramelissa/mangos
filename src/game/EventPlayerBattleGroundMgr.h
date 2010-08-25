@@ -16,8 +16,16 @@
 struct EventInfoPlayerBattleGround : public EventInfoPlayer
 {
     // TODO: fill needed params
-
+    
     EventInfoPlayerBattleGround(const Player &player_)
+    : EventInfoPlayer(player_) {}
+};
+
+struct EventInfoPlayerDuell : public EventInfoPlayer
+{
+    // TODO: fill needed params
+    
+    EventInfoPlayerDuell(const Player &player_)
     : EventInfoPlayer(player_) {}
 };
 
@@ -28,8 +36,8 @@ public:
     virtual void EventPlayerBattleGroundLeaved(const EventInfoPlayerBattleGround &) {}
     virtual void EventPlayerBattleGroundWon(const EventInfoPlayerBattleGround &) {}
     virtual void EventPlayerBattleGroundLost(const EventInfoPlayerBattleGround &) {}
-    virtual void EventPlayerDuellWon(const EventInfoPlayerBattleGround &) {}
-    virtual void EventPlayerDuellLost(const EventInfoPlayerBattleGround &) {}
+    virtual void EventPlayerDuellWon(const EventInfoPlayerDuell &) {}
+    virtual void EventPlayerDuellLost(const EventInfoPlayerDuell &) {}
 };
 
 // Debug purposes:
@@ -40,12 +48,12 @@ public:
     {
         sEventSystemMgr(EventListenerPlayerBattleGround).RegisterListener(this);
     }
-    void EventPlayerBattleGroundJoined(const EventInfoPlayerBattleGround &) { sLog.outDebug("============EventPlayerBattleGroundJoined============"); }
-    void EventPlayerBattleGroundLeaved(const EventInfoPlayerBattleGround &) { sLog.outDebug("============EventPlayerBattleGroundLeaved============"); }
-    void EventPlayerBattleGroundWon(const EventInfoPlayerBattleGround &) { sLog.outDebug("============EventPlayerBattleGroundWon============"); }
-    void EventPlayerBattleGroundLost(const EventInfoPlayerBattleGround &) { sLog.outDebug("============EventPlayerBattleGroundLost============"); }
-    void EventPlayerDuellWon(const EventInfoPlayerBattleGround &) { sLog.outDebug("============EventPlayerDuellWon============"); }
-    void EventPlayerDuellLost(const EventInfoPlayerBattleGround &) { sLog.outDebug("============EventPlayerDuellLost============"); }
+    void EventPlayerBattleGroundJoined(const EventInfoPlayerBattleGround &info);
+    void EventPlayerBattleGroundLeaved(const EventInfoPlayerBattleGround &info);
+    void EventPlayerBattleGroundWon(const EventInfoPlayerBattleGround &info);
+    void EventPlayerBattleGroundLost(const EventInfoPlayerBattleGround &info);
+    void EventPlayerDuellWon(const EventInfoPlayerDuell &info);
+    void EventPlayerDuellLost(const EventInfoPlayerDuell &info);
 };
 extern EventDebugPlayerBattleGround eventDebugPlayerBattleGround;
 

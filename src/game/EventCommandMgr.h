@@ -40,8 +40,8 @@ public:
     {
         sEventSystemMgr(EventListenerCommand).RegisterListener(this);
     }
-    void EventCommandUsed(const EventInfoCommand &) { sLog.outDebug("============EventCommandUsed============"); }
-    void EventCommandGMUsed(const EventInfoCommand &) { sLog.outDebug("============EventCommandGMUsed============"); }
+    void EventCommandUsed(const EventInfoCommand &info);
+    void EventCommandGMUsed(const EventInfoCommand &info);
 };
 extern EventDebugCommand eventDebugCommand;
 

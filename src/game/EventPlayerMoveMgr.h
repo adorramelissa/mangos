@@ -13,8 +13,6 @@
 #include "EventSystemMgr.h"
 #include "EventPlayerDefines.h"
 
-class Item;
-
 struct EventInfoPlayerMove : public EventInfoPlayer
 {
     // TODO: fill needed params
@@ -39,9 +37,9 @@ public:
     {
         sEventSystemMgr(EventListenerPlayerMove).RegisterListener(this);
     }
-    void EventPlayerMoved(const EventInfoPlayerMove &) { sLog.outDebug("============EventPlayerMoved============"); }
-    void EventPlayerTeleported(const EventInfoPlayerMove &) { sLog.outDebug("============EventPlayerTeleported============"); }
-    void EventPlayerFlightPathTaken(const EventInfoPlayerMove &) { sLog.outDebug("============EventPlayerFlightPathTaken============"); }
+    void EventPlayerMoved(const EventInfoPlayerMove &info);
+    void EventPlayerTeleported(const EventInfoPlayerMove &info);
+    void EventPlayerFlightPathTaken(const EventInfoPlayerMove &info);
 };
 extern EventDebugPlayerMove eventDebugPlayerMove;
 

@@ -38,8 +38,8 @@ public:
     {
         sEventSystemMgr(EventListenerGameEvent).RegisterListener(this);
     }
-    void EventGameEventStarted(const EventInfoGameEvent &) { sLog.outDebug("============EventGameEventStarted============"); }
-    void EventGameEventStopped(const EventInfoGameEvent &) { sLog.outDebug("============EventGameEventStopped============"); }
+    void EventGameEventStarted(const EventInfoGameEvent &info);
+    void EventGameEventStopped(const EventInfoGameEvent &info);
 };
 extern EventDebugGameEvent eventDebugGameEvent;
 

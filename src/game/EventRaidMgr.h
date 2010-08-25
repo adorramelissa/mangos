@@ -12,12 +12,15 @@
 
 #include "EventSystemMgr.h"
 
+class Group;
+
 struct EventInfoRaid : public EventInfo
 {
+    const Group &group;
     // TODO: implement needed params
 
-    EventInfoRaid()
-    : EventInfo() {}
+    EventInfoRaid(const Group &group_)
+    : EventInfo(), group(group_) {}
 };
 
 class EventListenerRaid : public EventListener
@@ -35,8 +38,8 @@ public:
     {
         sEventSystemMgr(EventListenerRaid).RegisterListener(this);
     }
-    void EventRaidCreated(const EventInfoRaid &) { sLog.outDebug("============EventRaidCreated============"); }
-    void EventRaidDisbanded(const EventInfoRaid &) { sLog.outDebug("============EventRaidDisbanded============"); }
+    void EventRaidCreated(const EventInfoRaid &info);
+    void EventRaidDisbanded(const EventInfoRaid &info);
 };
 extern EventDebugRaid eventDebugRaid;
 

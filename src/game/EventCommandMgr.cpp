@@ -9,6 +9,21 @@
 
 #include "EventCommandMgr.h"
 #include "Policies/SingletonImp.h"
+#include "Chat.h"
+#include "WorldPacket.h"
+#include "Player.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerCommand>);
 EventDebugCommand eventDebugCommand;
+
+void EventDebugCommand::EventCommandUsed(const EventInfoCommand &info)
+{
+    EVENTLOG("EventCommandUsed - command:%s accid:%u player:%u",
+             info.command.Name, info.accountId, info.player ? info.player->GetGUIDLow() : 0);
+}
+
+void EventDebugCommand::EventCommandGMUsed(const EventInfoCommand &info)
+{
+    EVENTLOG("EventCommandGMUsed - command:%s accid:%u player:%u",
+             info.command.Name, info.accountId, info.player ? info.player->GetGUIDLow() : 0);
+}

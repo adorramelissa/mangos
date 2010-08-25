@@ -15,7 +15,13 @@
 class Player;
 class ArenaTeam;
 
-typedef EventInfoSubject<ArenaTeam> EventInfoArenaTeam;
+struct EventInfoArenaTeam : public EventInfo
+{
+    const ArenaTeam &team;
+
+    EventInfoArenaTeam(const ArenaTeam &team_)
+    : EventInfo(), team(team_) {}
+};
 
 struct EventInfoArenaTeamStatus : public EventInfoArenaTeam
 {
@@ -49,9 +55,9 @@ public:
     {
         sEventSystemMgr(EventListenerArenaTeam).RegisterListener(this);
     }
-    void EventArenaTeamCreated(const EventInfoArenaTeamStatus &) { sLog.outDebug("============EventArenaTeamCreated============"); }
-    void EventArenaTeamDisbanded(const EventInfoArenaTeamStatus &) { sLog.outDebug("============EventArenaTeamDisbanded============"); }
-    void EventArenaTeamRatingGained(const EventInfoArenaTeamRating &) { sLog.outDebug("============EventArenaTeamRatingGained============"); }
+    void EventArenaTeamCreated(const EventInfoArenaTeamStatus &info);
+    void EventArenaTeamDisbanded(const EventInfoArenaTeamStatus &info);
+    void EventArenaTeamRatingGained(const EventInfoArenaTeamRating &info);
 };
 extern EventDebugArenaTeam eventDebugArenaTeam;
 

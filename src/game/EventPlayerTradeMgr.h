@@ -13,8 +13,6 @@
 #include "EventSystemMgr.h"
 #include "EventPlayerDefines.h"
 
-class Item;
-
 struct EventInfoPlayerTrade : public EventInfoPlayer
 {
     // TODO: fill needed params
@@ -40,10 +38,10 @@ public:
     {
         sEventSystemMgr(EventListenerPlayerTrade).RegisterListener(this);
     }
-    void EventPlayerMailSend(const EventInfoPlayerTrade &) { sLog.outDebug("============EventPlayerMailSend============"); }
-    void EventPlayerTradeAccepted(const EventInfoPlayerTrade &) { sLog.outDebug("============EventPlayerTradeAccepted============"); }
-    void EventPlayerTradeSpecialAccepted(const EventInfoPlayerTrade &) { sLog.outDebug("============EventPlayerTradeSpecialAccepted============"); }
-    void EventPlayerMerchantTraded(const EventInfoPlayerTrade &) { sLog.outDebug("============EventPlayerMerchantTraded============"); }
+    void EventPlayerMailSend(const EventInfoPlayerTrade &info);
+    void EventPlayerTradeAccepted(const EventInfoPlayerTrade &info);
+    void EventPlayerTradeSpecialAccepted(const EventInfoPlayerTrade &info);
+    void EventPlayerMerchantTraded(const EventInfoPlayerTrade &info);
 };
 extern EventDebugPlayerTrade eventDebugPlayerTrade;
 

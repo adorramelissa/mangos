@@ -13,8 +13,6 @@
 #include "EventSystemMgr.h"
 #include "EventPlayerDefines.h"
 
-class Item;
-
 struct EventInfoPlayerDeathState : public EventInfoPlayer
 {
     // TODO: fill needed params
@@ -38,8 +36,8 @@ public:
     {
         sEventSystemMgr(EventListenerPlayerDeathState).RegisterListener(this);
     }
-    void EventPlayerRevived(const EventInfoPlayerDeathState &) { sLog.outDebug("============EventPlayerRevived============"); }
-    void EventPlayerDied(const EventInfoPlayerDeathState &) { sLog.outDebug("============EventPlayerDied============"); }
+    void EventPlayerRevived(const EventInfoPlayerDeathState &info);
+    void EventPlayerDied(const EventInfoPlayerDeathState &info);
 };
 extern EventDebugPlayerDeathState eventDebugPlayerDeathState;
 

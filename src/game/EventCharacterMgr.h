@@ -51,12 +51,12 @@ public:
     {
         sEventSystemMgr(EventListenerCharacter).RegisterListener(this);
     }
-    void EventCharacterLogin(const EventInfoCharacter &) { sLog.outDebug("============EventCharacterLogin============"); }
-    void EventCharacterLogout(const EventInfoCharacter &) { sLog.outDebug("============EventCharacterLogout============"); }
-    void EventCharacterCreated(const EventInfoCharacter &) { sLog.outDebug("============EventCharacterCreated============"); }
-    void EventCharacterRenamed(const EventInfoCharacterRenamed &) { sLog.outDebug("============EventCharacterRenamed============"); }
-    void EventCharacterDeleted(const EventInfoCharacter &) { sLog.outDebug("============EventCharacterDeleted============"); }
-    void EventCharacterDeletedFinally(const EventInfoCharacter &) { sLog.outDebug("============EventCharacterDeletedFinally============"); }
+    void EventCharacterLogin(const EventInfoCharacter &info);
+    void EventCharacterLogout(const EventInfoCharacter &info);
+    void EventCharacterCreated(const EventInfoCharacter &info);
+    void EventCharacterRenamed(const EventInfoCharacterRenamed &info);
+    void EventCharacterDeleted(const EventInfoCharacter &info);
+    void EventCharacterDeletedFinally(const EventInfoCharacter &info);
 };
 extern EventDebugCharacter eventDebugCharacter;
 

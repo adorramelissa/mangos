@@ -13,6 +13,7 @@
 #include "EventSystemMgr.h"
 #include "EventPlayerDefines.h"
 
+class Player;
 class Item;
 
 struct EventInfoPlayerItem : public EventInfoPlayer
@@ -50,11 +51,11 @@ public:
     {
         sEventSystemMgr(EventListenerPlayerItem).RegisterListener(this);
     }
-    void EventPlayerItemUsed(const EventInfoPlayerItem &) { sLog.outDebug("============EventPlayerItemUsed============"); }
-    void EventPlayerItemEquipped(const EventInfoPlayerItem &) { sLog.outDebug("============EventPlayerItemEquipped============"); }
-    void EventPlayerItemReceived(const EventInfoPlayerItem &) { sLog.outDebug("============EventPlayerItemReceived============"); }
-    void EventPlayerItemColoredReceived(const EventInfoPlayerItem &) { sLog.outDebug("============EventPlayerItemColoredReceived============"); }
-    void EventPlayerMoneyGained(const EventInfoPlayerMoney &) { sLog.outDebug("============EventPlayerMoneyGained============"); }
+    void EventPlayerItemUsed(const EventInfoPlayerItem &info);
+    void EventPlayerItemEquipped(const EventInfoPlayerItem &info);
+    void EventPlayerItemReceived(const EventInfoPlayerItem &info);
+    void EventPlayerItemColoredReceived(const EventInfoPlayerItem &info);
+    void EventPlayerMoneyGained(const EventInfoPlayerMoney &info);
 };
 extern EventDebugPlayerItem eventDebugPlayerItem;
 

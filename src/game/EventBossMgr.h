@@ -14,7 +14,13 @@
 
 class Creature;
 
-typedef EventInfoSubject<Creature> EventInfoBoss;
+struct EventInfoBoss : public EventInfo
+{
+    const Creature &boss;
+
+    EventInfoBoss(const Creature &boss_)
+    : EventInfo(), boss(boss_) {}
+};
 
 class EventListenerBoss : public EventListener
 {
@@ -32,9 +38,9 @@ public:
     {
         sEventSystemMgr(EventListenerBoss).RegisterListener(this);
     }
-    void EventBossAggroed(const EventInfoBoss &) { sLog.outDebug("============EventBossAggroed============"); }
-    void EventBossDied(const EventInfoBoss &) { sLog.outDebug("============EventBossDied============"); }
-    void EventBossEvaded(const EventInfoBoss &) { sLog.outDebug("============EventBossEvaded============"); }
+    void EventBossAggroed(const EventInfoBoss &info);
+    void EventBossDied(const EventInfoBoss &info);
+    void EventBossEvaded(const EventInfoBoss &info);
 };
 extern EventDebugBoss eventDebugBoss;
 

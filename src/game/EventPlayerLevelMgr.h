@@ -39,11 +39,11 @@ public:
     {
         sEventSystemMgr(EventListenerPlayerLevel).RegisterListener(this);
     }
-    void EventPlayerLevelReached(const EventInfoPlayerLevel &) { sLog.outDebug("============EventPlayerLevelReached============"); }
-    //    void EventPlayerSkillLevelReached(const EventInfoPlayerLevel &) { sLog.outDebug("============EventPlayerSkillLevelReached============"); }
-    void EventPlayerReputationLevelReached(const EventInfoPlayerLevel &) { sLog.outDebug("============EventPlayerReputationLevelReached============"); }
-    //    void EventPlayerPersonalArenaRatingGained(const EventInfoPlayerLevel &) { sLog.outDebug("============EventPlayerPersonalArenaRatingGained============"); }
-    void EventPlayerTalentsReseted(const EventInfoPlayer &) { sLog.outDebug("============EventPlayerTalentsReseted============"); }
+    void EventPlayerLevelReached(const EventInfoPlayerLevel &info);
+//    void EventPlayerSkillLevelReached(const EventInfoPlayerLevel &info);
+    void EventPlayerReputationLevelReached(const EventInfoPlayerLevel &info);
+//    void EventPlayerPersonalArenaRatingGained(const EventInfoPlayerLevel &info);
+    void EventPlayerTalentsReseted(const EventInfoPlayer &info);
 };
 extern EventDebugPlayerLevel eventDebugPlayerLevel;
 

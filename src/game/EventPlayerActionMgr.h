@@ -44,8 +44,8 @@ public:
     {
         sEventSystemMgr(EventListenerPlayerAction).RegisterListener(this);
     }
-    void EventPlayerSpellCasted(const EventInfoPlayerActionSpell &) { sLog.outDebug("============EventPlayerSpellCasted============"); }
-    void EventPlayerDamageDealt(const EventInfoPlayerActionDamage &) { sLog.outDebug("============EventPlayerDamageDealt============"); }
+    void EventPlayerSpellCasted(const EventInfoPlayerActionSpell &info);
+    void EventPlayerDamageDealt(const EventInfoPlayerActionDamage &info);
 };
 extern EventDebugPlayerAction eventDebugPlayerAction;
 

@@ -15,6 +15,8 @@
 #include "Timer.h"
 #include "Log.h"
 
+#define EVENTLOG(...) sLog.outString(__VA_ARGS__)
+
 struct EventInfo
 {
     uint32 time;

@@ -13,8 +13,6 @@
 #include "EventSystemMgr.h"
 #include "EventPlayerDefines.h"
 
-class Item;
-
 struct EventInfoPlayerInstance : public EventInfoPlayer
 {
     // TODO: fill needed params
@@ -39,9 +37,9 @@ public:
     {
         sEventSystemMgr(EventListenerPlayerInstance).RegisterListener(this);
     }
-    void EventPlayerInstanceEntered(const EventInfoPlayerInstance &) { sLog.outDebug("============EventPlayerInstanceEntered============"); }
-    void EventPlayerInstanceLeaved(const EventInfoPlayerInstance &) { sLog.outDebug("============EventPlayerInstanceLeaved============"); }
-    void EventPlayerInstanceIdReceived(const EventInfoPlayerInstance &) { sLog.outDebug("============EventPlayerInstanceIdReceived============"); }
+    void EventPlayerInstanceEntered(const EventInfoPlayerInstance &info);
+    void EventPlayerInstanceLeaved(const EventInfoPlayerInstance &info);
+    void EventPlayerInstanceIdReceived(const EventInfoPlayerInstance &info);
 };
 extern EventDebugPlayerInstance eventDebugPlayerInstance;
 

@@ -13,8 +13,6 @@
 #include "EventSystemMgr.h"
 #include "EventPlayerDefines.h"
 
-class Item;
-
 struct EventInfoPlayerKill : public EventInfoPlayer
 {
     // TODO: fill needed params
@@ -40,10 +38,10 @@ public:
     {
         sEventSystemMgr(EventListenerPlayerKill).RegisterListener(this);
     }
-    void EventPlayerKilledByPlayer(const EventInfoPlayerKill &) { sLog.outDebug("============EventPlayerKilledByPlayer============"); }
-    void EventPlayerKilledByCreature(const EventInfoPlayerKill &) { sLog.outDebug("============EventPlayerKilledByCreature============"); }
-    void EventPlayerKilledOtherPlayer(const EventInfoPlayerKill &) { sLog.outDebug("============EventPlayerKilledOtherPlayer============"); }
-    void EventPlayerKilledOtherCreature(const EventInfoPlayerKill &) { sLog.outDebug("============EventPlayerKilledOtherCreature============"); }
+    void EventPlayerKilledByPlayer(const EventInfoPlayerKill &info);
+    void EventPlayerKilledByCreature(const EventInfoPlayerKill &info);
+    void EventPlayerKilledOtherPlayer(const EventInfoPlayerKill &info);
+    void EventPlayerKilledOtherCreature(const EventInfoPlayerKill &info);
 };
 extern EventDebugPlayerKill eventDebugPlayerKill;
 

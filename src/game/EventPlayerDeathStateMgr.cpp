@@ -9,6 +9,17 @@
 
 #include "EventPlayerDeathStateMgr.h"
 #include "Policies/SingletonImp.h"
+#include "Player.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerPlayerDeathState>);
 EventDebugPlayerDeathState eventDebugPlayerDeathState;
+
+void EventDebugPlayerDeathState::EventPlayerRevived(const EventInfoPlayerDeathState &info)
+{
+    EVENTLOG("EventPlayerRevived - id:%u", info.player.GetGUIDLow());
+}
+
+void EventDebugPlayerDeathState::EventPlayerDied(const EventInfoPlayerDeathState &info)
+{
+    EVENTLOG("EventPlayerDied - id:%u", info.player.GetGUIDLow());
+}

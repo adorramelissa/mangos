@@ -12,6 +12,12 @@
 
 class Player;
 
-typedef EventInfoSubject<Player> EventInfoPlayer;
+struct EventInfoPlayer : public EventInfo
+{
+    const Player &player;
+    
+    EventInfoPlayer(const Player &player_)
+    : EventInfo(), player(player_) {}
+};
 
 #endif // __EVENTPLAYERDEFINES_H__

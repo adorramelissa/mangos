@@ -39,8 +39,8 @@ public:
     {
         sEventSystemMgr(EventListenerLootItem).RegisterListener(this);
     }
-    void EventLootItemColoredDropped(const EventInfoLootItem &) { sLog.outDebug("============EventLootItemColoredDropped============"); }
-    void EventLootItemQuestDropped(const EventInfoLootItem &) { sLog.outDebug("============EventLootItemQuestDropped============"); }
+    void EventLootItemColoredDropped(const EventInfoLootItem &info);
+    void EventLootItemQuestDropped(const EventInfoLootItem &info);
 };
 extern EventDebugLootItem eventDebugLootItem;
 

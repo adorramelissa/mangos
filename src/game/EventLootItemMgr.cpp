@@ -9,6 +9,17 @@
 
 #include "EventLootItemMgr.h"
 #include "Policies/SingletonImp.h"
+#include "LootMgr.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerLootItem>);
 EventDebugLootItem eventDebugLootItem;
+
+void EventDebugLootItem::EventLootItemColoredDropped(const EventInfoLootItem &info)
+{
+    EVENTLOG("EventLootItemColoredDropped - id:%u", info.item.itemid);
+}
+
+void EventDebugLootItem::EventLootItemQuestDropped(const EventInfoLootItem &info)
+{
+    EVENTLOG("EventLootItemQuestDropped - id:%u", info.item.itemid); 
+}
