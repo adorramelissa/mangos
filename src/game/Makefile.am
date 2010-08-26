@@ -109,25 +109,43 @@ libmangosgame_a_SOURCES = \
 	DynamicObject.cpp \
 	DynamicObject.h \
 	EventArenaTeamMgr.cpp \
-    EventArenaTeamMgr.h \
-    EventBattleGroundMgr.cpp \
-    EventBattleGroundMgr.h \
-    EventBossMgr.cpp \
-    EventBossMgr.h \
-    EventCharacterMgr.cpp \
-    EventCharacterMgr.h \
-    EventCommandMgr.cpp \
-    EventCommandMgr.h \
-    EventCreatureMgr.cpp \
-    EventCreatureMgr.h \
-    EventGameEventMgr.cpp \
-    EventGameEventMgr.h \
-    EventLootItemMgr.cpp \
-    EventLootItemMgr.h \
-    EventPlayerItemMgr.cpp \
-    EventPlayerItemMgr.h \
-    EventPlayerLevelMgr.cpp \
-    EventPlayerLevelMgr.h \
+	EventArenaTeamMgr.h \
+	EventBattleGroundMgr.cpp \
+	EventBattleGroundMgr.h \
+	EventBossMgr.cpp \
+	EventBossMgr.h \
+	EventCharacterMgr.cpp \
+	EventCharacterMgr.h \
+	EventCommandMgr.cpp \
+	EventCommandMgr.h \
+	EventCreatureMgr.cpp \
+	EventCreatureMgr.h \
+	EventGameEventMgr.cpp \
+	EventGameEventMgr.h \
+	EventLootItemMgr.cpp \
+	EventLootItemMgr.h \
+	EventPlayerActionMgr.cpp \
+	EventPlayerActionMgr.h \
+	EventPlayerBattleGroundMgr.cpp \
+	EventPlayerBattleGroundMgr.h \
+	EventPlayerDeathStateMgr.cpp \
+	EventPlayerDeathStateMgr.h \
+	EventPlayerItemMgr.cpp \
+	EventPlayerItemMgr.h \
+	EventPlayerKillMgr.cpp \
+	EventPlayerKillMgr.h \
+	EventPlayerLearnMgr.cpp \
+	EventPlayerLearnMgr.h \
+	EventPlayerMapMgr.cpp \
+	EventPlayerMapMgr.h \
+	EventPlayerMoveMgr.cpp \
+	EventPlayerMoveMgr.h \
+	EventPlayerQuestMgr.cpp \
+	EventPlayerQuestMgr.h \
+	EventPlayerTradeMgr.cpp \
+	EventPlayerTradeMgr.h \
+	EventRaidMgr.cpp \
+	EventRaidMgr.h \
 	EventSystemMgr.cpp \
 	EventSystemMgr.h \
 	FleeingMovementGenerator.cpp \

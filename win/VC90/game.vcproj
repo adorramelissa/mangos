@@ -679,10 +679,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\game\EventSystemMgr.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\game\EventArenaTeamMgr.cpp"
 				>
 			</File>
@@ -747,6 +743,30 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\game\EventPlayerActionMgr.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\EventPlayerActionMgr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\EventPlayerBattleGroundMgr.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\EventPlayerBattleGroundMgr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\EventPlayerDeathStateMgr.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\EventPlayerDeathStateMgr.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\game\EventPlayerItemMgr.cpp"
 				>
 			</File>
@@ -755,11 +775,63 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\game\EventPlayerLevelMgr.cpp"
+				RelativePath="..\..\src\game\EventPlayerKillMgr.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\game\EventPlayerLevelMgr.h"
+				RelativePath="..\..\src\game\EventPlayerKillMgr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\EventPlayerLearnMgr.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\EventPlayerLearnMgr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\EventPlayerMapMgr.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\EventPlayerMapMgr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\EventPlayerMoveMgr.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\EventPlayerMoveMgr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\EventPlayerQuestMgr.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\EventPlayerQuestMgr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\EventPlayerTradeMgr.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\EventPlayerTradeMgr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\EventRaidMgr.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\EventRaidMgr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\EventSystemMgr.cpp"
 				>
 			</File>
 			<File

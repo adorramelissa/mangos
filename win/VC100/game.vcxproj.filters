@@ -114,10 +114,37 @@
     <ClCompile Include="..\..\src\game\EventLootItemMgr.cpp">
       <Filter>World/Handlers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\game\EventPlayerActionMgr.cpp">
+      <Filter>World/Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\EventPlayerBattleGroundMgr.cpp">
+      <Filter>World/Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\EventPlayerDeathStateMgr.cpp">
+      <Filter>World/Handlers</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\game\EventPlayerItemMgr.cpp">
       <Filter>World/Handlers</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\game\EventPlayerLevelMgr.cpp">
+    <ClCompile Include="..\..\src\game\EventPlayerKillMgr.cpp">
+      <Filter>World/Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\EventPlayerLearnMgr.cpp">
+      <Filter>World/Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\EventPlayerMapMgr.cpp">
+      <Filter>World/Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\EventPlayerMoveMgr.cpp">
+      <Filter>World/Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\EventPlayerQuestMgr.cpp">
+      <Filter>World/Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\EventPlayerTradeMgr.cpp">
+      <Filter>World/Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\EventRaidMgr.cpp">
       <Filter>World/Handlers</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\game\EventSystemMgr.cpp">
@@ -525,10 +552,37 @@
     <ClInclude Include="..\..\src\game\EventLootItemMgr.h">
       <Filter>World/Handlers</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\game\EventPlayerActionMgr.h">
+      <Filter>World/Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\EventPlayerBattleGroundMgr.h">
+      <Filter>World/Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\EventPlayerDeathStateMgr.h">
+      <Filter>World/Handlers</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\game\EventPlayerItemMgr.h">
       <Filter>World/Handlers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\game\EventPlayerLevelMgr.h">
+    <ClInclude Include="..\..\src\game\EventPlayerKillMgr.h">
+      <Filter>World/Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\EventPlayerLearnMgr.h">
+      <Filter>World/Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\EventPlayerMapMgr.h">
+      <Filter>World/Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\EventPlayerMoveMgr.h">
+      <Filter>World/Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\EventPlayerQuestMgr.h">
+      <Filter>World/Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\EventPlayerTradeMgr.h">
+      <Filter>World/Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\EventRaidMgr.h">
       <Filter>World/Handlers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\game\EventSystemMgr.h">
