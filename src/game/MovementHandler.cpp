@@ -29,6 +29,7 @@
 #include "WaypointMovementGenerator.h"
 #include "InstanceSaveMgr.h"
 #include "ObjectMgr.h"
+#include "EventPlayerMoveMgr.h"
 
 void WorldSession::HandleMoveWorldportAckOpcode( WorldPacket & /*recv_data*/ )
 {
@@ -341,6 +342,8 @@ void WorldSession::HandleMovementOpcodes( WorldPacket & recv_data )
                 plMover->RepopAtGraveyard();
             }
         }
+        sEventSystemMgr(EventListenerPlayerMove).TriggerEvent(EventInfoPlayerMoveType(*plMover, opcode),
+                                                              &EventListenerPlayerMove::EventPlayerMoved);        
     }
     else                                                    // creature charmed
     {

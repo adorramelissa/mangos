@@ -39,6 +39,7 @@
 #include "BattleGround.h"
 #include "Pet.h"
 #include "SocialMgr.h"
+#include "EventPlayerMoveMgr.h"
 
 void WorldSession::HandleRepopRequestOpcode( WorldPacket & recv_data )
 {
@@ -808,6 +809,8 @@ void WorldSession::HandleAreaTriggerOpcode(WorldPacket & recv_data)
     }
 
     GetPlayer()->TeleportTo(at->target_mapId,at->target_X,at->target_Y,at->target_Z,at->target_Orientation,TELE_TO_NOT_LEAVE_TRANSPORT);
+    sEventSystemMgr(EventListenerPlayerMove).TriggerEvent(EventInfoPlayerMoveTeleported(*pl, TELE_AREATRIGGER, at),
+                                                          &EventListenerPlayerMove::EventPlayerTeleported);
 }
 
 void WorldSession::HandleUpdateAccountData(WorldPacket & recv_data)

@@ -61,6 +61,7 @@
 #include "EventPlayerItemMgr.h"
 #include "EventPlayerLevelMgr.h"
 #include "EventCharacterMgr.h"
+#include "EventPlayerMoveMgr.h"
 
 #include <cmath>
 
@@ -17283,6 +17284,10 @@ bool Player::ActivateTaxiPathTo(std::vector<uint32> const& nodes, Creature* npc 
     DEBUG_LOG("WORLD: Sent SMSG_ACTIVATETAXIREPLY");
 
     GetSession()->SendDoFlight(mount_display_id, sourcepath);
+    
+    TaxiNodesEntry const* destination = sTaxiNodesStore.LookupEntry(lastnode);
+    sEventSystemMgr(EventListenerPlayerMove).TriggerEvent(EventInfoPlayerMoveFlightPath(*this, *node, *destination, npc),
+                                                          &EventListenerPlayerMove::EventPlayerFlightPathTaken);
 
     return true;
 }
@@ -19952,6 +19957,13 @@ void Player::SetHomebindToLocation(WorldLocation const& loc, uint32 area_id)
     // update sql homebind
     CharacterDatabase.PExecute("UPDATE character_homebind SET map = '%u', zone = '%u', position_x = '%f', position_y = '%f', position_z = '%f' WHERE guid = '%u'",
         m_homebindMapId, m_homebindAreaId, m_homebindX, m_homebindY, m_homebindZ, GetGUIDLow());
+}
+
+bool Player::TeleportToHomebind(uint32 options)
+{
+    sEventSystemMgr(EventListenerPlayerMove).TriggerEvent(EventInfoPlayerMoveTeleported(*this, TELE_HEARTHSTONE, NULL),
+                                                          &EventListenerPlayerMove::EventPlayerTeleported);
+    return TeleportTo(m_homebindMapId, m_homebindX, m_homebindY, m_homebindZ, GetOrientation(), options);
 }
 
 Object* Player::GetObjectByTypeMask(ObjectGuid guid, TypeMask typemask)

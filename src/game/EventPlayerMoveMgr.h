@@ -12,21 +12,55 @@
 
 #include "EventSystemMgr.h"
 #include "EventPlayerDefines.h"
+#include "Opcodes.h"
 
-struct EventInfoPlayerMove : public EventInfoPlayer
+struct TaxiNodesEntry;
+class Creature;
+
+enum EVENT_TELEPORTED_TYPE
 {
-    // TODO: fill needed params
+    TELE_HEARTHSTONE,   // Homebind used
+    TELE_AREATRIGGER,   // Stepped on areatrigger that teleports, also instance portals
+    TELE_SPELL,         // Casted spell that teleports (Teleport: Stormwind)
+    TELE_SPELL_UNKNOWN, // Unknown spell with teleportation ability
+    TELE_LEAP,          // Casted spell that leaps (Blink, Charge)
+    TELE_COMMAND,       // Used .go or .tele
+    TELE_UNSTUCK,       // Unstuck spell?
+    TELE_UNKNOWN        // Unknown reason for teleportation (pls report if happened)
+};
 
-    EventInfoPlayerMove(const Player &player_)
-    : EventInfoPlayer(player_) {}
+struct EventInfoPlayerMoveType : public EventInfoPlayer
+{   
+    uint32 opcode;
+    
+    EventInfoPlayerMoveType(const Player &player_, uint32 opcode_)
+    : EventInfoPlayer(player_), opcode(opcode_) {}
+};
+
+struct EventInfoPlayerMoveTeleported : public EventInfoPlayer
+{
+    EVENT_TELEPORTED_TYPE type;
+    const void *data;
+    
+    EventInfoPlayerMoveTeleported(const Player &player_, EVENT_TELEPORTED_TYPE type_, const void *data_)
+    : EventInfoPlayer(player_), type(type_), data(data_) {}
+};
+
+struct EventInfoPlayerMoveFlightPath : public EventInfoPlayer
+{
+    const TaxiNodesEntry &source, &destination;
+    const Creature *npc;
+    
+    EventInfoPlayerMoveFlightPath(const Player &player_, const TaxiNodesEntry &source_, const TaxiNodesEntry &destination_, const Creature *npc_)
+    : EventInfoPlayer(player_), source(source_), destination(destination_), npc(npc_) {}
 };
 
 class EventListenerPlayerMove : public EventListener
 {
 public:
-    virtual void EventPlayerMoved(const EventInfoPlayerMove &) {}
-    virtual void EventPlayerTeleported(const EventInfoPlayerMove &) {}
-    virtual void EventPlayerFlightPathTaken(const EventInfoPlayerMove &) {}
+    virtual void EventPlayerMoved(const EventInfoPlayerMoveType &) {}
+    virtual void EventPlayerTeleported(const EventInfoPlayerMoveTeleported &) {}
+    virtual void EventPlayerFlightPathTaken(const EventInfoPlayerMoveFlightPath &) {}
 };
 
 // Debug purposes:
@@ -37,9 +71,9 @@ public:
     {
         sEventSystemMgr(EventListenerPlayerMove).RegisterListener(this);
     }
-    void EventPlayerMoved(const EventInfoPlayerMove &info);
-    void EventPlayerTeleported(const EventInfoPlayerMove &info);
-    void EventPlayerFlightPathTaken(const EventInfoPlayerMove &info);
+    void EventPlayerMoved(const EventInfoPlayerMoveType &info);
+    void EventPlayerTeleported(const EventInfoPlayerMoveTeleported &info);
+    void EventPlayerFlightPathTaken(const EventInfoPlayerMoveFlightPath &info);
 };
 extern EventDebugPlayerMove eventDebugPlayerMove;
 
