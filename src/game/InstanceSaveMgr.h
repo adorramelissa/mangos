@@ -65,9 +65,9 @@ class InstanceSave
         uint32 GetMapId() const { return m_mapid; }
 
         /* Saved when the instance is generated for the first time */
-        void SaveToDB();
+        void SaveToDB() const;
         /* When the instance is being reset (permanently deleted) */
-        void DeleteFromDB();
+        void DeleteFromDB() const;
 
         /* for normal instances this corresponds to max(creature respawn time) + X hours
            for raid/heroic instances this caches the global respawn time for the map */
@@ -107,7 +107,7 @@ class InstanceSave
         typedef std::list<Player*> PlayerListType;
         typedef std::list<Group*> GroupListType;
 
-        bool UnloadIfEmpty();
+        bool UnloadIfEmpty() const;
         /* the only reason the instSave-object links are kept is because
            the object-instSave links need to be broken at reset time
            TODO: maybe it's enough to just store the number of players/groups */

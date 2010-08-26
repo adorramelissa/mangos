@@ -65,7 +65,7 @@ InstanceSave::~InstanceSave()
 /*
     Called from AddInstanceSave
 */
-void InstanceSave::SaveToDB()
+void InstanceSave::SaveToDB() const
 {
     // save instance data too
     std::string data;
@@ -106,13 +106,13 @@ MapEntry const* InstanceSave::GetMapEntry() const
     return sMapStore.LookupEntry(m_mapid);
 }
 
-void InstanceSave::DeleteFromDB()
+void InstanceSave::DeleteFromDB() const
 {
     InstanceSaveManager::DeleteInstanceFromDB(GetInstanceId());
 }
 
 /* true if the instance save is still valid */
-bool InstanceSave::UnloadIfEmpty()
+bool InstanceSave::UnloadIfEmpty() const
 {
     if (m_playerList.empty() && m_groupList.empty() && !m_usedByMap)
     {
