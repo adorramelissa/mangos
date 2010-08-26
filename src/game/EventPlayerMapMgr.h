@@ -1,0 +1,62 @@
+/*
+ *  EventPlayerMapMgr.h
+ *  MaNGOS
+ *
+ *  Created by cipherCOM on 03.08.10.
+ *  Copyright 2010 Back2Basics. All rights reserved.
+ *
+ */
+
+#ifndef __EVENTPLAYERMAPMGR_H__
+#define __EVENTPLAYERMAPMGR_H__
+
+#include "EventSystemMgr.h"
+#include "EventPlayerDefines.h"
+
+struct MapEntry;
+
+class Map;
+class InstanceSave;
+
+struct EventInfoPlayerMap : public EventInfoPlayer
+{
+    const MapEntry &map;
+    const Map &oldmap;
+
+    EventInfoPlayerMap(const Player &player_, const MapEntry &map_, const Map &oldmap_)
+    : EventInfoPlayer(player_), map(map_), oldmap(oldmap_) {}
+};
+
+struct EventInfoPlayerInstance : public EventInfoPlayer
+{
+    const InstanceSave &instance;
+
+    EventInfoPlayerInstance(const Player &player_, const InstanceSave &instance_)
+    : EventInfoPlayer(player_), instance(instance_) {}
+};
+
+class EventListenerPlayerMap : public EventListener
+{
+public:
+    virtual void EventPlayerMapChanged(const EventInfoPlayerMap &) {}
+    virtual void EventPlayerDungeonEntered(const EventInfoPlayerMap &) {}
+    virtual void EventPlayerDungeonLeaved(const EventInfoPlayerMap &) {}
+    virtual void EventPlayerInstanceBound(const EventInfoPlayerInstance &) {}
+};
+
+// Debug purposes:
+class EventDebugPlayerMap : public EventListenerPlayerMap
+{
+public:
+    EventDebugPlayerMap()
+    {
+        sEventSystemMgr(EventListenerPlayerMap).RegisterListener(this);
+    }
+    void EventPlayerMapChanged(const EventInfoPlayerMap &info);
+    void EventPlayerDungeonEntered(const EventInfoPlayerMap &);
+    void EventPlayerDungeonLeaved(const EventInfoPlayerMap &);
+    void EventPlayerInstanceBound(const EventInfoPlayerInstance &info);
+};
+extern EventDebugPlayerMap eventDebugPlayerMap;
+
+#endif // __EVENTPLAYERMAPMGR_H__

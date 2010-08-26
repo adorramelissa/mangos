@@ -62,6 +62,7 @@
 #include "EventPlayerLevelMgr.h"
 #include "EventCharacterMgr.h"
 #include "EventPlayerMoveMgr.h"
+#include "EventPlayerMapMgr.h"
 
 #include <cmath>
 
@@ -1876,6 +1877,13 @@ bool Player::TeleportTo(uint32 mapid, float x, float y, float z, float orientati
             // move packet sent by client always after far teleport
             // code for finish transfer to new map called in WorldSession::HandleMoveWorldportAckOpcode at client packet
             SetSemaphoreTeleportFar(true);
+
+            EventInfoPlayerMap infoMap(*this, *mEntry, *oldmap);
+            sEventSystemMgr(EventListenerPlayerMap).TriggerEvent(infoMap, &EventListenerPlayerMap::EventPlayerMapChanged);
+            if(oldmap->IsDungeon())
+                sEventSystemMgr(EventListenerPlayerMap).TriggerEvent(infoMap, &EventListenerPlayerMap::EventPlayerDungeonLeaved);
+            if(mEntry->IsDungeon())
+                sEventSystemMgr(EventListenerPlayerMap).TriggerEvent(infoMap, &EventListenerPlayerMap::EventPlayerDungeonEntered);
         }
         else
             return false;
@@ -15465,6 +15473,10 @@ InstancePlayerBind* Player::BindToInstance(InstanceSave *save, bool permanent, b
         bind.save = save;
         bind.perm = permanent;
         if(!load) DEBUG_LOG("Player::BindToInstance: %s(%d) is now bound to map %d, instance %d, difficulty %d", GetName(), GetGUIDLow(), save->GetMapId(), save->GetInstanceId(), save->GetDifficulty());
+
+        sEventSystemMgr(EventListenerPlayerMap).TriggerEvent(EventInfoPlayerInstance(*this, *save),
+                                                             &EventListenerPlayerMap::EventPlayerInstanceBound);
+
         return &bind;
     }
     else
@@ -17284,7 +17296,7 @@ bool Player::ActivateTaxiPathTo(std::vector<uint32> const& nodes, Creature* npc 
     DEBUG_LOG("WORLD: Sent SMSG_ACTIVATETAXIREPLY");
 
     GetSession()->SendDoFlight(mount_display_id, sourcepath);
-    
+
     TaxiNodesEntry const* destination = sTaxiNodesStore.LookupEntry(lastnode);
     sEventSystemMgr(EventListenerPlayerMove).TriggerEvent(EventInfoPlayerMoveFlightPath(*this, *node, *destination, npc),
                                                           &EventListenerPlayerMove::EventPlayerFlightPathTaken);
