@@ -30,6 +30,7 @@
 #include "InstanceSaveMgr.h"
 #include "ObjectMgr.h"
 #include "EventPlayerMoveMgr.h"
+#include "EventPlayerDeathStateMgr.h"
 
 void WorldSession::HandleMoveWorldportAckOpcode( WorldPacket & /*recv_data*/ )
 {
@@ -135,6 +136,8 @@ void WorldSession::HandleMoveWorldportAckOpcode()
         {
             GetPlayer()->ResurrectPlayer(0.5f);
             GetPlayer()->SpawnCorpseBones();
+            sEventSystemMgr(EventListenerPlayerDeathState).TriggerEvent(EventInfoPlayerRevive(*GetPlayer(), REVIVE_INSTANCE),
+                                                                        &EventListenerPlayerDeathState::EventPlayerRevived);
         }
     }
 
@@ -343,7 +346,7 @@ void WorldSession::HandleMovementOpcodes( WorldPacket & recv_data )
             }
         }
         sEventSystemMgr(EventListenerPlayerMove).TriggerEvent(EventInfoPlayerMoveType(*plMover, opcode),
-                                                              &EventListenerPlayerMove::EventPlayerMoved);        
+                                                              &EventListenerPlayerMove::EventPlayerMoved);
     }
     else                                                    // creature charmed
     {

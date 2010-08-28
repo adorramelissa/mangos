@@ -14,10 +14,11 @@
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerPlayerLevel>);
 EventDebugPlayerLevel eventDebugPlayerLevel;
 
-void EventDebugPlayerLevel::EventPlayerLevelReached(const EventInfoPlayerLevel &info) 
+void EventDebugPlayerLevel::EventPlayerLevelReached(const EventInfoPlayerLevel &info)
 {
     EVENTLOG("EventPlayerLevelReached - id:%u, lvl:%u, inc:%d",
-             info.player.GetGUIDLow(), info.level, info.increase); }
+             info.player.GetGUIDLow(), info.level, info.increase);
+}
 
 //void EventPlayerSkillLevelReached(const EventInfoPlayerLevel &info)
 //{
@@ -34,11 +35,11 @@ void EventDebugPlayerLevel::EventPlayerReputationLevelReached(const EventInfoPla
 //void EventPlayerPersonalArenaRatingGained(const EventInfoPlayerLevel &info)
 //{
 //    EVENTLOG("EventPlayerPersonalArenaRatingGained - id:%u, lvl:%u, inc:%d",
-//             info.player.GetGUIDLow(), info.level, info.increase); 
+//             info.player.GetGUIDLow(), info.level, info.increase);
 //}
 
 void EventDebugPlayerLevel::EventPlayerTalentsReseted(const EventInfoPlayer &info)
 {
     EVENTLOG("EventPlayerTalentsReseted - id:%u",
-             info.player.GetGUIDLow()); 
+             info.player.GetGUIDLow());
 }

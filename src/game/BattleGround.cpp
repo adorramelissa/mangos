@@ -34,6 +34,7 @@
 #include "Formulas.h"
 #include "GridNotifiersImpl.h"
 #include "EventBattleGroundMgr.h"
+#include "EventPlayerDeathStateMgr.h"
 
 namespace MaNGOS
 {
@@ -735,6 +736,8 @@ void BattleGround::EndBattleGround(uint32 winner)
         {
             plr->ResurrectPlayer(1.0f);
             plr->SpawnCorpseBones();
+            sEventSystemMgr(EventListenerPlayerDeathState).TriggerEvent(EventInfoPlayerRevive(*plr, REVIVE_BATTLEGROUND),
+                                                                        &EventListenerPlayerDeathState::EventPlayerRevived);
         }
         else
         {
@@ -988,6 +991,8 @@ void BattleGround::RemovePlayerAtLeave(uint64 guid, bool Transport, bool SendPac
     {
         plr->ResurrectPlayer(1.0f);
         plr->SpawnCorpseBones();
+        sEventSystemMgr(EventListenerPlayerDeathState).TriggerEvent(EventInfoPlayerRevive(*plr, REVIVE_BATTLEGROUND),
+                                                                    &EventListenerPlayerDeathState::EventPlayerRevived);
     }
 
     RemovePlayer(plr, guid);                                // BG subclass specific code

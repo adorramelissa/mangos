@@ -17,7 +17,7 @@
 struct TaxiNodesEntry;
 class Creature;
 
-enum EVENT_TELEPORTED_TYPE
+enum EventTeleportedType
 {
     TELE_HEARTHSTONE,   // Homebind used
     TELE_AREATRIGGER,   // Stepped on areatrigger that teleports, also instance portals
@@ -30,19 +30,19 @@ enum EVENT_TELEPORTED_TYPE
 };
 
 struct EventInfoPlayerMoveType : public EventInfoPlayer
-{   
+{
     uint32 opcode;
-    
+
     EventInfoPlayerMoveType(const Player &player_, uint32 opcode_)
     : EventInfoPlayer(player_), opcode(opcode_) {}
 };
 
 struct EventInfoPlayerMoveTeleported : public EventInfoPlayer
 {
-    EVENT_TELEPORTED_TYPE type;
+    EventTeleportedType type;
     const void *data;
-    
-    EventInfoPlayerMoveTeleported(const Player &player_, EVENT_TELEPORTED_TYPE type_, const void *data_)
+
+    EventInfoPlayerMoveTeleported(const Player &player_, EventTeleportedType type_, const void *data_)
     : EventInfoPlayer(player_), type(type_), data(data_) {}
 };
 
@@ -50,7 +50,7 @@ struct EventInfoPlayerMoveFlightPath : public EventInfoPlayer
 {
     const TaxiNodesEntry &source, &destination;
     const Creature *npc;
-    
+
     EventInfoPlayerMoveFlightPath(const Player &player_, const TaxiNodesEntry &source_, const TaxiNodesEntry &destination_, const Creature *npc_)
     : EventInfoPlayer(player_), source(source_), destination(destination_), npc(npc_) {}
 };

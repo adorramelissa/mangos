@@ -12,20 +12,40 @@
 
 #include "EventSystemMgr.h"
 #include "EventPlayerDefines.h"
+#include "SharedDefines.h"
 
-struct EventInfoPlayerDeathState : public EventInfoPlayer
+enum EventReviveType {
+    REVIVE_GRAVEYARD,
+    REVIVE_CORPSE,
+    REVIVE_SPELL,
+    REVIVE_INSTANCE,
+    REVIVE_BATTLEGROUND,
+    REVIVE_TRANSPORT,
+    REVIVE_COMMAND,
+    REVIVE_OTHER
+};
+
+struct EventInfoPlayerDeath : public EventInfoPlayer
 {
-    // TODO: fill needed params
+    DamageReasonType reason;
 
-    EventInfoPlayerDeathState(const Player &player_)
-    : EventInfoPlayer(player_) {}
+    EventInfoPlayerDeath(const Player &player_, DamageReasonType reason_)
+    : EventInfoPlayer(player_), reason(reason_) {}
+};
+
+struct EventInfoPlayerRevive : public EventInfoPlayer
+{
+    EventReviveType reason;
+
+    EventInfoPlayerRevive(const Player &player_, EventReviveType reason_)
+    : EventInfoPlayer(player_), reason(reason_) {}
 };
 
 class EventListenerPlayerDeathState : public EventListener
 {
 public:
-    virtual void EventPlayerRevived(const EventInfoPlayerDeathState &) {}
-    virtual void EventPlayerDied(const EventInfoPlayerDeathState &) {}
+    virtual void EventPlayerRevived(const EventInfoPlayerRevive &) {}
+    virtual void EventPlayerDied(const EventInfoPlayerDeath &) {}
 };
 
 // Debug purposes:
@@ -36,8 +56,8 @@ public:
     {
         sEventSystemMgr(EventListenerPlayerDeathState).RegisterListener(this);
     }
-    void EventPlayerRevived(const EventInfoPlayerDeathState &info);
-    void EventPlayerDied(const EventInfoPlayerDeathState &info);
+    void EventPlayerRevived(const EventInfoPlayerRevive &info);
+    void EventPlayerDied(const EventInfoPlayerDeath &info);
 };
 extern EventDebugPlayerDeathState eventDebugPlayerDeathState;
 

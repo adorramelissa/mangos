@@ -28,6 +28,7 @@
 #include "DBCStores.h"
 #include "ProgressBar.h"
 #include "ScriptCalls.h"
+#include "EventPlayerDeathStateMgr.h"
 
 void MapManager::LoadTransports()
 {
@@ -444,6 +445,8 @@ void Transport::TeleportTransport(uint32 newMapid, float x, float y, float z)
         if (plr->isDead() && !plr->HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_GHOST))
         {
             plr->ResurrectPlayer(1.0);
+            sEventSystemMgr(EventListenerPlayerDeathState).TriggerEvent(EventInfoPlayerRevive(*plr, REVIVE_TRANSPORT),
+                                                                        &EventListenerPlayerDeathState::EventPlayerRevived);
         }
         plr->TeleportTo(newMapid, x, y, z, GetOrientation(), TELE_TO_NOT_LEAVE_TRANSPORT);
 

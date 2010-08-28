@@ -37,6 +37,7 @@
 #include "MapManager.h"
 #include "SocialMgr.h"
 #include "EventCharacterMgr.h"
+#include "EventPlayerDeathStateMgr.h"
 
 /// WorldSession constructor
 WorldSession::WorldSession(uint32 id, WorldSocket *sock, AccountTypes sec, uint8 expansion, time_t mute_time, LocaleConstant locale) :
@@ -338,6 +339,9 @@ void WorldSession::LogoutPlayer(bool Save)
             if(!aset.empty())
                 if(BattleGround *bg = _player->GetBattleGround())
                     bg->HandleKillPlayer(_player,*aset.begin());
+
+            sEventSystemMgr(EventListenerPlayerDeathState).TriggerEvent(EventInfoPlayerDeath(*_player, REASON_OTHER),
+                                                                        &EventListenerPlayerDeathState::EventPlayerDied);
         }
         else if(_player->HasAuraType(SPELL_AURA_SPIRIT_OF_REDEMPTION))
         {
@@ -347,6 +351,9 @@ void WorldSession::LogoutPlayer(bool Save)
             _player->KillPlayer();
             _player->BuildPlayerRepop();
             _player->RepopAtGraveyard();
+
+            sEventSystemMgr(EventListenerPlayerDeathState).TriggerEvent(EventInfoPlayerDeath(*_player, REASON_OTHER),
+                                                                        &EventListenerPlayerDeathState::EventPlayerDied);
         }
         //drop a flag if player is carrying it
         if(BattleGround *bg = _player->GetBattleGround())

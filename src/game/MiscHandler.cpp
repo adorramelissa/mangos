@@ -40,6 +40,7 @@
 #include "Pet.h"
 #include "SocialMgr.h"
 #include "EventPlayerMoveMgr.h"
+#include "EventPlayerDeathStateMgr.h"
 
 void WorldSession::HandleRepopRequestOpcode( WorldPacket & recv_data )
 {
@@ -651,6 +652,9 @@ void WorldSession::HandleReclaimCorpseOpcode(WorldPacket &recv_data)
 
     // spawn bones
     GetPlayer()->SpawnCorpseBones();
+
+    sEventSystemMgr(EventListenerPlayerDeathState).TriggerEvent(EventInfoPlayerRevive(*GetPlayer(), REVIVE_CORPSE),
+                                                                &EventListenerPlayerDeathState::EventPlayerRevived);
 }
 
 void WorldSession::HandleResurrectResponseOpcode(WorldPacket & recv_data)

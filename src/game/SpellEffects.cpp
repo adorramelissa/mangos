@@ -53,6 +53,7 @@
 #include "TemporarySummon.h"
 #include "ScriptCalls.h"
 #include "EventPlayerMoveMgr.h"
+#include "EventPlayerDeathStateMgr.h"
 
 pEffect SpellEffects[TOTAL_SPELL_EFFECTS]=
 {
@@ -285,7 +286,7 @@ void Spell::EffectInstaKill(SpellEffectIndex /*eff_idx*/)
     data << uint32(m_spellInfo->Id);
     m_caster->SendMessageToSet(&data, true);
 
-    m_caster->DealDamage(unitTarget, unitTarget->GetHealth(), NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, NULL, false);
+    m_caster->DealDamage(unitTarget, unitTarget->GetHealth(), NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, NULL, false, REASON_SPELL);
 }
 
 void Spell::EffectEnvironmentalDMG(SpellEffectIndex eff_idx)
@@ -892,7 +893,7 @@ void Spell::EffectDummy(SpellEffectIndex eff_idx)
                 {
                     Aura * dummy = m_caster->GetDummyAura(28734);
                     if (dummy)
-                    {                        
+                    {
                         int32 bp = damage * dummy->GetStackAmount();
                         m_caster->CastCustomSpell(m_caster, 28733, &bp, NULL, NULL, true);
                         m_caster->RemoveAurasDueToSpell(28734);
@@ -2028,7 +2029,7 @@ void Spell::EffectTeleportUnits(SpellEffectIndex eff_idx)
             unitTarget->NearTeleportTo(x,y,z,orientation,unitTarget==m_caster);
             if(unitTarget->GetTypeId() == TYPEID_PLAYER)
                 sEventSystemMgr(EventListenerPlayerMove).TriggerEvent(EventInfoPlayerMoveTeleported(*(Player*)unitTarget, TELE_SPELL_UNKNOWN, this),
-                                                                      &EventListenerPlayerMove::EventPlayerTeleported);            
+                                                                      &EventListenerPlayerMove::EventPlayerTeleported);
             return;
         }
     }
@@ -3339,7 +3340,7 @@ void Spell::EffectAddFarsight(SpellEffectIndex eff_idx)
         delete dynObj;
         return;
     }
-    
+
     // DYNAMICOBJECT_BYTES is apparently different from the default bytes set in ::Create
     dynObj->SetUInt32Value(DYNAMICOBJECT_BYTES, 0x80000002);
 
@@ -4043,8 +4044,8 @@ void Spell::EffectWeaponDmg(SpellEffectIndex eff_idx)
                     if(proto->SpellVisual == 406 && proto->SpellIconID == 565)
                     {
                         (*itr)->RefreshAura();
-                        
-                        // +100% * stack 
+
+                        // +100% * stack
                         bonusDamagePercentMod += 1.0f * (*itr)->GetStackAmount();
                     }
                 }
@@ -5322,6 +5323,9 @@ void Spell::EffectSelfResurrect(SpellEffectIndex eff_idx)
     plr->SetPower(POWER_ENERGY, plr->GetMaxPower(POWER_ENERGY) );
 
     plr->SpawnCorpseBones();
+
+    sEventSystemMgr(EventListenerPlayerDeathState).TriggerEvent(EventInfoPlayerRevive(*plr, REVIVE_SPELL),
+                                                                &EventListenerPlayerDeathState::EventPlayerRevived);
 }
 
 void Spell::EffectSkinning(SpellEffectIndex /*eff_idx*/)
@@ -5792,6 +5796,9 @@ void Spell::EffectSpiritHeal(SpellEffectIndex /*eff_idx*/)
 
     ((Player*)unitTarget)->ResurrectPlayer(1.0f);
     ((Player*)unitTarget)->SpawnCorpseBones();
+
+    sEventSystemMgr(EventListenerPlayerDeathState).TriggerEvent(EventInfoPlayerRevive(*(Player*)unitTarget, REVIVE_BATTLEGROUND),
+                                                                &EventListenerPlayerDeathState::EventPlayerRevived);
 }
 
 // remove insignia spell effect

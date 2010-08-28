@@ -1099,6 +1099,21 @@ enum DamageEffectType
     SELF_DAMAGE             = 5
 };
 
+enum DamageReasonType
+{
+    REASON_MELEE,
+    REASON_SPELL,
+    REASON_SCRIPT,
+    REASON_ENVIRONMENTAL,
+    REASON_FALL,
+    REASON_FALL_TO_VOID,
+    REASON_EXHAUSTED,
+    REASON_DROWNING,
+    REASON_COMMAND,
+    REASON_OTHER,
+    REASON_UNKNOWN
+};
+
 enum GameobjectTypes
 {
     GAMEOBJECT_TYPE_DOOR                   = 0,

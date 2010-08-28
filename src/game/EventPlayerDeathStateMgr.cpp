@@ -14,12 +14,12 @@
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerPlayerDeathState>);
 EventDebugPlayerDeathState eventDebugPlayerDeathState;
 
-void EventDebugPlayerDeathState::EventPlayerRevived(const EventInfoPlayerDeathState &info)
+void EventDebugPlayerDeathState::EventPlayerRevived(const EventInfoPlayerRevive &info)
 {
-    EVENTLOG("EventPlayerRevived - id:%u", info.player.GetGUIDLow());
+    EVENTLOG("EventPlayerRevived - id:%u reason:%u", info.player.GetGUIDLow(), info.reason);
 }
 
-void EventDebugPlayerDeathState::EventPlayerDied(const EventInfoPlayerDeathState &info)
+void EventDebugPlayerDeathState::EventPlayerDied(const EventInfoPlayerDeath &info)
 {
-    EVENTLOG("EventPlayerDied - id:%u", info.player.GetGUIDLow());
+    EVENTLOG("EventPlayerDied - id:%u reason:%u", info.player.GetGUIDLow(), info.reason);
 }

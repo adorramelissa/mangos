@@ -63,6 +63,7 @@
 #include "EventCharacterMgr.h"
 #include "EventPlayerMoveMgr.h"
 #include "EventPlayerMapMgr.h"
+#include "EventPlayerDeathStateMgr.h"
 
 #include <cmath>
 
@@ -927,7 +928,30 @@ uint32 Player::EnvironmentalDamage(EnviromentalDamage type, uint32 damage)
     data << (uint32)resist; // resist
     SendMessageToSet(&data, true);
 
-    uint32 final_damage = DealDamage(this, damage, NULL, SELF_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, NULL, false);
+    DamageReasonType reason;
+    switch (type) {
+        case DAMAGE_DROWNING:
+            reason = REASON_DROWNING;
+            break;
+        case DAMAGE_FALL:
+            reason = REASON_FALL;
+            break;
+        case DAMAGE_FALL_TO_VOID:
+            reason = REASON_FALL_TO_VOID;
+            break;
+        case DAMAGE_EXHAUSTED:
+            reason = REASON_EXHAUSTED;
+            break;
+        case DAMAGE_FIRE:
+        case DAMAGE_SLIME:
+        case DAMAGE_LAVA:
+            reason = REASON_ENVIRONMENTAL;
+            break;
+        default:
+            reason = REASON_UNKNOWN;
+            break;
+    }
+    uint32 final_damage = DealDamage(this, damage, NULL, SELF_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, NULL, false, reason);
 
     if(type==DAMAGE_FALL && !isAlive())                     // DealDamage not apply item durability loss at self damage
     {
@@ -1914,6 +1938,9 @@ void Player::ProcessDelayedOperations()
         SetPower(POWER_ENERGY, GetMaxPower(POWER_ENERGY) );
 
         SpawnCorpseBones();
+
+        sEventSystemMgr(EventListenerPlayerDeathState).TriggerEvent(EventInfoPlayerRevive(*this, REVIVE_SPELL),
+                                                                    &EventListenerPlayerDeathState::EventPlayerRevived);
     }
 
     if(m_DelayedOperations & DELAYED_SAVE_PLAYER)
@@ -4664,6 +4691,8 @@ void Player::RepopAtGraveyard()
     {
         ResurrectPlayer(0.5f);
         SpawnCorpseBones();
+        sEventSystemMgr(EventListenerPlayerDeathState).TriggerEvent(EventInfoPlayerRevive(*this, REVIVE_OTHER),
+                                                                    &EventListenerPlayerDeathState::EventPlayerRevived);
     }
 
     WorldSafeLocsEntry const *ClosestGrave = NULL;
@@ -14886,6 +14915,8 @@ void Player::LoadCorpse()
         {
             //Prevent Dead Player login without corpse
             ResurrectPlayer(0.5f);
+            sEventSystemMgr(EventListenerPlayerDeathState).TriggerEvent(EventInfoPlayerRevive(*this, REVIVE_OTHER),
+                                                                        &EventListenerPlayerDeathState::EventPlayerRevived);
         }
     }
 }
@@ -19206,6 +19237,9 @@ void Player::ResurectUsingRequestData()
     SetPower(POWER_ENERGY, GetMaxPower(POWER_ENERGY) );
 
     SpawnCorpseBones();
+
+    sEventSystemMgr(EventListenerPlayerDeathState).TriggerEvent(EventInfoPlayerRevive(*this, REVIVE_SPELL),
+                                                                &EventListenerPlayerDeathState::EventPlayerRevived);
 }
 
 void Player::SetClientControl(Unit* target, uint8 allowMove)
