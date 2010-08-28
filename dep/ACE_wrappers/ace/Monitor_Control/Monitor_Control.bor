@@ -1,0 +1,120 @@
+# Makefile for building the ACE_Monitor_Control library with Borland C++ Make
+
+NAME = ACE_Monitor_Control
+
+NO_FULL_PATH=1
+
+OBJFILES = \
+	$(OBJDIR)\Auto_Update_Starter.$(OBJ_EXT) \
+	$(OBJDIR)\BSD_Network_Interface_Monitor.$(OBJ_EXT) \
+	$(OBJDIR)\Bytes_Received_Monitor.$(OBJ_EXT) \
+	$(OBJDIR)\Bytes_Sent_Monitor.$(OBJ_EXT) \
+	$(OBJDIR)\Constraint_Interpreter.$(OBJ_EXT) \
+	$(OBJDIR)\Constraint_Visitor.$(OBJ_EXT) \
+	$(OBJDIR)\CPU_Load_Monitor.$(OBJ_EXT) \
+	$(OBJDIR)\Linux_Network_Interface_Monitor.$(OBJ_EXT) \
+	$(OBJDIR)\Memory_Usage_Monitor.$(OBJ_EXT) \
+	$(OBJDIR)\Monitor_Group.$(OBJ_EXT) \
+	$(OBJDIR)\Monitor_Query.$(OBJ_EXT) \
+	$(OBJDIR)\Null_Network_Interface_Monitor.$(OBJ_EXT) \
+	$(OBJDIR)\Num_Threads_Monitor.$(OBJ_EXT) \
+	$(OBJDIR)\Packets_Received_Monitor.$(OBJ_EXT) \
+	$(OBJDIR)\Packets_Sent_Monitor.$(OBJ_EXT) \
+	$(OBJDIR)\Solaris_Network_Interface_Monitor.$(OBJ_EXT) \
+	$(OBJDIR)\Windows_Monitor.$(OBJ_EXT) \
+	$(OBJDIR)\Windows_Multi_Instance_Monitor.$(OBJ_EXT)
+
+LFLAGS = \
+        -L"." \
+        -j"."  \
+        -L"..\..\lib" \
+        -j"..\..\lib" 
+
+LIBFILES = \
+	ACE$(LIB_DECORATOR).lib \
+	ACE_ETCL$(LIB_DECORATOR).lib \
+	ACE_ETCL_Parser$(LIB_DECORATOR).lib \
+	$(DUMMY_VALUE_NOT_ENDING_IN_BACKSLASH)
+
+!ifdef STATIC
+LIB_FLAGS = \
+        -DACE_AS_STATIC_LIBS
+!else
+DLL_FLAGS = \
+        -DMONITOR_CONTROL_BUILD_DLL
+!endif
+
+CFLAGS = \
+	-I"..\.." \
+	$(LIB_FLAGS) \
+	$(DLL_FLAGS)
+
+CPPDIR = .
+CDIR   = .
+
+INCDIR_NAME = stage-10168\ACE_wrappers\ace\Monitor_Control
+
+# build_files rules
+
+
+# test_files rules
+
+
+# pkgconfig_files rules
+
+
+# Override defaults in outputdir.bor
+INSTALL_THIS_TARGET = 1
+
+INCLUDES_INSTALL=1
+BINDIR = ..\..\lib
+
+!include <$(ACE_ROOT)\include\makeinclude\build_library.bor>
+
+includes_install: $(INCLUDES)
+	-@if not exist $(INSTALL_DIR)\include\$(INCDIR_NAME)\. mkdir $(INSTALL_DIR)\include\$(INCDIR_NAME)\.
+	-&copy /Y Auto_Update_Starter.h $(INSTALL_DIR)\include\$(INCDIR_NAME)\Auto_Update_Starter.h 1> NUL
+	-@if not exist $(INSTALL_DIR)\include\$(INCDIR_NAME)\. mkdir $(INSTALL_DIR)\include\$(INCDIR_NAME)\.
+	-&copy /Y BSD_Network_Interface_Monitor.h $(INSTALL_DIR)\include\$(INCDIR_NAME)\BSD_Network_Interface_Monitor.h 1> NUL
+	-@if not exist $(INSTALL_DIR)\include\$(INCDIR_NAME)\. mkdir $(INSTALL_DIR)\include\$(INCDIR_NAME)\.
+	-&copy /Y Bytes_Received_Monitor.h $(INSTALL_DIR)\include\$(INCDIR_NAME)\Bytes_Received_Monitor.h 1> NUL
+	-@if not exist $(INSTALL_DIR)\include\$(INCDIR_NAME)\. mkdir $(INSTALL_DIR)\include\$(INCDIR_NAME)\.
+	-&copy /Y Bytes_Sent_Monitor.h $(INSTALL_DIR)\include\$(INCDIR_NAME)\Bytes_Sent_Monitor.h 1> NUL
+	-@if not exist $(INSTALL_DIR)\include\$(INCDIR_NAME)\. mkdir $(INSTALL_DIR)\include\$(INCDIR_NAME)\.
+	-&copy /Y Constraint_Interpreter.h $(INSTALL_DIR)\include\$(INCDIR_NAME)\Constraint_Interpreter.h 1> NUL
+	-@if not exist $(INSTALL_DIR)\include\$(INCDIR_NAME)\. mkdir $(INSTALL_DIR)\include\$(INCDIR_NAME)\.
+	-&copy /Y Constraint_Visitor.h $(INSTALL_DIR)\include\$(INCDIR_NAME)\Constraint_Visitor.h 1> NUL
+	-@if not exist $(INSTALL_DIR)\include\$(INCDIR_NAME)\. mkdir $(INSTALL_DIR)\include\$(INCDIR_NAME)\.
+	-&copy /Y CPU_Load_Monitor.h $(INSTALL_DIR)\include\$(INCDIR_NAME)\CPU_Load_Monitor.h 1> NUL
+	-@if not exist $(INSTALL_DIR)\include\$(INCDIR_NAME)\. mkdir $(INSTALL_DIR)\include\$(INCDIR_NAME)\.
+	-&copy /Y Linux_Network_Interface_Monitor.h $(INSTALL_DIR)\include\$(INCDIR_NAME)\Linux_Network_Interface_Monitor.h 1> NUL
+	-@if not exist $(INSTALL_DIR)\include\$(INCDIR_NAME)\. mkdir $(INSTALL_DIR)\include\$(INCDIR_NAME)\.
+	-&copy /Y Memory_Usage_Monitor.h $(INSTALL_DIR)\include\$(INCDIR_NAME)\Memory_Usage_Monitor.h 1> NUL
+	-@if not exist $(INSTALL_DIR)\include\$(INCDIR_NAME)\. mkdir $(INSTALL_DIR)\include\$(INCDIR_NAME)\.
+	-&copy /Y Monitor_Control.h $(INSTALL_DIR)\include\$(INCDIR_NAME)\Monitor_Control.h 1> NUL
+	-@if not exist $(INSTALL_DIR)\include\$(INCDIR_NAME)\. mkdir $(INSTALL_DIR)\include\$(INCDIR_NAME)\.
+	-&copy /Y Monitor_Control_export.h $(INSTALL_DIR)\include\$(INCDIR_NAME)\Monitor_Control_export.h 1> NUL
+	-@if not exist $(INSTALL_DIR)\include\$(INCDIR_NAME)\. mkdir $(INSTALL_DIR)\include\$(INCDIR_NAME)\.
+	-&copy /Y Monitor_Control_utils.h $(INSTALL_DIR)\include\$(INCDIR_NAME)\Monitor_Control_utils.h 1> NUL
+	-@if not exist $(INSTALL_DIR)\include\$(INCDIR_NAME)\. mkdir $(INSTALL_DIR)\include\$(INCDIR_NAME)\.
+	-&copy /Y Monitor_Group.h $(INSTALL_DIR)\include\$(INCDIR_NAME)\Monitor_Group.h 1> NUL
+	-@if not exist $(INSTALL_DIR)\include\$(INCDIR_NAME)\. mkdir $(INSTALL_DIR)\include\$(INCDIR_NAME)\.
+	-&copy /Y Monitor_Query.h $(INSTALL_DIR)\include\$(INCDIR_NAME)\Monitor_Query.h 1> NUL
+	-@if not exist $(INSTALL_DIR)\include\$(INCDIR_NAME)\. mkdir $(INSTALL_DIR)\include\$(INCDIR_NAME)\.
+	-&copy /Y Null_Network_Interface_Monitor.h $(INSTALL_DIR)\include\$(INCDIR_NAME)\Null_Network_Interface_Monitor.h 1> NUL
+	-@if not exist $(INSTALL_DIR)\include\$(INCDIR_NAME)\. mkdir $(INSTALL_DIR)\include\$(INCDIR_NAME)\.
+	-&copy /Y Num_Threads_Monitor.h $(INSTALL_DIR)\include\$(INCDIR_NAME)\Num_Threads_Monitor.h 1> NUL
+	-@if not exist $(INSTALL_DIR)\include\$(INCDIR_NAME)\. mkdir $(INSTALL_DIR)\include\$(INCDIR_NAME)\.
+	-&copy /Y Packets_Received_Monitor.h $(INSTALL_DIR)\include\$(INCDIR_NAME)\Packets_Received_Monitor.h 1> NUL
+	-@if not exist $(INSTALL_DIR)\include\$(INCDIR_NAME)\. mkdir $(INSTALL_DIR)\include\$(INCDIR_NAME)\.
+	-&copy /Y Packets_Sent_Monitor.h $(INSTALL_DIR)\include\$(INCDIR_NAME)\Packets_Sent_Monitor.h 1> NUL
+	-@if not exist $(INSTALL_DIR)\include\$(INCDIR_NAME)\. mkdir $(INSTALL_DIR)\include\$(INCDIR_NAME)\.
+	-&copy /Y Solaris_Network_Interface_Monitor.h $(INSTALL_DIR)\include\$(INCDIR_NAME)\Solaris_Network_Interface_Monitor.h 1> NUL
+	-@if not exist $(INSTALL_DIR)\include\$(INCDIR_NAME)\. mkdir $(INSTALL_DIR)\include\$(INCDIR_NAME)\.
+	-&copy /Y Windows_Monitor.h $(INSTALL_DIR)\include\$(INCDIR_NAME)\Windows_Monitor.h 1> NUL
+	-@if not exist $(INSTALL_DIR)\include\$(INCDIR_NAME)\. mkdir $(INSTALL_DIR)\include\$(INCDIR_NAME)\.
+	-&copy /Y Windows_Multi_Instance_Monitor.h $(INSTALL_DIR)\include\$(INCDIR_NAME)\Windows_Multi_Instance_Monitor.h 1> NUL
+
+realclean:
+        @-rem
+

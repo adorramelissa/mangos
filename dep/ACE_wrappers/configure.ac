@@ -1,4 +1,4 @@
-dnl $Id: configure.ac 82832 2008-09-25 17:38:39Z jtc $
+dnl $Id: configure.ac 82573 2008-08-08 18:13:53Z jtc $
 
 dnl An autoconf script to automatically configure ACE.
 dnl Process this file with autoconf to produce a configure script.
@@ -19,7 +19,7 @@ AC_INIT([ACE],
         [ace-bugs@cs.wustl.edu],
         [ace])
 
-AC_REVISION([$Id: configure.ac 82832 2008-09-25 17:38:39Z jtc $])
+AC_REVISION([$Id: configure.ac 82573 2008-08-08 18:13:53Z jtc $])
 
 AC_COPYRIGHT([ACE(TM), TAO(TM), CIAO(TM), and CoSMIC(TM) (henceforth
 referred to as "DOC software") are copyrighted by Douglas C.
@@ -505,6 +505,8 @@ AC_CHECK_HEADER([dlfcn.h],
 
 ACE_CHECK_LACKS_HEADERS(inttypes.h malloc.h memory.h stdint.h)
 
+ACE_CHECK_HAS_HEADERS(bytesex.h)
+
 AC_CHECK_HEADER([sys/msg.h],
   [
    ACE_CACHE_CHECK([if _KERNEL is needed for msg prototypes],
@@ -589,8 +591,6 @@ AC_CHECK_HEADER([sys/procfs.h],
   ],)
 
 ACE_CHECK_LACKS_HEADERS(arpa/inet.h)
-
-ACE_CHECK_HAS_HEADERS(bytesex.h)
 
 ACE_CHECK_HAS_HEADERS(byteswap.h)
 
@@ -686,6 +686,10 @@ ACE_CHECK_LACKS_HEADERS(sys/sysctl.h, [], [],
 #endif
 ])
 
+ACE_CHECK_HAS_HEADERS(sys/sysinfo.h)
+
+ACE_CHECK_HAS_HEADERS(sys/systeminfo.h)
+
 ACE_CHECK_LACKS_HEADERS(sys/time.h)
 
 ACE_CHECK_LACKS_HEADERS(sys/uio.h)
@@ -701,6 +705,8 @@ ACE_CHECK_LACKS_HEADERS(time.h)
 ACE_CHECK_LACKS_HEADERS(termio.h termios.h)
 
 ACE_CHECK_LACKS_HEADERS(wctype.h)
+
+AC_CHECK_HEADER([sys/systeminfo.h],[],[])
 
 AC_CHECK_TYPE([struct termio],
 	      [AC_DEFINE([ACE_HAS_TERMIO], 1,
@@ -1098,10 +1104,7 @@ AC_CHECK_TYPE([key_t],
 			 [Define to 1 if the system lacks the type `key_t'.])],
 	      [#include <sys/types.h>])
 
-AC_CHECK_TYPE([sem_t],
-              [],
-              [],
-              [#include <semaphore.h>])
+ACE_CHECK_TYPE([sem_t],[semaphore.h],,)
 
 AC_CHECK_TYPE([pri_t],
 	      [],
@@ -1257,68 +1260,62 @@ dnl SECTION 7: checks for structures
 
 
 dnl TODO: Check whether these structures can be defined somewhere else.
-AC_CHECK_TYPE([struct dirent],
-              [],
-              [AC_DEFINE([ACE_LACKS_STRUCT_DIR], 1,
-                         [Define to 1 if the system lacks the type `struct dirent'.])],
-              [#include <dirent.h>])
-AC_CHECK_TYPE([struct flock],
-              [],
-              [AC_DEFINE([ACE_LACKS_FILELOCKS], 1,
-                         [Define to 1 if the system lacks the type `struct flock'.])],
-              [#include <fcntl.h>])
-AC_CHECK_TYPE([rwlock_t],
-              [],
-              [AC_DEFINE([ACE_LACKS_RWLOCK_T], 1,
-                         [Define to 1 if the system lacks the type `rwlock_t'.])],
-              [#include <synch.h>])
-AC_CHECK_TYPE([struct strbuf],
-              [AC_DEFINE([ACE_HAS_STRBUF_T], 1,
-                         [Define to 1 if the system has the type `struct strbuf'.])],
-              [],
-              [#include <stropts.h>])
+ACE_CHECK_STRUCT([dirent],[dirent.h],,[AC_DEFINE([ACE_LACKS_STRUCT_DIR])])
+ACE_CHECK_STRUCT([flock],[fcntl.h],,[AC_DEFINE([ACE_LACKS_FILELOCKS])])
+ACE_CHECK_STRUCT([rwlock_t],[synch.h],,[AC_DEFINE([ACE_LACKS_RWLOCK_T])])
+ACE_CHECK_STRUCT([strbuf],[stropts.h],[AC_DEFINE([ACE_HAS_STRBUF_T])],)
 case "$host" in
 *irix*)
   dnl IRIX prusage fields don't match what ACE currently supports.
   ;;
 *)
-  AC_CHECK_TYPE([prusage_t],
-                [AC_DEFINE([ACE_HAS_PRUSAGE_T], 1,
-		           [Define to 1 if the system has the type `prusage_t'.])],
-                [],
-                [#include <sys/procfs.h>])
+  ACE_CHECK_STRUCT([prusage_t],[sys/procfs.h],[AC_DEFINE([ACE_HAS_PRUSAGE_T])],)
   ;;
 esac
-AC_CHECK_TYPE([struct strrecvfd],
-              [],
-              [AC_DEFINE([ACE_LACKS_STRRECVFD], 1,
-                         [Define to 1 if the system lacks the type `struct strrecvfd'.])],
-              [#include <stropts.h>])
-AC_CHECK_TYPE([struct sigaction],
-              [],
-              [AC_DEFINE([ACE_LACKS_SIGACTION], 1,
-                         [Define to 1 if the system lacks the type `struct sigaction'.])],
-              [#include <signal.h>])
-AC_CHECK_TYPE([sigset_t],
-              [],
-              [AC_DEFINE([ACE_LACKS_SIGSET], 1,
-                         [Define to 1 if the system lacks the type `sigset_t'.])],
-              [#include <signal.h>])
-AC_CHECK_TYPE([struct utsname],
-              [],
-              [AC_DEFINE([ACE_LACKS_UTSNAME_T], 1,
-                         [Define to 1 if the system lacks the type `struct utsname'.])],
-              [#include <sys/utsname.h>])
-AC_CHECK_TYPE([struct sembuf],
-              [],
-              [AC_DEFINE([ACE_LACKS_SEMBUF_T], 1,
-                         [Define to 1 if the system lacks the type `struct sembuf'.])],
-              [
+ACE_CHECK_STRUCT([strrecvfd],[stropts.h],,[AC_DEFINE([ACE_LACKS_STRRECVFD])])
+ACE_CHECK_STRUCT([sigaction],[signal.h],,[AC_DEFINE([ACE_LACKS_SIGACTION])])
+ACE_CHECK_STRUCT([sigset_t],[signal.h],,[AC_DEFINE([ACE_LACKS_SIGSET])])
+ACE_CHECK_STRUCT([utsname],[sys/utsname.h],,[AC_DEFINE([ACE_LACKS_UTSNAME_T])])
+
+ACE_CACHE_CHECK([for struct sembuf],[ace_cv_struct_sembuf],
+  [
+   dnl Some platforms may need to include some headers before <sys/sem.h>.
+     AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #ifndef ACE_LACKS_SYS_TYPES_H
 # include <sys/types.h>
 #endif
 #include <sys/ipc.h>
-#include <sys/sem.h>])
+#include <sys/sem.h>
+       ]],[[
+        struct sembuf ace_sembuf;
+       ]])],[
+        ace_cv_struct_sembuf=yes
+       ],[
+dnl Some compilers don't like the "struct" but we need the struct for
+dnl some platforms to resolve ambiguities between functions and
+dnl structures with with the same name.  So, we try the same test but
+dnl without "struct" if the above test with "struct" fails.  If both
+dnl tests fail, then we can be reasonably sure that we don't have the
+dnl structure we are testing for.
+        AC_COMPILE_IFELSE([AC_LANG_PROGRAM(
+          [[
+#ifndef ACE_LACKS_SYS_TYPES_H
+# include <sys/types.h>
+#endif
+#include <sys/ipc.h>
+#include <sys/sem.h>
+          ]],
+          [[
+           sembuf ace_sembuf;
+          ]])],
+          [
+           ace_cv_struct_sembuf=yes
+          ],
+          [
+           ace_cv_struct_sembuf=no
+          ])
+       ])
+  ],,[AC_DEFINE([ACE_LACKS_SEMBUF_T])])
 
 dnl Thanks to Konstantinos Margaritis <kmargar@cc.uoa.gr> for pointing out
 dnl that struct siginfo_t may also be defined in signal.h
@@ -1518,6 +1515,26 @@ ACE_CACHE_CHECK([for limited struct rusage],
            ace_cv_lib_limited_rusage=yes
           ])
 ],[AC_DEFINE([ACE_HAS_LIMITED_RUSAGE_T])],)
+
+if test "$ace_cv_struct_siginfo_t" = yes; then
+  dnl Check for si_addr member in struct siginfo_t
+  ACE_CACHE_CHECK([for si_addr member in struct siginfo_t],
+    [ace_cv_lib_posix_si_addr],[
+        AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#ifndef ACE_LACKS_SIGINFO_H
+# include <siginfo.h>
+#endif
+#include <signal.h>
+          ]],[[
+           siginfo_t acesig;
+           acesig.si_addr = 0;
+          ]])],[
+           ace_cv_lib_posix_si_addr=yes
+          ],[
+           ace_cv_lib_posix_si_addr=no
+          ])
+  ],,[AC_DEFINE([ACE_LACKS_SI_ADDR])])
+fi dnl test "$ace_cv_struct_siginfo_t" = yes
 
 dnl Check for sin_len member in struct sockaddr_in
 AC_CHECK_MEMBER([struct sockaddr_in.sin_len],
@@ -2235,6 +2252,31 @@ if test "$ace_cv_lib_auto_ptr_class" = yes; then
        ])
     ],,[AC_DEFINE([ACE_AUTO_PTR_LACKS_RESET])])
 fi  dnl test $ace_cv_lib_auto_ptr_class=yes
+
+dnl Check if platform supports placement new operator
+ACE_CACHE_CHECK([for C++ placement new operator],
+  [ace_cv_feature_placement_new],[
+    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#if defined (ACE_HAS_NEW_NO_H)
+# include <new>
+#elif defined (ACE_HAS_NEW_H)
+# include <new.h>
+#endif
+
+class foo
+{
+public:
+  void *operator new (size_t, void *p) { return p; }
+};
+                   ]],[[
+int *x = 0;
+foo *f = new (x) foo;
+                   ]])],[
+                    ace_cv_feature_placement_new=yes
+                   ],[
+                    ace_cv_feature_placement_new=no
+                   ])
+  ],,[AC_DEFINE([ACE_LACKS_PLACEMENT_OPERATOR_NEW])])
 
 dnl Check if platform supports placement delete operator
 ACE_CACHE_CHECK([for C++ placement delete operator],
@@ -3034,9 +3076,9 @@ case "$host_os" in
 esac
 
 ACE_CHECK_HAS_FUNCS(_InterlockedIncrement _InterlockedDecrement _InterlockedExchangeAdd)
-if test "$ac_cv_func__InterlockedIncrement" = yes &&
-   test "$ac_cv_func__InterlockedDecrement" = yes &&
-   test "$ac_cv_func__InterlockedExchangeAdd" = yes; then
+if test "$ac_cv_func__InterlockedIncrement" == yes &&
+   test "$ac_cv_func__InterlockedDecrement" == yes &&
+   test "$ac_cv_func__InterlockedExchangeAdd" == yes; then
   AC_DEFINE([ACE_HAS_INTRINSIC_INTERLOCKED])
 fi
 
@@ -3442,7 +3484,12 @@ ACE_CHECK_LACKS_FUNCS(sysconf)
 
 ACE_CHECK_HAS_FUNCS(sysctl)
 
-ACE_CHECK_FUNC_SYSINFO
+AC_CHECK_FUNC([sysinfo],
+  [
+   if test "$ac_cv_header_sys_systeminfo_h" = yes; then
+     AC_DEFINE([ACE_HAS_SYSINFO])
+   fi
+  ],)
 
 ACE_CHECK_LACKS_FUNCS(system)
 
@@ -3547,14 +3594,10 @@ main ()
     ;;
 esac
 
-AC_CHECK_FUNC([gethrtime])
-if test $ac_cv_func_gethrtime = "yes"; then
-  AC_CHECK_TYPE([hrtime_t],
-                [AC_DEFINE([ACE_HAS_HI_RES_TIMER], 1,
-                           [Define to 1 if system has SunOS high resolution timer.])],
-                [],
-                [#include <sys/time.h>])
-fi
+AC_CHECK_FUNC([gethrtime],
+  [
+   ACE_CHECK_TYPE([hrtime_t],[sys/time.h],[AC_DEFINE([ACE_HAS_HI_RES_TIMER])],)
+  ],)
 
 AC_CHECK_FUNC([pread],
   [AC_CHECK_FUNC([pwrite],
@@ -3589,7 +3632,7 @@ ACE_CHECK_HAS_FUNCS(sigsuspend sigtimedwait)
 ACE_CHECK_LACKS_FUNCS(socketpair)
 
 AC_CHECK_FUNC(strptime)
-if test "$ac_cv_func_strptime" = yes; then
+if test "$ac_cv_func_strptime" == yes; then
   dnl strptime() is available, but its prototype is not always visible to
   dnl the compiler. Check if _XOPEN_SOURCE macro is needed to make the
   dnl strptime() prototype visible.
@@ -3843,7 +3886,7 @@ AC_SEARCH_LIBS([sem_destroy],rt,[ace_cv_func_sem_destroy=yes],,)
 
 if test "$ace_cv_func_sem_init" = yes &&
    test "$ace_cv_func_sem_destroy" = yes &&
-   test "$ac_cv_type_sem_t" = yes; then
+   test "$ace_cv_type_sem_t" = yes; then
 
 dnl Only enable POSIX semaphore support if process shared semaphores
 dnl are supported.  Presumably process shared semaphores are only
@@ -4075,9 +4118,8 @@ dnl name.
   dnl Can't use ACE_CHECK_LACKS_FUNCS because the macro doesn't match the
   dnl tested function name.
   AC_CHECK_FUNC([pthread_condattr_setpshared],
-    [],
-    [AC_DEFINE([ACE_LACKS_CONDATTR_PSHARED], 1, 
-               [Define to 1 if system lacks pthread_condattr_setpshared()])])
+    ,
+    [AC_DEFINE([ACE_LACKS_CONDATTR_PSHARED])])
 
   dnl ACE_CHECK_LACKS_FUNCS(pthread_attr_setstack)
   dnl Can't use ACE_CHECK_LACKS_FUNCS because the lower-down AC macros build
@@ -4154,13 +4196,12 @@ dnl name.
     ])
 
   AC_CHECK_FUNC([pthread_attr_setscope],
-    [],
+    ,
     [AC_DEFINE([ACE_LACKS_THREAD_PROCESS_SCOPING])])
 
   AC_CHECK_FUNC([pthread_mutexattr_setpshared],
-    [],
-    [AC_DEFINE([ACE_LACKS_MUTEXATTR_PSHARED], 1,
-               [Define to 1 if system lacks pthread_mutexattr_setpshared().])])
+    ,
+    [AC_DEFINE([ACE_LACKS_MUTEXATTR_PSHARED])])
 
 dnl Check for POSIX Threads Draft 4 functions
   AC_CHECK_FUNC([pthread_mutexattr_create],,)
@@ -4195,23 +4236,47 @@ dnl  AC_CHECK_FUNC(sched_yield,,)
 dnl We already check for this during the library checks.
 
 dnl Check for Unix98 pthreads extensions
-  AC_CHECK_TYPE([pthread_rwlock_t],
-                [],
-                [],
-                [
-#ifndef ACE_LACKS_SYS_TYPES_H
-#include <sys/types.h>
-#endif
-#include <pthread.h>])
+  ACE_CACHE_CHECK([for struct pthread_rwlock_t],
+    [ace_cv_struct_pthread_rwlock_t],
+    [
+     dnl Since we are checking for pthread_rwlock_t in more than one header
+     dnl we can't use the ACE_CHECK_STRUCT macro so we have to do things
+     dnl manually.
+     ACE_TRY_COMPILE_STRUCT([pthread_rwlock_t], [pthread.h],
+       [
+        ace_cv_struct_pthread_rwlock_t=yes
+       ],
+       [
+        ACE_TRY_COMPILE_STRUCT([pthread_rwlock_t], [sys/types.h],
+          [
+           ace_cv_struct_pthread_rwlock_t=yes
+          ],
+          [
+           ace_cv_struct_pthread_rwlock_t=no
+          ])
+       ])
+    ],,)
 
-  AC_CHECK_TYPE([pthread_rwlockattr_t],
-                [],
-                [],
-                [
-#ifndef ACE_LACKS_SYS_TYPES_H
-#include <sys/types.h>
-#endif
-#include <pthread.h>])
+  ACE_CACHE_CHECK([for struct pthread_rwlockattr_t],
+    [ace_cv_struct_pthread_rwlockattr_t],
+    [
+     dnl Since we are checking for pthread_rwlockattr_t in more than one
+     dnl header, we can't use the ACE_CHECK_STRUCT macro so we have to do
+     dnl things manually.
+     ACE_TRY_COMPILE_STRUCT([pthread_rwlockattr_t], [pthread.h],
+       [
+        ace_cv_struct_pthread_rwlockattr_t=yes
+       ],
+       [
+        ACE_TRY_COMPILE_STRUCT([pthread_rwlockattr_t], [sys/types.h],
+          [
+           ace_cv_struct_pthread_rwlockattr_t=yes
+          ],
+          [
+           ace_cv_struct_pthread_rwlockattr_t=no
+          ])
+       ])
+    ],,)
 
   ACE_CHECK_HAS_FUNCS(pthread_continue pthread_continue_np pthread_resume_np pthread_suspend pthread_suspend_np)
   ACE_CHECK_HAS_FUNCS(pthread_getconcurrency pthread_setconcurrency)
@@ -4330,12 +4395,11 @@ fi dnl test "$ac_cv_type_cpu_set_t" = yes
   AC_CHECK_FUNC([pthread_rwlockattr_init],,)
   AC_CHECK_FUNC([pthread_rwlockattr_destroy],,)
   AC_CHECK_FUNC([pthread_rwlockattr_setpshared],
-    [],
-    [AC_DEFINE([ACE_LACKS_RWLOCKATTR_PSHARED], 1,
-               [Define to 1 if system lacks pthread_rwlockattr_setpshared().])])
+    ,
+    [AC_DEFINE([ACE_LACKS_RWLOCKATTR_PSHARED])])
 
-  if test "$ac_cv_type_pthread_rwlock_t" = yes &&
-     test "$ac_cv_type_pthread_rwlockattr_t" = yes &&
+  if test "$ace_cv_struct_pthread_rwlock_t" = yes &&
+     test "$ace_cv_struct_pthread_rwlockattr_t" = yes &&
      test "$ac_cv_func_pthread_rwlock_init" = yes &&
      test "$ac_cv_func_pthread_rwlock_destroy" = yes &&
      test "$ac_cv_func_pthread_rwlock_rdlock" = yes &&
@@ -4660,7 +4724,7 @@ if test "$ace_user_enable_reentrant_funcs" = yes; then
                   fi
                  ],
                  [
-                  echo "Nothing to do";
+                  dnl Nothing to do!
                  ])
                 ],
                 [AC_DEFINE([ACE_LACKS_PWD_REENTRANT_FUNCTIONS])])
@@ -5566,7 +5630,7 @@ typedef void (*SA)(...);
       ])
   ])
 
-if test "$ac_cv_type_struct_sigaction" = yes; then
+if test "$ace_cv_struct_sigaction" = yes; then
 dnl Check if struct sigaction takes a void (*)(int) handler
   AC_CACHE_CHECK([if struct sigaction takes a void (*)(int) handler],
     [ace_cv_lib_struct_sigaction_vi1_handler],[
@@ -5642,7 +5706,7 @@ dnl Check if struct sigaction takes a void (*)(...) handler
          ace_cv_lib_struct_sigaction_va1_handler=no
         ])
     ])
-fi dnl test "$ac_cv_type_struct_sigaction" = yes
+fi dnl test "$ace_cv_struct_sigaction" = yes
 
 dnl TODO: This doesn't work.
 dnl The linux compiler issues a warning regarding the invalid void*
@@ -7263,7 +7327,7 @@ and the following information:
 
   ACE 'configure' Script Information
   ==================================
-  [RCS] translit([$Id: configure.ac 82832 2008-09-25 17:38:39Z jtc $], [$"])
+  [RCS] translit([$Id: configure.ac 82573 2008-08-08 18:13:53Z jtc $], [$"])
 
 
   ACE Version:        ACE_VERSION
@@ -7407,7 +7471,260 @@ dnl   tests/Makefile
 AC_CONFIG_FILES([
   Makefile
   ace/Makefile
+  ace/ETCL/Makefile
+  ace/Monitor_Control/Makefile
+  ace/QoS/Makefile
+  ace/SSL/Makefile
+  apps/Makefile
+  apps/Gateway/Makefile
+  apps/Gateway/Gateway/Makefile
+  apps/Gateway/Peer/Makefile
+  apps/JAWS/Makefile
+  apps/JAWS/clients/Makefile
+  apps/JAWS/clients/Blobby/Makefile
+  apps/JAWS/clients/Caching/Makefile
+  apps/JAWS/server/Makefile
+  apps/JAWS2/Makefile
+  apps/JAWS2/HTTPU/Makefile
+  apps/JAWS2/JAWS/Makefile
+  apps/JAWS3/Makefile
+  apps/JAWS3/jaws3/Makefile
+  apps/drwho/Makefile
+  apps/gperf/Makefile
+  apps/gperf/src/Makefile
+  apps/gperf/tests/Makefile
+  apps/mkcsregdb/Makefile
+  apps/soreduce/Makefile
+  bin/Makefile
+  bin/PerlACE/Makefile
+  netsvcs/Makefile
+  netsvcs/lib/Makefile
+  netsvcs/clients/Makefile
+  netsvcs/clients/Logger/Makefile
+  netsvcs/clients/Naming/Makefile
+  netsvcs/clients/Naming/Client/Makefile
+  netsvcs/clients/Naming/Dump_Restore/Makefile
+  netsvcs/servers/Makefile
+  websvcs/Makefile
+  websvcs/lib/Makefile
+  websvcs/tests/Makefile
 ])
+
+dnl Configure examples if configured...
+if test "$ace_build_examples" = yes; then
+  AC_CONFIG_FILES([
+    examples/Makefile
+    examples/APG/Makefile
+    examples/APG/Active_Objects/Makefile
+    examples/APG/Config/Makefile
+    examples/APG/Containers/Makefile
+    examples/APG/Logging/Makefile
+    examples/APG/Misc_IPC/Makefile
+    examples/APG/Naming/Makefile
+    examples/APG/Proactor/Makefile
+    examples/APG/Processes/Makefile
+    examples/APG/Reactor/Makefile
+    examples/APG/Shared_Memory/Makefile
+    examples/APG/Signals/Makefile
+    examples/APG/Sockets/Makefile
+    examples/APG/Streams/Makefile
+    examples/APG/Svc_Config/Makefile
+    examples/APG/ThreadManagement/Makefile
+    examples/APG/ThreadPools/Makefile
+    examples/APG/ThreadSafety/Makefile
+    examples/APG/Threads/Makefile
+    examples/APG/Timers/Makefile
+    examples/ASX/Makefile
+    examples/ASX/CCM_App/Makefile
+    examples/ASX/Event_Server/Makefile
+    examples/ASX/Event_Server/Event_Server/Makefile
+    examples/ASX/Event_Server/Transceiver/Makefile
+    examples/ASX/Message_Queue/Makefile
+    examples/ASX/UPIPE_Event_Server/Makefile
+    examples/Bounded_Packet_Relay/Makefile
+    examples/C++NPv1/Makefile
+    examples/C++NPv2/Makefile
+    examples/ConfigViewer/Makefile
+    examples/Connection/Makefile
+    examples/Connection/blocking/Makefile
+    examples/Connection/misc/Makefile
+    examples/Connection/non_blocking/Makefile
+    examples/DLL/Makefile
+    examples/Export/Makefile
+    examples/IOStream/Makefile
+    examples/IOStream/client/Makefile
+    examples/IOStream/server/Makefile
+    examples/IPC_SAP/Makefile
+    examples/IPC_SAP/ATM_SAP/Makefile
+    examples/IPC_SAP/DEV_SAP/Makefile
+    examples/IPC_SAP/DEV_SAP/reader/Makefile
+    examples/IPC_SAP/DEV_SAP/writer/Makefile
+    examples/IPC_SAP/FIFO_SAP/Makefile
+    examples/IPC_SAP/FILE_SAP/Makefile
+    examples/IPC_SAP/SOCK_SAP/Makefile
+    examples/IPC_SAP/SPIPE_SAP/Makefile
+    examples/IPC_SAP/SSL_SAP/Makefile
+    examples/IPC_SAP/TLI_SAP/Makefile
+    examples/IPC_SAP/UPIPE_SAP/Makefile
+    examples/Log_Msg/Makefile
+    examples/Logger/Makefile
+    examples/Logger/Acceptor-server/Makefile
+    examples/Logger/client/Makefile
+    examples/Logger/simple-server/Makefile
+    examples/Map_Manager/Makefile
+    examples/Mem_Map/Makefile
+    examples/Mem_Map/IO-tests/Makefile
+    examples/Mem_Map/file-reverse/Makefile
+    examples/Misc/Makefile
+    examples/Monitor/Makefile
+    examples/Monitor/Bytes_Sent/Makefile
+    examples/Monitor/Message_Queue_Size/Makefile
+    examples/Monitor/Constraint/Makefile
+    examples/Monitor/CPU_Load/Makefile
+    examples/Monitor/Num_Threads/Makefile
+    examples/Monitor/Group/Makefile
+    examples/Monitor/Memory_Usage/Makefile
+    examples/NT_Service/Makefile
+    examples/Naming/Makefile
+    examples/OS/Makefile
+    examples/OS/Process/Makefile
+    examples/QOS/Makefile
+    examples/QOS/Change_Receiver_FlowSpec/Makefile
+    examples/QOS/Change_Sender_TSpec/Makefile
+    examples/QOS/Diffserv/Makefile
+    examples/QOS/Simple/Makefile
+    examples/Reactor/Makefile
+    examples/Reactor/Dgram/Makefile
+    examples/Reactor/FIFO/Makefile
+    examples/Reactor/Misc/Makefile
+    examples/Reactor/Multicast/Makefile
+    examples/Reactor/Ntalker/Makefile
+    examples/Reactor/Proactor/Makefile
+    examples/Reactor/TP_Reactor/Makefile
+    examples/Reactor/WFMO_Reactor/Makefile
+    examples/Registry/Makefile
+    examples/Semaphores/Makefile
+    examples/Service_Configurator/Makefile
+    examples/Service_Configurator/IPC-tests/Makefile
+    examples/Service_Configurator/IPC-tests/client/Makefile
+    examples/Service_Configurator/IPC-tests/server/Makefile
+    examples/Service_Configurator/Misc/Makefile
+    examples/Shared_Malloc/Makefile
+    examples/Shared_Memory/Makefile
+    examples/Smart_Pointers/Makefile
+    examples/Synch/Makefile
+    examples/System_V_IPC/Makefile
+    examples/System_V_IPC/SV_Message_Queues/Makefile
+    examples/System_V_IPC/SV_Semaphores/Makefile
+    examples/Threads/Makefile
+    examples/Timer_Queue/Makefile
+    examples/Web_Crawler/Makefile
+  ])
+fi
+
+dnl Configure tests if configured...
+if test "$ace_build_tests" = yes; then
+  AC_CONFIG_FILES([
+    performance-tests/Makefile
+    performance-tests/Misc/Makefile
+    performance-tests/SCTP/Makefile
+    performance-tests/Server_Concurrency/Leader_Follower/Makefile
+    performance-tests/Server_Concurrency/Makefile
+    performance-tests/Server_Concurrency/Queue_Based_Workers/Makefile
+    performance-tests/Synch-Benchmarks/Base_Test/Makefile
+    performance-tests/Synch-Benchmarks/Makefile
+    performance-tests/Synch-Benchmarks/Perf_Test/Makefile
+    performance-tests/Synch-Benchmarks/Synch_Lib/Makefile
+    performance-tests/TCP/Makefile
+    performance-tests/UDP/Makefile
+    tests/Makefile
+    tests/SSL/Makefile
+  ])
+fi
+
+dnl Configure subdirectories if they are present.
+if test -d $srcdir/ACEXML; then
+  AC_CONFIG_FILES([
+    ACEXML/Makefile
+    ACEXML/common/Makefile
+    ACEXML/parser/Makefile
+    ACEXML/parser/parser/Makefile
+    ACEXML/apps/Makefile
+    ACEXML/apps/svcconf/Makefile
+    ACEXML/examples/Makefile
+    ACEXML/examples/SAXPrint/Makefile
+    ACEXML/tests/Makefile
+    ACEXML/tests/util/Makefile
+  ])
+  AC_SUBST([ACEXML],[ACEXML])
+fi
+
+if test -d $srcdir/ASNMP; then
+  AC_CONFIG_FILES([
+    ASNMP/Makefile
+    ASNMP/asnmp/Makefile
+    ASNMP/agent/Makefile
+    ASNMP/examples/Makefile
+    ASNMP/examples/get/Makefile
+    ASNMP/examples/next/Makefile
+    ASNMP/examples/set/Makefile
+    ASNMP/examples/trap/Makefile
+    ASNMP/examples/walk/Makefile
+    ASNMP/tests/Makefile
+  ])
+  AC_SUBST([ASNMP],[ASNMP])
+fi
+
+if test -d $srcdir/Kokyu; then
+  AC_CONFIG_FILES([
+    Kokyu/Makefile
+    Kokyu/tests/Makefile
+    Kokyu/tests/DSRT_MIF/Makefile
+    Kokyu/tests/EDF/Makefile
+    Kokyu/tests/FIFO/Makefile
+  ])
+  AC_SUBST([KOKYU],[Kokyu])
+fi
+
+if test -d $srcdir/protocols; then
+  AC_CONFIG_FILES([
+    protocols/Makefile
+    protocols/ace/Makefile
+    protocols/ace/HTBP/Makefile
+    protocols/ace/RMCast/Makefile
+    protocols/ace/TMCast/Makefile
+  ])
+
+  dnl Configure examples if configured...
+  if test "$ace_build_examples" = yes; then
+    AC_CONFIG_FILES([
+      protocols/examples/Makefile
+      protocols/examples/RMCast/Makefile
+      protocols/examples/RMCast/Send_Msg/Makefile
+      protocols/examples/TMCast/Makefile
+      protocols/examples/TMCast/Member/Makefile
+    ])
+  fi
+
+  dnl Configure tests if configured...
+  if test "$ace_build_tests" = yes; then
+    AC_CONFIG_FILES([
+      protocols/tests/HTBP/Makefile
+      protocols/tests/HTBP/Reactor_Tests/Makefile
+      protocols/tests/HTBP/Send_Large_Msg/Makefile
+      protocols/tests/HTBP/Send_Recv_Tests/Makefile
+      protocols/tests/HTBP/ping/Makefile
+      protocols/tests/Makefile
+      protocols/tests/RMCast/Makefile
+    ])
+  fi
+  AC_SUBST([protocols],[protocols])
+fi
+
+if test -d $srcdir/TAO -a X$ace_user_with_tao = Xyes; then
+  AC_CONFIG_SUBDIRS([TAO])
+  AC_SUBST([TAO],[TAO])
+fi
 
 dnl Note that the "ACE_VERSION" in the message below is an M4 macro
 dnl that expands to the version of ACE being configured.

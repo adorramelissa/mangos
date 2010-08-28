@@ -19,6 +19,7 @@
 #define ACE_CONFIG_WIN32_H
 #include /**/ "ace/pre.h"
 
+// MaNGOS change
 // by derex ,I include the win32 specific header here,
 // this violates the idea of this file a bit ;)
 #define ACE_HAS_REACTOR_NOTIFICATION_QUEUE
@@ -48,9 +49,7 @@
 #ifndef _WINDOWS
   #define _WINDOWS
 #endif
-
-// end custom config stuff
-
+// MaNGOS changes end
 
 // NOTE: Please do not add anything besides #include's here.  Put other stuff
 //       (definitions, etc.) in the included headers
@@ -81,12 +80,13 @@
 // gethostbyaddr does not handle IPv6-mapped-IPv4 addresses
 #define ACE_HAS_BROKEN_GETHOSTBYADDR_V4MAPPED
 
+// MaNGOS changes
 // TODO remove this at some point when we add ACE::init and ACE::fini
 // by derex
 #ifdef ACE_HAS_NONSTATIC_OBJECT_MANAGER
 #undef ACE_HAS_NONSTATIC_OBJECT_MANAGER
 #endif //ACE_HAS_NONSTATIC_OBJECT_MANAGER
-
+// MaNGOS changes end
 
 #include /**/ "ace/post.h"
 #endif /* ACE_CONFIG_WIN32_H */

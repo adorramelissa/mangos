@@ -1,0 +1,12 @@
+#
+# $Id: build_library.bor 80826 2008-03-04 14:51:23Z wotte $
+#
+# Makefile rules for building a static or dynamic library
+#
+
+!ifdef STATIC
+!include <$(ACE_ROOT)\include\makeinclude\build_lib.bor>
+!else
+!include <$(ACE_ROOT)\include\makeinclude\build_dll.bor>
+!endif
+
