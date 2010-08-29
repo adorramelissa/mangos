@@ -41,6 +41,7 @@
 #include "BattleGroundMgr.h"
 #include "Item.h"
 #include "AuctionHouseMgr.h"
+#include "EventPlayerTradeMgr.h"
 
 /**
  * Handles the Packet sent by the client when sending a mail.
@@ -277,6 +278,9 @@ void WorldSession::HandleSendMail(WorldPacket & recv_data )
     CharacterDatabase.BeginTransaction();
     pl->SaveInventoryAndGoldToDB();
     CharacterDatabase.CommitTransaction();
+
+    sEventSystemMgr(EventListenerPlayerTrade).TriggerEvent(EventInfoPlayerTradeMail(*GetPlayer(), draft, rc),
+                                                           &EventListenerPlayerTrade::EventPlayerMailSend);
 }
 
 /**

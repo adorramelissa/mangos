@@ -10,26 +10,26 @@
 #include "EventPlayerTradeMgr.h"
 #include "Policies/SingletonImp.h"
 #include "Player.h"
+#include "Creature.h"
+#include "Item.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerPlayerTrade>);
 EventDebugPlayerTrade eventDebugPlayerTrade;
 
-void EventDebugPlayerTrade::EventPlayerMailSend(const EventInfoPlayerTrade &info)
+void EventDebugPlayerTrade::EventPlayerMailSend(const EventInfoPlayerTradeMail &info)
 {
-    EVENTLOG("EventPlayerMailSend - id:%u", info.player.GetGUIDLow());
+    EVENTLOG("EventPlayerMailSend - id:%u recipient:%lu",
+             info.player.GetGUIDLow(), info.recipient);
 }
 
-void EventDebugPlayerTrade::EventPlayerTradeAccepted(const EventInfoPlayerTrade &info)
+void EventDebugPlayerTrade::EventPlayerTradeAccepted(const EventInfoPlayerTradeTrade &info)
 {
-    EVENTLOG("EventPlayerTradeAccepted - id:%u", info.player.GetGUIDLow());
+    EVENTLOG("EventPlayerTradeAccepted - id:%u other:%u",
+             info.player.GetGUIDLow(), info.other.GetGUIDLow());
 }
 
-void EventDebugPlayerTrade::EventPlayerTradeSpecialAccepted(const EventInfoPlayerTrade &info)
+void EventDebugPlayerTrade::EventPlayerVendorTraded(const EventInfoPlayerTradeVendor &info)
 {
-    EVENTLOG("EventPlayerTradeSpecialAccepted - id:%u", info.player.GetGUIDLow());
-}
-
-void EventDebugPlayerTrade::EventPlayerMerchantTraded(const EventInfoPlayerTrade &info)
-{
-    EVENTLOG("EventPlayerMerchantTraded - id:%u", info.player.GetGUIDLow());
+    EVENTLOG("EventPlayerVendorTraded - id:%u vendor:%u item:%u count:%u",
+             info.player.GetGUIDLow(), info.vendor.GetGUIDLow(), info.item.GetGUIDLow(), info.count);
 }

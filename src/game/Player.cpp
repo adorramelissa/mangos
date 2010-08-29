@@ -64,6 +64,7 @@
 #include "EventPlayerMoveMgr.h"
 #include "EventPlayerMapMgr.h"
 #include "EventPlayerDeathStateMgr.h"
+#include "EventPlayerTradeMgr.h"
 
 #include <cmath>
 
@@ -17643,7 +17644,8 @@ bool Player::BuyItemFromVendor(uint64 vendorguid, uint32 item, uint8 count, uint
             }
         }
 
-        if (Item *it = StoreNewItem( dest, item, true ))
+        Item *it = StoreNewItem( dest, item, true );
+        if (it)
         {
             uint32 new_count = pCreature->UpdateVendorItemCurrentCount(crItem,pProto->BuyCount * count);
 
@@ -17656,6 +17658,9 @@ bool Player::BuyItemFromVendor(uint64 vendorguid, uint32 item, uint8 count, uint
 
             SendNewItem(it, pProto->BuyCount*count, true, false, false);
         }
+
+        sEventSystemMgr(EventListenerPlayerTrade).TriggerEvent(EventInfoPlayerTradeVendor(*this, *pCreature, *it, count),
+                                                               &EventListenerPlayerTrade::EventPlayerVendorTraded);
     }
     else if (IsEquipmentPos(bag, slot))
     {
@@ -17688,7 +17693,8 @@ bool Player::BuyItemFromVendor(uint64 vendorguid, uint32 item, uint8 count, uint
             }
         }
 
-        if (Item *it = EquipNewItem( dest, item, true ))
+        Item *it = EquipNewItem( dest, item, true );
+        if (it)
         {
             uint32 new_count = pCreature->UpdateVendorItemCurrentCount(crItem,pProto->BuyCount * count);
 
@@ -17703,6 +17709,9 @@ bool Player::BuyItemFromVendor(uint64 vendorguid, uint32 item, uint8 count, uint
 
             AutoUnequipOffhandIfNeed();
         }
+
+        sEventSystemMgr(EventListenerPlayerTrade).TriggerEvent(EventInfoPlayerTradeVendor(*this, *pCreature, *it, count),
+                                                               &EventListenerPlayerTrade::EventPlayerVendorTraded);
     }
     else
     {

@@ -28,6 +28,7 @@
 #include "Spell.h"
 #include "SocialMgr.h"
 #include "Language.h"
+#include "EventPlayerTradeMgr.h"
 
 void WorldSession::SendTradeStatus(TradeStatus status)
 {
@@ -471,6 +472,9 @@ void WorldSession::HandleAcceptTradeOpcode(WorldPacket& recvPacket)
 
         if (his_spell)
             his_spell->prepare(&his_targets);
+
+        sEventSystemMgr(EventListenerPlayerTrade).TriggerEvent(EventInfoPlayerTradeTrade(*_player, *trader, *my_trade, *his_trade, my_spell || his_spell),
+                                                               &EventListenerPlayerTrade::EventPlayerTradeAccepted);
 
         // cleanup
         clearAcceptTradeMode(my_trade, his_trade);
