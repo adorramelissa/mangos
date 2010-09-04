@@ -1508,11 +1508,6 @@ void Player::SetDeathState(DeathState s)
         if(getClass()== CLASS_WARRIOR)
             CastSpell(this,SPELL_ID_PASSIVE_BATTLE_STANCE,true);
     }
-
-    if (s == JUST_DIED)
-    {
-//        sEventSystemMgr.TriggerPlayerStatusEvent(EVENT_PLAYER_DIED, this);
-    }
 }
 
 bool Player::BuildEnumData( QueryResult * result, WorldPacket * p_data )
@@ -4327,8 +4322,6 @@ void Player::ResurrectPlayer(float restore_percent, bool applySickness)
     m_camera.UpdateVisibilityForOwner();
     // update visibility of player for nearby cameras
     UpdateObjectVisibility();
-
-//    sEventSystemMgr.TriggerPlayerEvent(EVENT_PLAYER_REVIVED, this);
 
     if(!applySickness)
         return;

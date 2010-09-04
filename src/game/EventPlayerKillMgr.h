@@ -13,12 +13,14 @@
 #include "EventSystemMgr.h"
 #include "EventPlayerDefines.h"
 
+class Unit;
+
 struct EventInfoPlayerKill : public EventInfoPlayer
 {
-    // TODO: fill needed params
+    const Unit &enemy;
 
-    EventInfoPlayerKill(const Player &player_)
-    : EventInfoPlayer(player_) {}
+    EventInfoPlayerKill(const Player &player_, const Unit &enemy_)
+    : EventInfoPlayer(player_), enemy(enemy_) {}
 };
 
 class EventListenerPlayerKill : public EventListener

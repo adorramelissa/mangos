@@ -10,26 +10,27 @@
 #include "EventPlayerKillMgr.h"
 #include "Policies/SingletonImp.h"
 #include "Player.h"
+#include "Unit.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerPlayerKill>);
 EventDebugPlayerKill eventDebugPlayerKill;
 
 void EventDebugPlayerKill::EventPlayerKilledByPlayer(const EventInfoPlayerKill &info)
 {
-    EVENTLOG("EventPlayerKilledByPlayer - id:%u", info.player.GetGUIDLow());
+    EVENTLOG("EventPlayerKilledByPlayer - id:%u enemy:%u", info.player.GetGUIDLow(), info.enemy.GetGUIDLow());
 }
 
 void EventDebugPlayerKill::EventPlayerKilledByCreature(const EventInfoPlayerKill &info)
 {
-    EVENTLOG("EventPlayerKilledByCreature - id:%u", info.player.GetGUIDLow());
+    EVENTLOG("EventPlayerKilledByCreature - id:%u enemy:%u", info.player.GetGUIDLow(), info.enemy.GetGUIDLow());
 }
 
 void EventDebugPlayerKill::EventPlayerKilledOtherPlayer(const EventInfoPlayerKill &info)
 {
-    EVENTLOG("EventPlayerKilledOtherPlayer - id:%u", info.player.GetGUIDLow());
+    EVENTLOG("EventPlayerKilledOtherPlayer - id:%u enemy:%u", info.player.GetGUIDLow(), info.enemy.GetGUIDLow());
 }
 
 void EventDebugPlayerKill::EventPlayerKilledOtherCreature(const EventInfoPlayerKill &info)
 {
-    EVENTLOG("EventPlayerKilledOtherCreature - id:%u", info.player.GetGUIDLow());
+    EVENTLOG("EventPlayerKilledOtherCreature - id:%u enemy:%u", info.player.GetGUIDLow(), info.enemy.GetGUIDLow());
 }
