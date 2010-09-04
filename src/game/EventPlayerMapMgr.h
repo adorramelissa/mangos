@@ -13,18 +13,16 @@
 #include "EventSystemMgr.h"
 #include "EventPlayerDefines.h"
 
-struct MapEntry;
-
 class Map;
 class InstanceSave;
 
 struct EventInfoPlayerMap : public EventInfoPlayer
 {
-    const MapEntry &map;
+    uint32 mapId;
     const Map &oldmap;
 
-    EventInfoPlayerMap(const Player &player_, const MapEntry &map_, const Map &oldmap_)
-    : EventInfoPlayer(player_), map(map_), oldmap(oldmap_) {}
+    EventInfoPlayerMap(const Player &player_, const uint32 &mapId_, const Map &oldmap_)
+    : EventInfoPlayer(player_), mapId(mapId_), oldmap(oldmap_) {}
 };
 
 struct EventInfoPlayerInstance : public EventInfoPlayer
