@@ -35,6 +35,7 @@
 #include "GridNotifiersImpl.h"
 #include "EventBattleGroundMgr.h"
 #include "EventPlayerDeathStateMgr.h"
+#include "EventPlayerBattleGroundMgr.h"
 
 namespace MaNGOS
 {
@@ -758,13 +759,18 @@ void BattleGround::EndBattleGround(uint32 winner)
                 loser_arena_team->MemberLost(plr,winner_rating);
         }
 
+        EventInfoPlayerBattleGround eventInfo(*plr, *this);
         if (team == winner)
         {
             RewardMark(plr,ITEM_WINNER_COUNT);
             RewardQuestComplete(plr);
+            sEventSystemMgr(EventListenerPlayerBattleGround).TriggerEvent(eventInfo, &EventListenerPlayerBattleGround::EventPlayerBattleGroundWon);
         }
         else
+        {
             RewardMark(plr,ITEM_LOSER_COUNT);
+            sEventSystemMgr(EventListenerPlayerBattleGround).TriggerEvent(eventInfo, &EventListenerPlayerBattleGround::EventPlayerBattleGroundLost);
+        }
 
         plr->CombatStopWithPets(true);
 
@@ -1210,6 +1216,9 @@ void BattleGround::AddPlayer(Player *plr)
 
     // Log
     DETAIL_LOG("BATTLEGROUND: Player %s joined the battle.", plr->GetName());
+
+    sEventSystemMgr(EventListenerPlayerBattleGround).TriggerEvent(EventInfoPlayerBattleGround(*plr, *this),
+                                                                  &EventListenerPlayerBattleGround::EventPlayerBattleGroundJoined);
 }
 
 /* this method adds player to his team's bg group, or sets his correct group if player is already in bg group */

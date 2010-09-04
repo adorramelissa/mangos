@@ -65,6 +65,7 @@
 #include "EventPlayerMapMgr.h"
 #include "EventPlayerDeathStateMgr.h"
 #include "EventPlayerTradeMgr.h"
+#include "EventPlayerBattleGroundMgr.h"
 
 #include <cmath>
 
@@ -6625,8 +6626,15 @@ void Player::DuelComplete(DuelCompleteType type)
         data << duel->opponent->GetName();
         data << GetName();
         SendMessageToSet(&data,true);
+        
+        // Seems illogical but Player object always looses when this function is called
+        // DUEL_WON means only that this duel ended normally =/
+        sEventSystemMgr(EventListenerPlayerBattleGround).TriggerEvent(EventInfoPlayerDuel(*this, *duel->opponent),
+                                                                      &EventListenerPlayerBattleGround::EventPlayerDuelLost);
+        sEventSystemMgr(EventListenerPlayerBattleGround).TriggerEvent(EventInfoPlayerDuel(*duel->opponent, *this),
+                                                                      &EventListenerPlayerBattleGround::EventPlayerDuelWon);
     }
-
+    
     //Remove Duel Flag object
     GameObject* obj = GetMap()->GetGameObject(GetUInt64Value(PLAYER_DUEL_ARBITER));
     if(obj)
@@ -18093,6 +18101,9 @@ void Player::LeaveBattleground(bool teleportToEntryPoint)
                 CastSpell(this, 26013, true);               // Deserter
             }
         }
+        
+        sEventSystemMgr(EventListenerPlayerBattleGround).TriggerEvent(EventInfoPlayerBattleGround(*this, *bg),
+                                                                      &EventListenerPlayerBattleGround::EventPlayerBattleGroundLeaved);
     }
 }
 

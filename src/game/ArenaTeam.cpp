@@ -23,6 +23,7 @@
 #include "World.h"
 #include "Player.h"
 #include "EventArenaTeamMgr.h"
+#include "EventPlayerBattleGroundMgr.h"
 
 void ArenaTeamMember::ModifyPersonalRating(Player* plr, int32 mod, uint32 slot)
 {
@@ -187,6 +188,10 @@ bool ArenaTeam::AddMember(ObjectGuid playerGuid)
         if (m_CaptainGuid != playerGuid)
             pl->SetArenaTeamInfoField(GetSlot(), ARENA_TEAM_MEMBER, 1);
     }
+
+    sEventSystemMgr(EventListenerPlayerBattleGround).TriggerEvent(EventInfoPlayerArenaTeam(playerGuid, *this),
+                                                                  &EventListenerPlayerBattleGround::EventPlayerArenaTeamJoined);
+
     return true;
 }
 
@@ -315,6 +320,9 @@ void ArenaTeam::DelMember(ObjectGuid guid)
     }
 
     CharacterDatabase.PExecute("DELETE FROM arena_team_member WHERE arenateamid = '%u' AND guid = '%u'", GetId(), guid.GetCounter());
+
+    sEventSystemMgr(EventListenerPlayerBattleGround).TriggerEvent(EventInfoPlayerArenaTeam(guid, *this),
+                                                                  &EventListenerPlayerBattleGround::EventPlayerArenaTeamLeaved);
 }
 
 void ArenaTeam::Disband(WorldSession *session)

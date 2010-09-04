@@ -10,36 +10,48 @@
 #include "EventPlayerBattleGroundMgr.h"
 #include "Policies/SingletonImp.h"
 #include "Player.h"
+#include "ArenaTeam.h"
+#include "ObjectGuid.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerPlayerBattleGround>);
 EventDebugPlayerBattleGround eventDebugPlayerBattleGround;
 
 void EventDebugPlayerBattleGround::EventPlayerBattleGroundJoined(const EventInfoPlayerBattleGround &info)
 {
-    EVENTLOG("EventPlayerBattleGroundJoined - id:%u", info.player.GetGUIDLow());
+    EVENTLOG("EventPlayerBattleGroundJoined - id:%u bg:%u", info.player.GetGUIDLow(), info.battleGround.GetInstanceID());
 }
 
 void EventDebugPlayerBattleGround::EventPlayerBattleGroundLeaved(const EventInfoPlayerBattleGround &info)
 {
-    EVENTLOG("EventPlayerBattleGroundLeaved - id:%u", info.player.GetGUIDLow());
+    EVENTLOG("EventPlayerBattleGroundLeaved - id:%u bg:%u", info.player.GetGUIDLow(), info.battleGround.GetInstanceID());
 }
 
 void EventDebugPlayerBattleGround::EventPlayerBattleGroundWon(const EventInfoPlayerBattleGround &info)
 {
-    EVENTLOG("EventPlayerBattleGroundWon - id:%u", info.player.GetGUIDLow());
+    EVENTLOG("EventPlayerBattleGroundWon - id:%u bg:%u", info.player.GetGUIDLow(), info.battleGround.GetInstanceID());
 }
 
 void EventDebugPlayerBattleGround::EventPlayerBattleGroundLost(const EventInfoPlayerBattleGround &info)
 {
-    EVENTLOG("EventPlayerBattleGroundLost - id:%u", info.player.GetGUIDLow());
+    EVENTLOG("EventPlayerBattleGroundLost - id:%u bg:%u", info.player.GetGUIDLow(), info.battleGround.GetInstanceID());
 }
 
-void EventDebugPlayerBattleGround::EventPlayerDuellWon(const EventInfoPlayerDuell &info)
+void EventDebugPlayerBattleGround::EventPlayerDuelWon(const EventInfoPlayerDuel &info)
 {
-    EVENTLOG("EventPlayerDuellWon - id:%u", info.player.GetGUIDLow());
+    EVENTLOG("EventPlayerDuelWon - id:%u enemy:%u", info.player.GetGUIDLow(), info.enemy.GetGUIDLow());
 }
 
-void EventDebugPlayerBattleGround::EventPlayerDuellLost(const EventInfoPlayerDuell &info)
+void EventDebugPlayerBattleGround::EventPlayerDuelLost(const EventInfoPlayerDuel &info)
 {
-    EVENTLOG("EventPlayerDuellLost - id:%u", info.player.GetGUIDLow());
+    EVENTLOG("EventPlayerDuelLost - id:%u enemy:%u", info.player.GetGUIDLow(), info.enemy.GetGUIDLow());
+}
+
+void EventDebugPlayerBattleGround::EventPlayerArenaTeamJoined(const EventInfoPlayerArenaTeam &info) 
+{
+    EVENTLOG("EventPlayerArenaTeamJoined - id:%u team:%u", info.guid.GetEntry(), info.team.GetId());    
+}
+
+void EventDebugPlayerBattleGround::EventPlayerArenaTeamLeaved(const EventInfoPlayerArenaTeam &info) 
+{
+    EVENTLOG("EventPlayerArenaTeamLeaved - id:%u team:%u", info.guid.GetEntry(), info.team.GetId());    
 }
