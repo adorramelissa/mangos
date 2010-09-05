@@ -43,7 +43,7 @@ elseif(UNIX)
     SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}
     BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}
     CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<BINARY_DIR> --disable-ace-examples --disable-ace-tests --disable-ssl
-    BUILD_COMMAND make # export arch="ia32" && 
+    BUILD_COMMAND make -j2 # export arch="ia32" && 
     INSTALL_COMMAND make install
   )
 else()

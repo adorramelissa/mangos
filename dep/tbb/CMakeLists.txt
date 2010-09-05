@@ -39,7 +39,7 @@ elseif(UNIX)
     SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}
     BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}
     CONFIGURE_COMMAND ""
-    BUILD_COMMAND make -C <SOURCE_DIR> # export arch="ia32" && 
+    BUILD_COMMAND make -j2 -C <SOURCE_DIR> # export arch="ia32" && 
     INSTALL_COMMAND ""
   )
 else()
