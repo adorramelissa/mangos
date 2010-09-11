@@ -44,6 +44,11 @@ endif()
 find_package(Platform REQUIRED)
 find_package(Git)
 
+# VS100 uses MSBuild.exe instead of devenv.com, so force it to use devenv.com
+if(WIN32 AND MSVC_VERSION MATCHES 1600)
+  find_package(VisualStudio2010)
+endif()
+
 # if(NOT PLATFORM MATCHES X86 AND NOT PLATFORM MATCHES X64)
 #   message(FATAL_ERROR
 #     "An unknown Architecture was selected. Only the values X86 and X64 for PLATFORM are supported."
@@ -343,35 +348,37 @@ add_custom_target("revision.h" ALL
 )
 
 if(WIN32)
-  # Special thing for debug and 32-bit
-  if(PLATFORM MATCHES X86)
-    set(WIN_DEBUGLIBS
-      ${CMAKE_SOURCE_DIR}/dep/lib/win32_debug/vld.lib
-    )
-  endif()
-
-  # Copy dll's Windows needs
   install(
     FILES
-      ${CMAKE_SOURCE_DIR}/dep/lib/${DEP_ARCH}_release/dbghelp.dll
-      # ${CMAKE_SOURCE_DIR}/dep/lib/${DEP_ARCH}_release/libeay32.dll
-      # ${CMAKE_SOURCE_DIR}/dep/lib/${DEP_ARCH}_release/libmySQL.dll
+      ${CMAKE_SOURCE_DIR}/dep/lib/${DEP_ARCH}_release/libeay32.dll
+      ${CMAKE_SOURCE_DIR}/dep/lib/${DEP_ARCH}_release/libmySQL.dll
     DESTINATION ${LIBS_DIR}
     CONFIGURATIONS Release
   )
   install(
     FILES
-      ${CMAKE_SOURCE_DIR}/dep/lib/${DEP_ARCH}_debug/dbghelp.dll
-      # ${CMAKE_SOURCE_DIR}/dep/lib/${DEP_ARCH}_debug/libeay32.dll
-      # ${CMAKE_SOURCE_DIR}/dep/lib/${DEP_ARCH}_debug/libmySQL.dll
+      ${CMAKE_SOURCE_DIR}/dep/lib/${DEP_ARCH}_debug/libeay32.dll
+      ${CMAKE_SOURCE_DIR}/dep/lib/${DEP_ARCH}_debug/libmySQL.dll
     DESTINATION ${LIBS_DIR}
     CONFIGURATIONS Debug
   )
   if(PLATFORM MATCHES X86)
+    # Special thing for debug and 32-bit
+    set(WIN_DEBUGLIBS
+      ${CMAKE_SOURCE_DIR}/dep/lib/win32_debug/vld.lib
+    )
+    # Copy dll's Windows needs
+    install(
+      FILES
+        ${CMAKE_SOURCE_DIR}/dep/lib/win32_release/dbghelp.dll
+      DESTINATION ${LIBS_DIR}
+      CONFIGURATIONS Release
+    )
     install(
       FILES
         ${CMAKE_SOURCE_DIR}/dep/lib/win32_debug/vld.dll
-      DESTINATION ${LIBS_DIR} OPTIONAL
+        ${CMAKE_SOURCE_DIR}/dep/lib/win32_debug/dbghelp.dll
+      DESTINATION ${LIBS_DIR}
       CONFIGURATIONS Debug
     )
   endif()

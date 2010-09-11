@@ -23,25 +23,42 @@ if(WIN32)
 endif()
 
 if(WIN32 AND MSVC)
+  # VS100 uses MSBuild.exe instead of devenv.com, so force it to use devenv.com
+  if(VS100_FOUND)
+    set(ACE_BUILD_TOOL ${VS100_DIR}/devenv.com)
+  else()
+    set(ACE_BUILD_TOOL ${CMAKE_BUILD_TOOL})
+  endif()
+
+  if(PLATFORM MATCHES X86)
+    set(ACE_CONFIGURATION Win32)
+  else()
+    set(ACE_CONFIGURATION x64)
+  endif()
+
   ExternalProject_Add(ACE_Project
     SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}
     BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}
+    DOWNLOAD_COMMAND ""
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
     INSTALL_COMMAND ""
   )
   ExternalProject_Add_Step(ACE_Project ACE_Upgrade
-    COMMAND ${CMAKE_BUILD_TOOL} <SOURCE_DIR>\\ace\\ace_vc8.sln /upgrade
+    COMMAND ${ACE_BUILD_TOOL} <SOURCE_DIR>\\ace\\ace_vc8.sln /upgrade
+    ALWAYS 0
   )
   ExternalProject_Add_Step(ACE_Project ACE_Build
     DEPENDEES ACE_Upgrade
-    COMMAND ${CMAKE_BUILD_TOOL} <SOURCE_DIR>\\ace\\ace_vc8.sln /build Debug
-    COMMAND ${CMAKE_BUILD_TOOL} <SOURCE_DIR>\\ace\\ace_vc8.sln /build Release
+    COMMAND ${ACE_BUILD_TOOL} <SOURCE_DIR>\\ace\\ace_vc8.sln /build Debug|${ACE_CONFIGURATION}
+    COMMAND ${ACE_BUILD_TOOL} <SOURCE_DIR>\\ace\\ace_vc8.sln /build Release|${ACE_CONFIGURATION}
+    ALWAYS 0
   )
 elseif(UNIX)
   ExternalProject_Add(ACE_Project
     SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}
     BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}
+    DOWNLOAD_COMMAND ""
     CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<BINARY_DIR> --disable-ace-examples --disable-ace-tests --disable-ssl
     BUILD_COMMAND make -j2 # export arch="ia32" && 
     INSTALL_COMMAND make install

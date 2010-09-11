@@ -21,26 +21,31 @@
 # add_library(tbbmalloc SHARED IMPORTED)
 if(WIN32)
   set(LIB_SUFFIX dll)
-  if(PLATFORM MATCHES X86)
-    set(LIBDIR ia32)
+  if(VS100_FOUND)
+    set(VSDIR vs100project)
   else()
-    set(LIBDIR intel64)
+    set(VSDIR vsproject)
+  endif()
+  if(PLATFORM MATCHES X86)
+    set(ARCHDIR ia32)
+  else()
+    set(ARCHDIR intel64)
   endif()
 #   set_target_properties(tbb PROPERTIES
-#     IMPORTED_LOCATION_RELEASE ${CMAKE_SOURCE_DIR}/dep/tbb/build/vsproject/${LIBDIR}/Release/tbb.dll
-#     IMPORTED_LOCATION_DEBUG ${CMAKE_SOURCE_DIR}/dep/tbb/build/vsproject/${LIBDIR}/Debug/tbb_debug.dll
-#     IMPORTED_IMPLIB_RELEASE ${CMAKE_SOURCE_DIR}/dep/tbb/build/vsproject/${LIBDIR}/Release/tbb.lib
-#     IMPORTED_IMPLIB_DEBUG ${CMAKE_SOURCE_DIR}/dep/tbb/build/vsproject/${LIBDIR}/Debug/tbb_debug.lib
+#     IMPORTED_LOCATION_RELEASE ${CMAKE_SOURCE_DIR}/dep/tbb/build/${VSDIR}/${ARCHDIR}/Release/tbb.dll
+#     IMPORTED_LOCATION_DEBUG ${CMAKE_SOURCE_DIR}/dep/tbb/build/${VSDIR}/${ARCHDIR}/Debug/tbb_debug.dll
+#     IMPORTED_IMPLIB_RELEASE ${CMAKE_SOURCE_DIR}/dep/tbb/build/${VSDIR}/${ARCHDIR}/Release/tbb.lib
+#     IMPORTED_IMPLIB_DEBUG ${CMAKE_SOURCE_DIR}/dep/tbb/build/${VSDIR}/${ARCHDIR}/Debug/tbb_debug.lib
 #   )
 #   set_target_properties(tbbmalloc PROPERTIES
-#     IMPORTED_LOCATION_RELEASE ${CMAKE_SOURCE_DIR}/dep/tbb/build/vsproject/${LIBDIR}/Release/tbbmalloc.dll
-#     IMPORTED_LOCATION_DEBUG ${CMAKE_SOURCE_DIR}/dep/tbb/build/vsproject/${LIBDIR}/Debug/tbbmalloc_debug.dll
-#     IMPORTED_IMPLIB_RELEASE ${CMAKE_SOURCE_DIR}/dep/tbb/build/vsproject/${LIBDIR}/Release/tbbmalloc.lib
-#     IMPORTED_IMPLIB_DEBUG ${CMAKE_SOURCE_DIR}/dep/tbb/build/vsproject/${LIBDIR}/Debug/tbbmalloc_debug.lib
+#     IMPORTED_LOCATION_RELEASE ${CMAKE_SOURCE_DIR}/dep/tbb/build/${VSDIR}/${ARCHDIR}/Release/tbbmalloc.dll
+#     IMPORTED_LOCATION_DEBUG ${CMAKE_SOURCE_DIR}/dep/tbb/build/${VSDIR}/${ARCHDIR}/Debug/tbbmalloc_debug.dll
+#     IMPORTED_IMPLIB_RELEASE ${CMAKE_SOURCE_DIR}/dep/tbb/build/${VSDIR}/${ARCHDIR}/Release/tbbmalloc.lib
+#     IMPORTED_IMPLIB_DEBUG ${CMAKE_SOURCE_DIR}/dep/tbb/build/${VSDIR}/${ARCHDIR}/Debug/tbbmalloc_debug.lib
 #   )
   set(TBB_LIBRARIES_DIR
-    ${CMAKE_SOURCE_DIR}/dep/tbb/build/vsproject/${LIBDIR}/Release
-    ${CMAKE_SOURCE_DIR}/dep/tbb/build/vsproject/${LIBDIR}/Debug
+    ${CMAKE_SOURCE_DIR}/dep/tbb/build/${VSDIR}/${ARCHDIR}/Release
+    ${CMAKE_SOURCE_DIR}/dep/tbb/build/${VSDIR}/${ARCHDIR}/Debug
   )
 else()
   if(APPLE)
@@ -68,7 +73,7 @@ endif()
 # set_target_properties(tbbmalloc PROPERTIES DEPENDS TBB_Project)
 
 set(TBB_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/dep/tbb/include)
-set(TBB_LIBRARIES tbb tbbmalloc)
+set(TBB_LIBRARIES optimized tbb optimized tbbmalloc debug tbb_debug debug tbbmalloc_debug)
 
 # Little Hack to remove the link warnings because of not found directories
 if(XCODE)

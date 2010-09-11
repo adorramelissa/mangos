@@ -19,25 +19,44 @@
 include(ExternalProject)
 
 if(WIN32 AND MSVC)
+  # VS100 uses MSBuild.exe instead of devenv.com, so force it to use devenv.com
+  if(VS100_FOUND)
+    set(TBB_BUILD_TOOL ${VS100_DIR}/devenv.com)
+    set(TBB_SOURCE <SOURCE_DIR>\\build\\vs100project)
+  else()
+    set(TBB_BUILD_TOOL ${CMAKE_BUILD_TOOL})
+    set(TBB_SOURCE <SOURCE_DIR>\\build\\vsproject)
+  endif()
+
+  if(PLATFORM MATCHES X86)
+    set(TBB_CONFIGURATION Win32)
+  else()
+    set(TBB_CONFIGURATION x64)
+  endif()
+
   ExternalProject_Add(TBB_Project
     SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}
     BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}
+    DOWNLOAD_COMMAND ""
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
     INSTALL_COMMAND ""
   )
   ExternalProject_Add_Step(TBB_Project TBB_Upgrade
-    COMMAND ${CMAKE_BUILD_TOOL} <SOURCE_DIR>\\build\\vsproject\\makefile.sln /upgrade
+    COMMAND ${TBB_BUILD_TOOL} ${TBB_SOURCE}\\makefile.sln /upgrade
+    ALWAYS 0
   )
   ExternalProject_Add_Step(TBB_Project TBB_Build
     DEPENDEES TBB_Upgrade
-    COMMAND ${CMAKE_BUILD_TOOL} <SOURCE_DIR>\\build\\vsproject\\makefile.sln /build Debug
-    COMMAND ${CMAKE_BUILD_TOOL} <SOURCE_DIR>\\build\\vsproject\\makefile.sln /build Release
+    COMMAND ${TBB_BUILD_TOOL} ${TBB_SOURCE}\\makefile.sln /build Debug|${TBB_CONFIGURATION}
+    COMMAND ${TBB_BUILD_TOOL} ${TBB_SOURCE}\\makefile.sln /build Release|${TBB_CONFIGURATION}
+    ALWAYS 0
   )
 elseif(UNIX)
   ExternalProject_Add(TBB_Project
     SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}
     BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}
+    DOWNLOAD_COMMAND ""
     CONFIGURE_COMMAND ""
     BUILD_COMMAND make -j2 -C <SOURCE_DIR> # export arch="ia32" && 
     INSTALL_COMMAND ""

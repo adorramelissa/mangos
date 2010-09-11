@@ -16,7 +16,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-file(GLOB_RECURSE mangos_worldd_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp *.h)
+file(GLOB_RECURSE mangosd_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp *.h)
 
 include_directories(
   ${CMAKE_SOURCE_DIR}/src/shared
@@ -30,17 +30,17 @@ include_directories(
   ${OPENSSL_INCLUDE_DIR}
 )
 
-add_executable(mangos_worldd
-  ${mangos_worldd_SRCS}
+add_executable(mangosd
+  ${mangosd_SRCS}
 )
 
-add_dependencies(mangos_worldd revision.h)
+add_dependencies(mangosd revision.h)
 if(NOT ACE_USE_EXTERNAL)
-  add_dependencies(mangos_worldd ACE_Project)
-# add_dependencies(mangos_worldd ace)
+  add_dependencies(mangosd ACE_Project)
+# add_dependencies(mangosd ace)
 endif()
 
-target_link_libraries(mangos_worldd
+target_link_libraries(mangosd
   game
   shared
   framework
@@ -50,7 +50,7 @@ target_link_libraries(mangos_worldd
 )
 
 if(WIN32)
-  target_link_libraries(mangos_worldd
+  target_link_libraries(mangosd
     zlib
     optimized ${MYSQL_LIBRARY}
     optimized ${OPENSSL_LIBRARIES}
@@ -58,14 +58,14 @@ if(WIN32)
     debug ${OPENSSL_DEBUG_LIBRARIES}
   )
   if(PLATFORM MATCHES X86)
-    target_link_libraries(mangos_worldd
+    target_link_libraries(mangosd
       debug ${WIN_DEBUGLIBS}
     )    
   endif()
 endif()
 
 if(UNIX)
-  target_link_libraries(mangos_worldd
+  target_link_libraries(mangosd
     ${MYSQL_LIBRARY}
     ${OPENSSL_LIBRARIES}
     ${ZLIB_LIBRARIES}
@@ -73,26 +73,26 @@ if(UNIX)
 endif()
 
 if(APPLE)
-  target_link_libraries(mangos_worldd
+  target_link_libraries(mangosd
     ${OSX_LIBS}
   )
 endif()
 
-set(mangos_worldd_LINK_FLAGS "")
+set(mangosd_LINK_FLAGS "")
 
 if(UNIX)
-  set(mangos_worldd_LINK_FLAGS "-pthread ${mangos_worldd_LINK_FLAGS}")
+  set(mangosd_LINK_FLAGS "-pthread ${mangosd_LINK_FLAGS}")
 endif()
 
 if(APPLE)
-  set(mangos_worldd_LINK_FLAGS "-framework Carbon ${mangos_worldd_LINK_FLAGS}")
+  set(mangosd_LINK_FLAGS "-framework Carbon ${mangosd_LINK_FLAGS}")
 endif()
 
-set_target_properties(mangos_worldd PROPERTIES LINK_FLAGS
-  "${mangos_worldd_LINK_FLAGS}"
+set_target_properties(mangosd PROPERTIES LINK_FLAGS
+  "${mangosd_LINK_FLAGS}"
 )
 
-install(TARGETS mangos_worldd DESTINATION ${BIN_DIR})
+install(TARGETS mangosd DESTINATION ${BIN_DIR})
 install(FILES run-mangosd DESTINATION ${BIN_DIR})
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/mangosd.conf.dist.in ${CMAKE_CURRENT_BINARY_DIR}/mangosd.conf.dist)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/mangosd.conf.dist DESTINATION ${CONF_DIR})

@@ -42,9 +42,13 @@ target_link_libraries(mangosscript
 
 if(WIN32)
   target_link_libraries(mangosscript
-    mangos_worldd # FIXME: could this be done for unix? because unix won't generate exe.libs
-	  debug ${WIN_DEBUGLIBS}
+    mangosd # FIXME: could this be done for unix? because unix won't generate exe.libs
   )
+  if(WIN32 AND PLATFORM MATCHES X86)
+    target_link_libraries(mangosscript
+      debug ${WIN_DEBUGLIBS}
+    )
+  endif()
 endif()
 
 if(APPLE)

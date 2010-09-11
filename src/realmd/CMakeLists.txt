@@ -16,7 +16,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-file(GLOB_RECURSE mangos_realmd_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp *.h)
+file(GLOB_RECURSE realmd_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp *.h)
 
 include_directories(
   ${CMAKE_SOURCE_DIR}/src/shared
@@ -27,62 +27,62 @@ include_directories(
   ${ACE_INCLUDE_DIR}
 )
 
-add_executable(mangos_realmd
-  ${mangos_realmd_SRCS}
+add_executable(realmd
+  ${realmd_SRCS}
 )
 
-add_dependencies(mangos_realmd revision.h)
+add_dependencies(realmd revision.h)
 if(NOT ACE_USE_EXTERNAL)
-  add_dependencies(mangos_realmd ACE_Project)
-# add_dependencies(mangos_realmd ace)
+  add_dependencies(realmd ACE_Project)
+# add_dependencies(realmd ace)
 endif()
 
-target_link_libraries(mangos_realmd
+target_link_libraries(realmd
   shared
   framework
   ${ACE_LIBRARIES}
 )
 
 if(WIN32)
-  target_link_libraries(mangos_realmd
+  target_link_libraries(realmd
     optimized ${MYSQL_LIBRARY}
     optimized ${OPENSSL_LIBRARIES}
     debug ${MYSQL_DEBUG_LIBRARY}
     debug ${OPENSSL_DEBUG_LIBRARIES}
   )
   if(PLATFORM MATCHES X86)
-    target_link_libraries(mangos_realmd
+    target_link_libraries(realmd
       debug ${WIN_DEBUGLIBS}
     )
   endif()
 endif()
 
 if(UNIX)
-  target_link_libraries(mangos_realmd
+  target_link_libraries(realmd
     ${MYSQL_LIBRARY}
     ${OPENSSL_LIBRARIES}
   )
 endif()
 
 if(APPLE)
-  target_link_libraries(mangos_realmd
+  target_link_libraries(realmd
     ${OSX_LIBS}
   )
 endif()
 
-set(mangos_realmd_LINK_FLAGS "")
+set(realmd_LINK_FLAGS "")
 
 if(UNIX)
-  set(mangos_realmd_LINK_FLAGS "-pthread ${mangos_realmd_LINK_FLAGS}")
+  set(realmd_LINK_FLAGS "-pthread ${realmd_LINK_FLAGS}")
 endif()
 
 if(APPLE)
-  set(mangos_realmd_LINK_FLAGS "-framework Carbon ${mangos_realmd_LINK_FLAGS}")
+  set(realmd_LINK_FLAGS "-framework Carbon ${realmd_LINK_FLAGS}")
 endif()
 
-set_target_properties(mangos_realmd PROPERTIES LINK_FLAGS
-  "${mangos_realmd_LINK_FLAGS}"
+set_target_properties(realmd PROPERTIES LINK_FLAGS
+  "${realmd_LINK_FLAGS}"
 )
 
-install(TARGETS mangos_realmd DESTINATION ${BIN_DIR})
+install(TARGETS realmd DESTINATION ${BIN_DIR})
 install(FILES realmd.conf.dist.in DESTINATION ${CONF_DIR} RENAME realmd.conf.dist)
