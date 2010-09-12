@@ -33,6 +33,7 @@ public:
 };
 
 // Debug purposes:
+#ifdef EVENTDEBUGOUT
 class EventDebugPlayerKill : public EventListenerPlayerKill
 {
 public:
@@ -46,5 +47,6 @@ public:
     void EventPlayerKilledOtherCreature(const EventInfoPlayerKill &info);
 };
 extern EventDebugPlayerKill eventDebugPlayerKill;
+#endif
 
 #endif // __EVENTPLAYERKILLMGR_H__

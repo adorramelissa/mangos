@@ -44,6 +44,7 @@ public:
 };
 
 // Debug purposes:
+#ifdef EVENTDEBUGOUT
 class EventDebugCharacter : public EventListenerCharacter
 {
 public:
@@ -59,5 +60,6 @@ public:
     void EventCharacterDeletedFinally(const EventInfoCharacter &info);
 };
 extern EventDebugCharacter eventDebugCharacter;
+#endif
 
 #endif // __EVENTCHARACTERMGR_H__

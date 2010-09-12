@@ -12,6 +12,8 @@
 #include "Player.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerPlayerDeathState>);
+
+#ifdef EVENTDEBUGOUT
 EventDebugPlayerDeathState eventDebugPlayerDeathState;
 
 void EventDebugPlayerDeathState::EventPlayerRevived(const EventInfoPlayerRevive &info)
@@ -23,3 +25,4 @@ void EventDebugPlayerDeathState::EventPlayerDied(const EventInfoPlayerDeath &inf
 {
     EVENTLOG("EventPlayerDied - id:%u reason:%u", info.player.GetGUIDLow(), info.reason);
 }
+#endif

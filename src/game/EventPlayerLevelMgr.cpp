@@ -12,6 +12,8 @@
 #include "Player.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerPlayerLevel>);
+
+#ifdef EVENTDEBUGOUT
 EventDebugPlayerLevel eventDebugPlayerLevel;
 
 void EventDebugPlayerLevel::EventPlayerLevelReached(const EventInfoPlayerLevel &info)
@@ -43,3 +45,4 @@ void EventDebugPlayerLevel::EventPlayerTalentsReseted(const EventInfoPlayer &inf
     EVENTLOG("EventPlayerTalentsReseted - id:%u",
              info.player.GetGUIDLow());
 }
+#endif

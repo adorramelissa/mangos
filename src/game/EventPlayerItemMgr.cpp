@@ -13,6 +13,8 @@
 #include "Item.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerPlayerItem>);
+
+#ifdef EVENTDEBUGOUT
 EventDebugPlayerItem eventDebugPlayerItem;
 
 void EventDebugPlayerItem::EventPlayerItemUsed(const EventInfoPlayerItem &info)
@@ -42,5 +44,6 @@ void EventDebugPlayerItem::EventPlayerItemColoredReceived(const EventInfoPlayerI
 void EventDebugPlayerItem::EventPlayerMoneyGained(const EventInfoPlayerMoney &info)
 {
     EVENTLOG("EventPlayerMoneyGained - id:%u, amount:%d",
-             info.player.GetGUIDLow(), info.amount); 
+             info.player.GetGUIDLow(), info.amount);
 }
+#endif

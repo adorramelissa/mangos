@@ -37,6 +37,7 @@ public:
 };
 
 // Debug purposes:
+#ifdef EVENTDEBUGOUT
 class EventDebugPlayerAction : public EventListenerPlayerAction
 {
 public:
@@ -48,5 +49,6 @@ public:
     void EventPlayerDamageDealt(const EventInfoPlayerActionDamage &info);
 };
 extern EventDebugPlayerAction eventDebugPlayerAction;
+#endif
 
 #endif // __EVENTPLAYERACTIONMGR_H__

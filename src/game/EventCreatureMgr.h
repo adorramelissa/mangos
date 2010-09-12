@@ -17,7 +17,7 @@ class Creature;
 struct EventInfoCreature : public EventInfo
 {
     const Creature &creature;
-    
+
     EventInfoCreature(const Creature &creature_)
     : EventInfo(), creature(creature_) {}
 };
@@ -30,6 +30,7 @@ public:
 };
 
 // Debug purposes:
+#ifdef EVENTDEBUGOUT
 class EventDebugCreature : public EventListenerCreature
 {
 public:
@@ -41,5 +42,6 @@ public:
     void EventCreatureDied(const EventInfoCreature &info);
 };
 extern EventDebugCreature eventDebugCreature;
+#endif
 
 #endif // __EVENTCREATUREMGR_H__

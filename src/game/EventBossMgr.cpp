@@ -12,9 +12,11 @@
 #include "Creature.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerBoss>);
+
+#ifdef EVENTDEBUGOUT
 EventDebugBoss eventDebugBoss;
 
-void EventDebugBoss::EventBossAggroed(const EventInfoBoss &info) 
+void EventDebugBoss::EventBossAggroed(const EventInfoBoss &info)
 {
     EVENTLOG("EventBossAggroed - guid:%u", info.boss.GetGUIDLow());
 }
@@ -28,3 +30,4 @@ void EventDebugBoss::EventBossEvaded(const EventInfoBoss &info)
 {
     EVENTLOG("EventBossEvaded - guid:%u", info.boss.GetGUIDLow());
 }
+#endif

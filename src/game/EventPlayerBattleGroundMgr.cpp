@@ -14,6 +14,8 @@
 #include "ObjectGuid.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerPlayerBattleGround>);
+
+#ifdef EVENTDEBUGOUT
 EventDebugPlayerBattleGround eventDebugPlayerBattleGround;
 
 void EventDebugPlayerBattleGround::EventPlayerBattleGroundJoined(const EventInfoPlayerBattleGround &info)
@@ -46,12 +48,13 @@ void EventDebugPlayerBattleGround::EventPlayerDuelLost(const EventInfoPlayerDuel
     EVENTLOG("EventPlayerDuelLost - id:%u enemy:%u", info.player.GetGUIDLow(), info.enemy.GetGUIDLow());
 }
 
-void EventDebugPlayerBattleGround::EventPlayerArenaTeamJoined(const EventInfoPlayerArenaTeam &info) 
+void EventDebugPlayerBattleGround::EventPlayerArenaTeamJoined(const EventInfoPlayerArenaTeam &info)
 {
-    EVENTLOG("EventPlayerArenaTeamJoined - id:%u team:%u", info.guid.GetEntry(), info.team.GetId());    
+    EVENTLOG("EventPlayerArenaTeamJoined - id:%u team:%u", info.guid.GetEntry(), info.team.GetId());
 }
 
-void EventDebugPlayerBattleGround::EventPlayerArenaTeamLeaved(const EventInfoPlayerArenaTeam &info) 
+void EventDebugPlayerBattleGround::EventPlayerArenaTeamLeaved(const EventInfoPlayerArenaTeam &info)
 {
-    EVENTLOG("EventPlayerArenaTeamLeaved - id:%u team:%u", info.guid.GetEntry(), info.team.GetId());    
+    EVENTLOG("EventPlayerArenaTeamLeaved - id:%u team:%u", info.guid.GetEntry(), info.team.GetId());
 }
+#endif

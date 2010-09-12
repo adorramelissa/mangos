@@ -41,6 +41,7 @@ public:
 };
 
 // Debug purposes:
+#ifdef EVENTDEBUGOUT
 class EventDebugBattleGround : public EventListenerBattleGround
 {
 public:
@@ -52,5 +53,6 @@ public:
     void EventBattleGroundEnded(const EventInfoBattleGroundEnded &info);
 };
 extern EventDebugBattleGround eventDebugBattleGround;
+#endif
 
 #endif // __EVENTBATTLEGROUNDMGR_H__

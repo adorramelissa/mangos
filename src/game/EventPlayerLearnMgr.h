@@ -28,6 +28,7 @@ public:
 };
 
 // Debug purposes:
+#ifdef EVENTDEBUGOUT
 class EventDebugPlayerLearn : public EventListenerPlayerLearn
 {
 public:
@@ -38,5 +39,6 @@ public:
     void EventPlayerSpellLearned(const EventInfoPlayerLearn &info);
 };
 extern EventDebugPlayerLearn eventDebugPlayerLearn;
+#endif
 
 #endif // __EVENTPLAYERLEARNMGR_H__

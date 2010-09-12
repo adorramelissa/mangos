@@ -48,6 +48,7 @@ public:
 };
 
 // Debug purposes:
+#ifdef EVENTDEBUGOUT
 class EventDebugArenaTeam : public EventListenerArenaTeam
 {
 public:
@@ -60,5 +61,6 @@ public:
     void EventArenaTeamRatingGained(const EventInfoArenaTeamRating &info);
 };
 extern EventDebugArenaTeam eventDebugArenaTeam;
+#endif
 
 #endif // __EVENTARENATEAMMGR_H__

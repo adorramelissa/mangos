@@ -31,6 +31,7 @@ public:
 };
 
 // Debug purposes:
+#ifdef EVENTDEBUGOUT
 class EventDebugGameEvent : public EventListenerGameEvent
 {
 public:
@@ -42,5 +43,6 @@ public:
     void EventGameEventStopped(const EventInfoGameEvent &info);
 };
 extern EventDebugGameEvent eventDebugGameEvent;
+#endif
 
 #endif // __EVENTGAMEEVENTMGR_H__

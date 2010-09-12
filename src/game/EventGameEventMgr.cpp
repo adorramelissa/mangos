@@ -12,6 +12,8 @@
 #include "GameEventMgr.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerGameEvent>);
+
+#ifdef EVENTDEBUGOUT
 EventDebugGameEvent eventDebugGameEvent;
 
 void EventDebugGameEvent::EventGameEventStarted(const EventInfoGameEvent &info)
@@ -23,3 +25,4 @@ void EventDebugGameEvent::EventGameEventStopped(const EventInfoGameEvent &info)
 {
     EVENTLOG("EventGameEventStopped - id:%u desc:%s", info.id, info.gameEvent.description.c_str());
 }
+#endif

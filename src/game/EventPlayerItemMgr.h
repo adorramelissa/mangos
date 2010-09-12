@@ -44,6 +44,7 @@ public:
 };
 
 // Debug purposes:
+#ifdef EVENTDEBUGOUT
 class EventDebugPlayerItem : public EventListenerPlayerItem
 {
 public:
@@ -58,5 +59,6 @@ public:
     void EventPlayerMoneyGained(const EventInfoPlayerMoney &info);
 };
 extern EventDebugPlayerItem eventDebugPlayerItem;
+#endif
 
 #endif // __EVENTPLAYERITEMMGR_H__

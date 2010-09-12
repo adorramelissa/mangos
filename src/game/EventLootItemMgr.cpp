@@ -12,6 +12,8 @@
 #include "LootMgr.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerLootItem>);
+
+#ifdef EVENTDEBUGOUT
 EventDebugLootItem eventDebugLootItem;
 
 void EventDebugLootItem::EventLootItemColoredDropped(const EventInfoLootItem &info)
@@ -21,5 +23,6 @@ void EventDebugLootItem::EventLootItemColoredDropped(const EventInfoLootItem &in
 
 void EventDebugLootItem::EventLootItemQuestDropped(const EventInfoLootItem &info)
 {
-    EVENTLOG("EventLootItemQuestDropped - id:%u", info.item.itemid); 
+    EVENTLOG("EventLootItemQuestDropped - id:%u", info.item.itemid);
 }
+#endif

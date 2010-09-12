@@ -30,6 +30,7 @@ public:
 };
 
 // Debug purposes:
+#ifdef EVENTDEBUGOUT
 class EventDebugPlayerQuest : public EventListenerPlayerQuest
 {
 public:
@@ -42,5 +43,6 @@ public:
     void EventPlayerQuestItemCollected(const EventInfoPlayerQuest &info);
 };
 extern EventDebugPlayerQuest eventDebugPlayerQuest;
+#endif
 
 #endif // __EVENTPLAYERQUESTMGR_H__

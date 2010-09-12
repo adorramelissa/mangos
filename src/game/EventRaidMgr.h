@@ -31,6 +31,7 @@ public:
 };
 
 // Debug purposes:
+#ifdef EVENTDEBUGOUT
 class EventDebugRaid : public EventListenerRaid
 {
 public:
@@ -42,5 +43,6 @@ public:
     void EventRaidDisbanded(const EventInfoRaid &info);
 };
 extern EventDebugRaid eventDebugRaid;
+#endif
 
 #endif // __EVENTRAIDMGR_H__

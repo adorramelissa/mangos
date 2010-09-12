@@ -12,6 +12,8 @@
 #include "Player.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerPlayerAction>);
+
+#ifdef EVENTDEBUGOUT
 EventDebugPlayerAction EventDebugPlayerAction;
 
 void EventDebugPlayerAction::EventPlayerSpellCasted(const EventInfoPlayerActionSpell &info)
@@ -23,3 +25,4 @@ void EventDebugPlayerAction::EventPlayerDamageDealt(const EventInfoPlayerActionD
 {
     EVENTLOG("EventPlayerDamageDealt - id:%u", info.player.GetGUIDLow());
 }
+#endif

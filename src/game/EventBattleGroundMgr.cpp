@@ -15,9 +15,11 @@
 #include "Player.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerBattleGround>);
+
+#ifdef EVENTDEBUGOUT
 EventDebugBattleGround eventDebugBattleGround;
 
-void EventDebugBattleGround::EventBattleGroundStarted(const EventInfoBattleGround &info) 
+void EventDebugBattleGround::EventBattleGroundStarted(const EventInfoBattleGround &info)
 {
     EVENTLOG("EventBattleGroundStarted - id:%u alliance:%u horde:%u",
              info.battleGround.GetInstanceID(), info.alliance ? info.alliance->GetId() : 0, info.horde ? info.horde->GetId() : 0);
@@ -28,3 +30,4 @@ void EventDebugBattleGround::EventBattleGroundEnded(const EventInfoBattleGroundE
     EVENTLOG("EventBattleGroundEnded - id:%u alliance:%u horde:%u winner:%u",
              info.battleGround.GetInstanceID(), info.alliance ? info.alliance->GetId() : 0, info.horde ? info.horde->GetId() : 0, info.winnerFaction);
 }
+#endif

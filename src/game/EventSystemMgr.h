@@ -10,21 +10,26 @@
 #ifndef __EVENTSYSTEMMGR_H__
 #define __EVENTSYSTEMMGR_H__
 
+#include <time.h>
+
 #include "Policies/Singleton.h"
 #include "Utilities/UnorderedMapSet.h"
 #include "Timer.h"
 #include "Log.h"
 
 // Used by all custom eventlistener for debug purposes and to change log level fast
+#define EVENTDEBUGOUT
+#ifdef EVENTDEBUGOUT
 #define EVENTLOG(...) sLog.outString(__VA_ARGS__)
+#endif
 
 // Struct to hold all important informations about event, will be overloaded by specific events
 // to deliver information about that event
 struct EventInfo
 {
-    uint32 time;
+    time_t timestamp;
 
-    EventInfo() : time(getMSTime()) {}
+    EventInfo() : timestamp(time(NULL)) {}
 };
 
 // Basic listener, will be overloaded by specific listener

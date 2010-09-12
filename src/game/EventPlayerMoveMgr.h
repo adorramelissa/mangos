@@ -64,6 +64,7 @@ public:
 };
 
 // Debug purposes:
+#ifdef EVENTDEBUGOUT
 class EventDebugPlayerMove : public EventListenerPlayerMove
 {
 public:
@@ -76,5 +77,6 @@ public:
     void EventPlayerFlightPathTaken(const EventInfoPlayerMoveFlightPath &info);
 };
 extern EventDebugPlayerMove eventDebugPlayerMove;
+#endif
 
 #endif // __EVENTPLAYERMOVEMGR_H__

@@ -20,7 +20,7 @@ class ArenaTeam;
 struct EventInfoPlayerBattleGround : public EventInfoPlayer
 {
     const BattleGround &battleGround;
-    
+
     EventInfoPlayerBattleGround(const Player &player_, const BattleGround &battleGround_)
     : EventInfoPlayer(player_), battleGround(battleGround_) {}
 };
@@ -28,7 +28,7 @@ struct EventInfoPlayerBattleGround : public EventInfoPlayer
 struct EventInfoPlayerDuel : public EventInfoPlayer
 {
     const Player &enemy;
-    
+
     EventInfoPlayerDuel(const Player &player_, const Player &enemy_)
     : EventInfoPlayer(player_), enemy(enemy_) {}
 };
@@ -37,7 +37,7 @@ struct EventInfoPlayerArenaTeam : public EventInfo
 {
     const ObjectGuid &guid;
     const ArenaTeam &team;
-    
+
     EventInfoPlayerArenaTeam(const ObjectGuid &guid_, const ArenaTeam &team_)
     : EventInfo(), guid(guid_), team(team_) {}
 };
@@ -56,6 +56,7 @@ public:
 };
 
 // Debug purposes:
+#ifdef EVENTDEBUGOUT
 class EventDebugPlayerBattleGround : public EventListenerPlayerBattleGround
 {
 public:
@@ -73,5 +74,6 @@ public:
     void EventPlayerArenaTeamLeaved(const EventInfoPlayerArenaTeam &info);
 };
 extern EventDebugPlayerBattleGround eventDebugPlayerBattleGround;
+#endif
 
 #endif // __EVENTPLAYERBATTLEGROUNDMGR_H__

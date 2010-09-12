@@ -13,6 +13,8 @@
 #include "Player.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerArenaTeam>);
+
+#ifdef EVENTDEBUGOUT
 EventDebugArenaTeam eventDebugArenaTeam;
 
 void EventDebugArenaTeam::EventArenaTeamCreated(const EventInfoArenaTeamStatus &info)
@@ -29,3 +31,4 @@ void EventDebugArenaTeam::EventArenaTeamRatingGained(const EventInfoArenaTeamRat
 {
     EVENTLOG("EventArenaTeamRatingGained - id:%u amount:%d", info.team.GetId(), info.amount);
 }
+#endif

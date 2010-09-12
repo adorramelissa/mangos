@@ -49,6 +49,7 @@ public:
 };
 
 // Debug purposes:
+#ifdef EVENTDEBUGOUT
 class EventDebugPlayerDeathState : public EventListenerPlayerDeathState
 {
 public:
@@ -60,5 +61,6 @@ public:
     void EventPlayerDied(const EventInfoPlayerDeath &info);
 };
 extern EventDebugPlayerDeathState eventDebugPlayerDeathState;
+#endif
 
 #endif // __EVENTPLAYERDEATHSTATEMGR_H__

@@ -14,6 +14,8 @@
 #include "Player.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerCommand>);
+
+#ifdef EVENTDEBUGOUT
 EventDebugCommand eventDebugCommand;
 
 void EventDebugCommand::EventCommandUsed(const EventInfoCommand &info)
@@ -27,3 +29,4 @@ void EventDebugCommand::EventCommandGMUsed(const EventInfoCommand &info)
     EVENTLOG("EventCommandGMUsed - command:%s accid:%u player:%u",
              info.command.Name, info.accountId, info.player ? info.player->GetGUIDLow() : 0);
 }
+#endif

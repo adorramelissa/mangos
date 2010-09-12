@@ -13,6 +13,8 @@
 #include "Unit.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerPlayerKill>);
+
+#ifdef EVENTDEBUGOUT
 EventDebugPlayerKill eventDebugPlayerKill;
 
 void EventDebugPlayerKill::EventPlayerKilledByPlayer(const EventInfoPlayerKill &info)
@@ -34,3 +36,4 @@ void EventDebugPlayerKill::EventPlayerKilledOtherCreature(const EventInfoPlayerK
 {
     EVENTLOG("EventPlayerKilledOtherCreature - id:%u enemy:%u", info.player.GetGUIDLow(), info.enemy.GetGUIDLow());
 }
+#endif

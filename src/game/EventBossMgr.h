@@ -31,6 +31,7 @@ public:
 };
 
 // Debug purposes:
+#ifdef EVENTDEBUGOUT
 class EventDebugBoss : public EventListenerBoss
 {
 public:
@@ -43,5 +44,6 @@ public:
     void EventBossEvaded(const EventInfoBoss &info);
 };
 extern EventDebugBoss eventDebugBoss;
+#endif
 
 #endif // __EVENTBOSSMGR_H__

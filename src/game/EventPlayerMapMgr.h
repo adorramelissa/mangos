@@ -43,6 +43,7 @@ public:
 };
 
 // Debug purposes:
+#ifdef EVENTDEBUGOUT
 class EventDebugPlayerMap : public EventListenerPlayerMap
 {
 public:
@@ -56,5 +57,6 @@ public:
     void EventPlayerInstanceBound(const EventInfoPlayerInstance &info);
 };
 extern EventDebugPlayerMap eventDebugPlayerMap;
+#endif
 
 #endif // __EVENTPLAYERMAPMGR_H__

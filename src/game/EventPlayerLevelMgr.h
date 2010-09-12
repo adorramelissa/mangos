@@ -32,6 +32,7 @@ public:
 };
 
 // Debug purposes:
+#ifdef EVENTDEBUGOUT
 class EventDebugPlayerLevel : public EventListenerPlayerLevel
 {
 public:
@@ -46,5 +47,6 @@ public:
     void EventPlayerTalentsReseted(const EventInfoPlayer &info);
 };
 extern EventDebugPlayerLevel eventDebugPlayerLevel;
+#endif
 
 #endif // __EVENTPLAYERLEVELMGR_H__

@@ -32,6 +32,7 @@ public:
 };
 
 // Debug purposes:
+#ifdef EVENTDEBUGOUT
 class EventDebugLootItem : public EventListenerLootItem
 {
 public:
@@ -43,5 +44,6 @@ public:
     void EventLootItemQuestDropped(const EventInfoLootItem &info);
 };
 extern EventDebugLootItem eventDebugLootItem;
+#endif
 
 #endif // __EVENTLOOTITEMMGR_H__

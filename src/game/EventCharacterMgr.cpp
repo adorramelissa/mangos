@@ -11,6 +11,8 @@
 #include "Policies/SingletonImp.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerCharacter>);
+
+#ifdef EVENTDEBUGOUT
 EventDebugCharacter EventDebugCharacter;
 
 void EventDebugCharacter::EventCharacterLogin(const EventInfoCharacter &info)
@@ -48,3 +50,4 @@ void EventDebugCharacter::EventCharacterDeletedFinally(const EventInfoCharacter 
     EVENTLOG("EventCharacterDeletedFinally: char:%u name:%s accid:%u ip:%s",
              info.guid, info.name.c_str(), info.accountId, info.ip.c_str());
 }
+#endif

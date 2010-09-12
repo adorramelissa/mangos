@@ -14,6 +14,8 @@
 #include "Item.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerPlayerTrade>);
+
+#ifdef EVENTDEBUGOUT
 EventDebugPlayerTrade eventDebugPlayerTrade;
 
 void EventDebugPlayerTrade::EventPlayerMailSend(const EventInfoPlayerTradeMail &info)
@@ -33,3 +35,4 @@ void EventDebugPlayerTrade::EventPlayerVendorTraded(const EventInfoPlayerTradeVe
     EVENTLOG("EventPlayerVendorTraded - id:%u vendor:%u item:%u count:%u",
              info.player.GetGUIDLow(), info.vendor.GetGUIDLow(), info.item.GetGUIDLow(), info.count);
 }
+#endif

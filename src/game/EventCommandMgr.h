@@ -33,6 +33,7 @@ public:
 };
 
 // Debug purposes:
+#ifdef EVENTDEBUGOUT
 class EventDebugCommand : public EventListenerCommand
 {
 public:
@@ -44,5 +45,6 @@ public:
     void EventCommandGMUsed(const EventInfoCommand &info);
 };
 extern EventDebugCommand eventDebugCommand;
+#endif
 
 #endif // __EVENTCOMMANDMGR_H__

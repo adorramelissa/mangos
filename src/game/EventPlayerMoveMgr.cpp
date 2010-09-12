@@ -14,6 +14,8 @@
 #include "Creature.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerPlayerMove>);
+
+#ifdef EVENTDEBUGOUT
 EventDebugPlayerMove eventDebugPlayerMove;
 
 void EventDebugPlayerMove::EventPlayerMoved(const EventInfoPlayerMoveType &info)
@@ -31,4 +33,4 @@ void EventDebugPlayerMove::EventPlayerFlightPathTaken(const EventInfoPlayerMoveF
     EVENTLOG("EventPlayerFlightPathTaken - id:%u from:%u to:%u npc:%u",
              info.player.GetGUIDLow(), info.source.ID, info.destination.ID, info.npc ? info.npc->GetGUIDLow() : 0);
 }
-
+#endif

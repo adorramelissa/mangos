@@ -14,6 +14,8 @@
 #include "InstanceSaveMgr.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerPlayerMap>);
+
+#ifdef EVENTDEBUGOUT
 EventDebugPlayerMap eventDebugPlayerMap;
 
 void EventDebugPlayerMap::EventPlayerMapChanged(const EventInfoPlayerMap &info)
@@ -39,3 +41,4 @@ void EventDebugPlayerMap::EventPlayerInstanceBound(const EventInfoPlayerInstance
     EVENTLOG("EventPlayerInstanceBound - id:%u instance:%u",
              info.player.GetGUIDLow(), info.instance.GetInstanceId());
 }
+#endif

@@ -12,6 +12,8 @@
 #include "Player.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerPlayerQuest>);
+
+#ifdef EVENTDEBUGOUT
 EventDebugPlayerQuest eventDebugPlayerQuest;
 
 void EventDebugPlayerQuest::EventPlayerQuestCompleted(const EventInfoPlayerQuest &info)
@@ -28,3 +30,4 @@ void EventDebugPlayerQuest::EventPlayerQuestItemCollected(const EventInfoPlayerQ
 {
     EVENTLOG("EventPlayerQuestItemCollected - id:%u", info.player.GetGUIDLow());
 }
+#endif

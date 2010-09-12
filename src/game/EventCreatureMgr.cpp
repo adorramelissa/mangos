@@ -12,6 +12,8 @@
 #include "Creature.h"
 
 INSTANTIATE_SINGLETON_1(EventSystemMgr<EventListenerCreature>);
+
+#ifdef EVENTDEBUGOUT
 EventDebugCreature eventDebugCreature;
 
 void EventDebugCreature::EventCreatureSpawned(const EventInfoCreature &info)
@@ -21,5 +23,6 @@ void EventDebugCreature::EventCreatureSpawned(const EventInfoCreature &info)
 
 void EventDebugCreature::EventCreatureDied(const EventInfoCreature &info)
 {
-    EVENTLOG("EventCreatureDied - guid:%u", info.creature.GetGUIDLow()); 
+    EVENTLOG("EventCreatureDied - guid:%u", info.creature.GetGUIDLow());
 }
+#endif

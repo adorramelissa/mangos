@@ -56,6 +56,7 @@ public:
 };
 
 // Debug purposes:
+#ifdef EVENTDEBUGOUT
 class EventDebugPlayerTrade : public EventListenerPlayerTrade
 {
 public:
@@ -68,5 +69,6 @@ public:
     void EventPlayerVendorTraded(const EventInfoPlayerTradeVendor &info);
 };
 extern EventDebugPlayerTrade eventDebugPlayerTrade;
+#endif
 
 #endif // __EVENTPLAYERTRADEMGR_H__
