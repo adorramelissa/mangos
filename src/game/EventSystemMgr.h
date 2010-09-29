@@ -15,8 +15,11 @@
 #include "Timer.h"
 #include "Log.h"
 
+// Used by all custom eventlistener for debug purposes and to change log level fast
 #define EVENTLOG(...) sLog.outString(__VA_ARGS__)
 
+// Struct to hold all important informations about event, will be overloaded by specific events
+// to deliver information about that event
 struct EventInfo
 {
     uint32 time;
@@ -24,26 +27,25 @@ struct EventInfo
     EventInfo() : time(getMSTime()) {}
 };
 
-template <typename U>
-struct EventInfoSubject : public EventInfo
+// Basic listener, will be overloaded by specific listener
+class EventListener
 {
-    const U &subject;
-
-    EventInfoSubject(const U &subject_)
-    : EventInfo(), subject(subject_) {}
+protected:
+    EventListener() {}
 };
 
-class EventListener {};
-
+// Main dispatcher for all events. Also the point where listener have to register
 template<typename ListenerType>
 class EventSystemMgr
 {
 public:
+    // Register a listener of a specific type
     inline void RegisterListener(ListenerType *listener)
     {
         _list.insert(listener);
     }
 
+    // Triggers an event and informs all registered listeners that match the eventtype
     template<typename EventType>
     void TriggerEvent(const EventType &event, void (ListenerType::*func)(const EventType &))
     {
