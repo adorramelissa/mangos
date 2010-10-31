@@ -58,6 +58,7 @@
 #include "Spell.h"
 #include "SocialMgr.h"
 #include "Mail.h"
+#include "EventLootItemMgr.h"
 #include "EventPlayerItemMgr.h"
 #include "EventPlayerLevelMgr.h"
 #include "EventCharacterMgr.h"
@@ -7711,6 +7712,9 @@ void Player::SendLoot(ObjectGuid guid, LootType loot_type)
 
     if (loot_type == LOOT_CORPSE && !guid.IsItem())
         SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_LOOTING);
+
+    sEventSystemMgr(EventListenerLootItem).TriggerEvent(EventInfoLoot(*loot, guid, loot_type),
+                                                        &EventListenerLootItem::EventLootGenerated);
 }
 
 void Player::SendNotifyLootMoneyRemoved()

@@ -15,6 +15,16 @@
 struct LootItem;
 struct Loot;
 
+struct EventInfoLoot : public EventInfo
+{
+    const Loot &loot;
+    const ObjectGuid &guid;
+    const LootType type;
+    
+    EventInfoLoot(const Loot &loot_, const ObjectGuid &guid_, const LootType type_)
+    : EventInfo(), loot(loot_), guid(guid_), type(type_) {}
+};
+
 struct EventInfoLootItem : public EventInfo
 {
     const LootItem &item;
@@ -27,6 +37,7 @@ struct EventInfoLootItem : public EventInfo
 class EventListenerLootItem : public EventListener
 {
 public:
+    virtual void EventLootGenerated(const EventInfoLoot &) {}
     virtual void EventLootItemColoredDropped(const EventInfoLootItem &) {}
     virtual void EventLootItemQuestDropped(const EventInfoLootItem &) {}
 };
@@ -40,6 +51,7 @@ public:
     {
         sEventSystemMgr(EventListenerLootItem).RegisterListener(this);
     }
+    void EventLootGenerated(const EventInfoLoot &);
     void EventLootItemColoredDropped(const EventInfoLootItem &info);
     void EventLootItemQuestDropped(const EventInfoLootItem &info);
 };
