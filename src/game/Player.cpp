@@ -15493,7 +15493,13 @@ InstancePlayerBind* Player::BindToInstance(InstanceSave *save, bool permanent, b
                 if(!load) CharacterDatabase.PExecute("UPDATE character_instance SET instance = '%u', permanent = '%u' WHERE guid = '%u' AND instance = '%u'", save->GetInstanceId(), permanent, GetGUIDLow(), bind.save->GetInstanceId());
         }
         else
-            if(!load) CharacterDatabase.PExecute("INSERT INTO character_instance (guid, instance, permanent) VALUES ('%u', '%u', '%u')", GetGUIDLow(), save->GetInstanceId(), permanent);
+            if(!load)
+            {
+                CharacterDatabase.PExecute("INSERT INTO character_instance (guid, instance, permanent) VALUES ('%u', '%u', '%u')", GetGUIDLow(), save->GetInstanceId(), permanent);
+
+                sEventSystemMgr(EventListenerPlayerMap).TriggerEvent(EventInfoPlayerInstance(*this, *save),
+                                                                     &EventListenerPlayerMap::EventPlayerInstanceBoundPermanent);
+            }
 
         if(bind.save != save)
         {

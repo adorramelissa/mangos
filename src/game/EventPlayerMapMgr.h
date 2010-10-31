@@ -39,6 +39,7 @@ public:
     virtual void EventPlayerDungeonEntered(const EventInfoPlayerMap &) {}
     virtual void EventPlayerDungeonLeaved(const EventInfoPlayerMap &) {}
     virtual void EventPlayerInstanceBound(const EventInfoPlayerInstance &) {}
+    virtual void EventPlayerInstanceBoundPermanent(const EventInfoPlayerInstance &) {}
 };
 
 // Debug purposes:
@@ -54,6 +55,7 @@ public:
     void EventPlayerDungeonEntered(const EventInfoPlayerMap &);
     void EventPlayerDungeonLeaved(const EventInfoPlayerMap &);
     void EventPlayerInstanceBound(const EventInfoPlayerInstance &info);
+    void EventPlayerInstanceBoundPermanent(const EventInfoPlayerInstance &info);
 };
 extern EventDebugPlayerMap eventDebugPlayerMap;
 #endif

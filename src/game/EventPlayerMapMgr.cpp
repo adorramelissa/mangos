@@ -41,4 +41,10 @@ void EventDebugPlayerMap::EventPlayerInstanceBound(const EventInfoPlayerInstance
     EVENTLOG("EventPlayerInstanceBound - id:%u instance:%u",
              info.player.GetGUIDLow(), info.instance.GetInstanceId());
 }
+
+void EventDebugPlayerMap::EventPlayerInstanceBoundPermanent(const EventInfoPlayerInstance &info)
+{
+    EVENTLOG("EventPlayerInstanceBoundPermanent - id:%u instance:%u",
+             info.player.GetGUIDLow(), info.instance.GetInstanceId());
+}
 #endif
