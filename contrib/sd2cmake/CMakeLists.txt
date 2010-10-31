@@ -21,10 +21,6 @@
 #   $(top_builddir)/src/tools/genrevision/genrevision $(srcdir)
 
 file(GLOB_RECURSE mangosscript_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp *.h)
-# Exclude orphans
-list(REMOVE_ITEM mangosscript_SRCS
-  scripts/outland/coilfang_reservoir/underbog/boss_ghazan.cpp
-)
 
 source_group("Other"
   REGULAR_EXPRESSION .*
