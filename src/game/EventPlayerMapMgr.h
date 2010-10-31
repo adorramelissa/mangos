@@ -18,11 +18,10 @@ class InstanceSave;
 
 struct EventInfoPlayerMap : public EventInfoPlayer
 {
-    uint32 mapId;
-    const Map &oldmap;
+    uint32 mapId, oldMapId;
 
-    EventInfoPlayerMap(const Player &player_, const uint32 &mapId_, const Map &oldmap_)
-    : EventInfoPlayer(player_), mapId(mapId_), oldmap(oldmap_) {}
+    EventInfoPlayerMap(const Player &player_, const uint32 mapId_, const uint32 oldMapId_)
+    : EventInfoPlayer(player_), mapId(mapId_), oldMapId(oldMapId_) {}
 };
 
 struct EventInfoPlayerInstance : public EventInfoPlayer

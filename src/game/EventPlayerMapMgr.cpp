@@ -21,19 +21,19 @@ EventDebugPlayerMap eventDebugPlayerMap;
 void EventDebugPlayerMap::EventPlayerMapChanged(const EventInfoPlayerMap &info)
 {
     EVENTLOG("EventPlayerMapChanged - id:%u map:%u oldmap:%u",
-             info.player.GetGUIDLow(), info.mapId, info.oldmap.GetId());
+             info.player.GetGUIDLow(), info.mapId, info.oldMapId);
 }
 
 void EventDebugPlayerMap::EventPlayerDungeonEntered(const EventInfoPlayerMap &info)
 {
     EVENTLOG("EventPlayerDungeonEntered - id:%u map:%u oldmap:%u",
-             info.player.GetGUIDLow(), info.mapId, info.oldmap.GetId());
+             info.player.GetGUIDLow(), info.mapId, info.oldMapId);
 }
 
 void EventDebugPlayerMap::EventPlayerDungeonLeaved(const EventInfoPlayerMap &info)
 {
     EVENTLOG("EventPlayerDungeonLeaved - id:%u map:%u oldmap:%u",
-             info.player.GetGUIDLow(), info.mapId, info.oldmap.GetId());
+             info.player.GetGUIDLow(), info.mapId, info.oldMapId);
 }
 
 void EventDebugPlayerMap::EventPlayerInstanceBound(const EventInfoPlayerInstance &info)

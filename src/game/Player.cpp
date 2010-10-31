@@ -1692,6 +1692,7 @@ bool Player::TeleportTo(uint32 mapid, float x, float y, float z, float orientati
     Pet* pet = GetPet();
 
     MapEntry const* mEntry = sMapStore.LookupEntry(mapid);
+    MapEntry const* oldEntry = sMapStore.LookupEntry(GetMapId());
 
     // don't let enter battlegrounds without assigned battleground id (for example through areatrigger)...
     // don't let gm level > 1 either
@@ -1899,11 +1900,11 @@ bool Player::TeleportTo(uint32 mapid, float x, float y, float z, float orientati
             // code for finish transfer to new map called in WorldSession::HandleMoveWorldportAckOpcode at client packet
             SetSemaphoreTeleportFar(true);
 
-            EventInfoPlayerMap infoMap(*this, mapid, *oldmap);
+            EventInfoPlayerMap infoMap(*this, mapid, GetMapId());
             sEventSystemMgr(EventListenerPlayerMap).TriggerEvent(infoMap, &EventListenerPlayerMap::EventPlayerMapChanged);
-            if(oldmap->IsDungeon())
+            if(oldEntry && oldEntry->IsDungeon())
                 sEventSystemMgr(EventListenerPlayerMap).TriggerEvent(infoMap, &EventListenerPlayerMap::EventPlayerDungeonLeaved);
-            if(mEntry->IsDungeon())
+            if(mEntry && mEntry->IsDungeon())
                 sEventSystemMgr(EventListenerPlayerMap).TriggerEvent(infoMap, &EventListenerPlayerMap::EventPlayerDungeonEntered);
         }
         else
