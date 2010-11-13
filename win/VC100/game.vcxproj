@@ -404,6 +404,7 @@
     <ClCompile Include="..\..\src\game\EventPlayerQuestMgr.cpp" />
     <ClCompile Include="..\..\src\game\EventPlayerTradeMgr.cpp" />
     <ClCompile Include="..\..\src\game\EventRaidMgr.cpp" />
+    <ClCompile Include="..\..\src\game\EventServerMgr.cpp" />
     <ClCompile Include="..\..\src\game\EventSystemMgr.cpp" />
     <ClCompile Include="..\..\src\game\FleeingMovementGenerator.cpp" />
     <ClCompile Include="..\..\src\game\FollowerReference.cpp" />
@@ -565,6 +566,7 @@
     <ClInclude Include="..\..\src\game\EventPlayerQuestMgr.h" />
     <ClInclude Include="..\..\src\game\EventPlayerTradeMgr.h" />
     <ClInclude Include="..\..\src\game\EventRaidMgr.h" />
+    <ClInclude Include="..\..\src\game\EventServerMgr.h" />
     <ClInclude Include="..\..\src\game\EventSystemMgr.h" />
     <ClInclude Include="..\..\src\game\FleeingMovementGenerator.h" />
     <ClInclude Include="..\..\src\game\FollowerReference.h" />

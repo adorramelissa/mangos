@@ -147,6 +147,9 @@
     <ClCompile Include="..\..\src\game\EventRaidMgr.cpp">
       <Filter>World/Handlers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\game\EventServerMgr.cpp">
+      <Filter>World/Handlers</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\game\EventSystemMgr.cpp">
       <Filter>World/Handlers</Filter>
     </ClCompile>
@@ -583,6 +586,9 @@
       <Filter>World/Handlers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\game\EventRaidMgr.h">
+      <Filter>World/Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\EventServerMgr.h">
       <Filter>World/Handlers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\game\EventSystemMgr.h">

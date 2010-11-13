@@ -838,6 +838,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\game\EventServerMgr.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\EventServerMgr.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\game\EventSystemMgr.cpp"
 				>
 			</File>

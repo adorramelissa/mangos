@@ -146,6 +146,8 @@ libmangosgame_a_SOURCES = \
 	EventPlayerTradeMgr.h \
 	EventRaidMgr.cpp \
 	EventRaidMgr.h \
+	EventServerMgr.cpp \
+	EventServerMgr.h \
 	EventSystemMgr.cpp \
 	EventSystemMgr.h \
 	FleeingMovementGenerator.cpp \
