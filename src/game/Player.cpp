@@ -7444,6 +7444,7 @@ void Player::SendLoot(ObjectGuid guid, LootType loot_type)
 
     Loot    *loot = 0;
     PermissionTypes permission = ALL_PERMISSION;
+    bool lootGenerated = false;
 
     DEBUG_LOG("Player::SendLoot");
     switch(guid.GetHigh())
@@ -7488,6 +7489,8 @@ void Player::SendLoot(ObjectGuid guid, LootType loot_type)
                     go->getFishLoot(loot,this);
 
                 go->SetLootState(GO_ACTIVATED);
+
+                lootGenerated = true;
             }
             break;
         }
@@ -7521,6 +7524,8 @@ void Player::SendLoot(ObjectGuid guid, LootType loot_type)
                         loot->generateMoneyLoot(item->GetProto()->MinMoneyLoot,item->GetProto()->MaxMoneyLoot);
                         break;
                 }
+
+                lootGenerated = true;
             }
             break;
         }
@@ -7546,6 +7551,8 @@ void Player::SendLoot(ObjectGuid guid, LootType loot_type)
                 // It may need a better formula
                 // Now it works like this: lvl10: ~6copper, lvl70: ~9silver
                 bones->loot.gold = (uint32)( urand(50, 150) * 0.016f * pow( ((float)pLevel)/5.76f, 2.5f) * sWorld.getConfig(CONFIG_FLOAT_RATE_DROP_MONEY) );
+
+                lootGenerated = true;
             }
 
             if (bones->lootRecipient != this)
@@ -7585,6 +7592,8 @@ void Player::SendLoot(ObjectGuid guid, LootType loot_type)
                     const uint32 a = urand(0, creature->getLevel()/2);
                     const uint32 b = urand(0, getLevel()/2);
                     loot->gold = uint32(10 * (a + b) * sWorld.getConfig(CONFIG_FLOAT_RATE_DROP_MONEY));
+
+                    lootGenerated = true;
                 }
             }
             else
@@ -7633,6 +7642,8 @@ void Player::SendLoot(ObjectGuid guid, LootType loot_type)
                                 break;
                         }
                     }
+ 
+                    lootGenerated = true;
                 }
 
                 // possible only if creature->lootForBody && loot->empty() at spell cast check
@@ -7647,6 +7658,8 @@ void Player::SendLoot(ObjectGuid guid, LootType loot_type)
                         // let reopen skinning loot if will closed.
                         if (!loot->empty())
                             creature->SetUInt32Value(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_LOOTABLE);
+
+                        lootGenerated = true;
                     }
                 }
                 // set group rights only for loot_type != LOOT_SKINNING
@@ -7688,6 +7701,12 @@ void Player::SendLoot(ObjectGuid guid, LootType loot_type)
 
     SetLootGUID(guid);
 
+    if (lootGenerated)
+    {
+        sEventSystemMgr(EventListenerLootItem).TriggerEvent(EventInfoLoot(*loot, guid, loot_type),
+                                                            &EventListenerLootItem::EventLootGenerated);
+    }
+
     // LOOT_SKINNING, LOOT_PROSPECTING, LOOT_INSIGNIA and LOOT_FISHINGHOLE unsupported by client
     switch(loot_type)
     {
@@ -7712,9 +7731,6 @@ void Player::SendLoot(ObjectGuid guid, LootType loot_type)
 
     if (loot_type == LOOT_CORPSE && !guid.IsItem())
         SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_LOOTING);
-
-    sEventSystemMgr(EventListenerLootItem).TriggerEvent(EventInfoLoot(*loot, guid, loot_type),
-                                                        &EventListenerLootItem::EventLootGenerated);
 }
 
 void Player::SendNotifyLootMoneyRemoved()
