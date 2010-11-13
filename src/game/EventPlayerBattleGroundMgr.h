@@ -46,13 +46,13 @@ class EventListenerPlayerBattleGround : public EventListener
 {
 public:
     virtual void EventPlayerBattleGroundJoined(const EventInfoPlayerBattleGround &) {}
-    virtual void EventPlayerBattleGroundLeaved(const EventInfoPlayerBattleGround &) {}
+    virtual void EventPlayerBattleGroundLeft(const EventInfoPlayerBattleGround &) {}
     virtual void EventPlayerBattleGroundWon(const EventInfoPlayerBattleGround &) {}
     virtual void EventPlayerBattleGroundLost(const EventInfoPlayerBattleGround &) {}
     virtual void EventPlayerDuelWon(const EventInfoPlayerDuel &) {}
     virtual void EventPlayerDuelLost(const EventInfoPlayerDuel &) {}
     virtual void EventPlayerArenaTeamJoined(const EventInfoPlayerArenaTeam &) {}
-    virtual void EventPlayerArenaTeamLeaved(const EventInfoPlayerArenaTeam &) {}
+    virtual void EventPlayerArenaTeamLeft(const EventInfoPlayerArenaTeam &) {}
 };
 
 // Debug purposes:
@@ -65,13 +65,13 @@ public:
         sEventSystemMgr(EventListenerPlayerBattleGround).RegisterListener(this);
     }
     void EventPlayerBattleGroundJoined(const EventInfoPlayerBattleGround &info);
-    void EventPlayerBattleGroundLeaved(const EventInfoPlayerBattleGround &info);
+    void EventPlayerBattleGroundLeft(const EventInfoPlayerBattleGround &info);
     void EventPlayerBattleGroundWon(const EventInfoPlayerBattleGround &info);
     void EventPlayerBattleGroundLost(const EventInfoPlayerBattleGround &info);
     void EventPlayerDuelWon(const EventInfoPlayerDuel &info);
     void EventPlayerDuelLost(const EventInfoPlayerDuel &info);
     void EventPlayerArenaTeamJoined(const EventInfoPlayerArenaTeam &info);
-    void EventPlayerArenaTeamLeaved(const EventInfoPlayerArenaTeam &info);
+    void EventPlayerArenaTeamLeft(const EventInfoPlayerArenaTeam &info);
 };
 extern EventDebugPlayerBattleGround eventDebugPlayerBattleGround;
 #endif

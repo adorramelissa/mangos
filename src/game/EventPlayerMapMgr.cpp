@@ -30,9 +30,9 @@ void EventDebugPlayerMap::EventPlayerDungeonEntered(const EventInfoPlayerMap &in
              info.player.GetGUIDLow(), info.mapId, info.oldMapId);
 }
 
-void EventDebugPlayerMap::EventPlayerDungeonLeaved(const EventInfoPlayerMap &info)
+void EventDebugPlayerMap::EventPlayerDungeonLeft(const EventInfoPlayerMap &info)
 {
-    EVENTLOG("EventPlayerDungeonLeaved - id:%u map:%u oldmap:%u",
+    EVENTLOG("EventPlayerDungeonLeft - id:%u map:%u oldmap:%u",
              info.player.GetGUIDLow(), info.mapId, info.oldMapId);
 }
 

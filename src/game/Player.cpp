@@ -1904,7 +1904,7 @@ bool Player::TeleportTo(uint32 mapid, float x, float y, float z, float orientati
             EventInfoPlayerMap infoMap(*this, mapid, GetMapId());
             sEventSystemMgr(EventListenerPlayerMap).TriggerEvent(infoMap, &EventListenerPlayerMap::EventPlayerMapChanged);
             if(oldEntry && oldEntry->IsDungeon())
-                sEventSystemMgr(EventListenerPlayerMap).TriggerEvent(infoMap, &EventListenerPlayerMap::EventPlayerDungeonLeaved);
+                sEventSystemMgr(EventListenerPlayerMap).TriggerEvent(infoMap, &EventListenerPlayerMap::EventPlayerDungeonLeft);
             if(mEntry && mEntry->IsDungeon())
                 sEventSystemMgr(EventListenerPlayerMap).TriggerEvent(infoMap, &EventListenerPlayerMap::EventPlayerDungeonEntered);
         }
@@ -18107,7 +18107,7 @@ void Player::LeaveBattleground(bool teleportToEntryPoint)
         }
         
         sEventSystemMgr(EventListenerPlayerBattleGround).TriggerEvent(EventInfoPlayerBattleGround(*this, *bg),
-                                                                      &EventListenerPlayerBattleGround::EventPlayerBattleGroundLeaved);
+                                                                      &EventListenerPlayerBattleGround::EventPlayerBattleGroundLeft);
     }
 }
 

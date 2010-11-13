@@ -23,9 +23,9 @@ void EventDebugPlayerBattleGround::EventPlayerBattleGroundJoined(const EventInfo
     EVENTLOG("EventPlayerBattleGroundJoined - id:%u bg:%u", info.player.GetGUIDLow(), info.battleGround.GetInstanceID());
 }
 
-void EventDebugPlayerBattleGround::EventPlayerBattleGroundLeaved(const EventInfoPlayerBattleGround &info)
+void EventDebugPlayerBattleGround::EventPlayerBattleGroundLeft(const EventInfoPlayerBattleGround &info)
 {
-    EVENTLOG("EventPlayerBattleGroundLeaved - id:%u bg:%u", info.player.GetGUIDLow(), info.battleGround.GetInstanceID());
+    EVENTLOG("EventPlayerBattleGroundLeft - id:%u bg:%u", info.player.GetGUIDLow(), info.battleGround.GetInstanceID());
 }
 
 void EventDebugPlayerBattleGround::EventPlayerBattleGroundWon(const EventInfoPlayerBattleGround &info)
@@ -53,8 +53,8 @@ void EventDebugPlayerBattleGround::EventPlayerArenaTeamJoined(const EventInfoPla
     EVENTLOG("EventPlayerArenaTeamJoined - id:%u team:%u", info.guid.GetEntry(), info.team.GetId());
 }
 
-void EventDebugPlayerBattleGround::EventPlayerArenaTeamLeaved(const EventInfoPlayerArenaTeam &info)
+void EventDebugPlayerBattleGround::EventPlayerArenaTeamLeft(const EventInfoPlayerArenaTeam &info)
 {
-    EVENTLOG("EventPlayerArenaTeamLeaved - id:%u team:%u", info.guid.GetEntry(), info.team.GetId());
+    EVENTLOG("EventPlayerArenaTeamLeft - id:%u team:%u", info.guid.GetEntry(), info.team.GetId());
 }
 #endif

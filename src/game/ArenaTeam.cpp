@@ -322,7 +322,7 @@ void ArenaTeam::DelMember(ObjectGuid guid)
     CharacterDatabase.PExecute("DELETE FROM arena_team_member WHERE arenateamid = '%u' AND guid = '%u'", GetId(), guid.GetCounter());
 
     sEventSystemMgr(EventListenerPlayerBattleGround).TriggerEvent(EventInfoPlayerArenaTeam(guid, *this),
-                                                                  &EventListenerPlayerBattleGround::EventPlayerArenaTeamLeaved);
+                                                                  &EventListenerPlayerBattleGround::EventPlayerArenaTeamLeft);
 }
 
 void ArenaTeam::Disband(WorldSession *session)
