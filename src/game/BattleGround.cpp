@@ -654,8 +654,8 @@ void BattleGround::EndBattleGround(uint32 winner)
 
     ArenaTeam * winner_arena_team = NULL;
     ArenaTeam * loser_arena_team = NULL;
-    uint32 loser_rating = 0;
-    uint32 winner_rating = 0;
+    uint32 loser_rating = 0, loser_change = 0;
+    uint32 winner_rating = 0, winner_change = 0;
     WorldPacket data;
     int32 winmsg_id = 0;
 
@@ -693,8 +693,8 @@ void BattleGround::EndBattleGround(uint32 winner)
         {
             loser_rating = loser_arena_team->GetStats().rating;
             winner_rating = winner_arena_team->GetStats().rating;
-            int32 winner_change = winner_arena_team->WonAgainst(loser_rating);
-            int32 loser_change = loser_arena_team->LostAgainst(winner_rating);
+            winner_change = winner_arena_team->WonAgainst(loser_rating);
+            loser_change = loser_arena_team->LostAgainst(winner_rating);
             DEBUG_LOG("--- Winner rating: %u, Loser rating: %u, Winner change: %i, Loser change: %i ---", winner_rating, loser_rating, winner_change, loser_change);
             SetArenaTeamRatingChangeForTeam(winner, winner_change);
             SetArenaTeamRatingChangeForTeam(GetOtherTeam(winner), loser_change);
@@ -804,7 +804,7 @@ void BattleGround::EndBattleGround(uint32 winner)
         alliance = sObjectMgr.GetArenaTeamById(GetArenaTeamIdForTeam(ALLIANCE));
         horde = sObjectMgr.GetArenaTeamById(GetArenaTeamIdForTeam(HORDE));
     }
-    sEventSystemMgr(EventListenerBattleGround).TriggerEvent(EventInfoBattleGroundEnded(*this, winner, alliance, horde),
+    sEventSystemMgr(EventListenerBattleGround).TriggerEvent(EventInfoBattleGroundEnded(*this, winner, winner_change, alliance, horde),
                                                             &EventListenerBattleGround::EventBattleGroundEnded);
 
     if (winmsg_id)
@@ -1647,7 +1647,7 @@ void BattleGround::SendYell2ToAll(int32 entry, uint32 language, uint64 const& gu
 
 void BattleGround::EndNow()
 {
-    sEventSystemMgr(EventListenerBattleGround).TriggerEvent(EventInfoBattleGroundEnded(*this, 0, NULL, NULL),
+    sEventSystemMgr(EventListenerBattleGround).TriggerEvent(EventInfoBattleGroundEnded(*this, 0, 0, NULL, NULL),
                                                             &EventListenerBattleGround::EventBattleGroundEnded);
     RemoveFromBGFreeSlotQueue();
     SetStatus(STATUS_WAIT_LEAVE);

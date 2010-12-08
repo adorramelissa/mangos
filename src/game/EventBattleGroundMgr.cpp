@@ -27,7 +27,8 @@ void EventDebugBattleGround::EventBattleGroundStarted(const EventInfoBattleGroun
 
 void EventDebugBattleGround::EventBattleGroundEnded(const EventInfoBattleGroundEnded &info)
 {
-    EVENTLOG("EventBattleGroundEnded - id:%u alliance:%u horde:%u winner:%u",
-             info.battleGround.GetInstanceID(), info.alliance ? info.alliance->GetId() : 0, info.horde ? info.horde->GetId() : 0, info.winnerFaction);
+    EVENTLOG("EventBattleGroundEnded - id:%u alliance:%u horde:%u winner:%u change:%d",
+             info.battleGround.GetInstanceID(), info.alliance ? info.alliance->GetId() : 0, info.horde ? info.horde->GetId() : 0,
+             info.winnerFaction, info.ratingChange);
 }
 #endif

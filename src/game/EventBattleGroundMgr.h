@@ -27,10 +27,11 @@ struct EventInfoBattleGround : public EventInfo
 struct EventInfoBattleGroundEnded : public EventInfoBattleGround
 {
     uint32 winnerFaction;
+    int32 ratingChange;
 
-    EventInfoBattleGroundEnded(const BattleGround &battleGround_, uint32 winnerFaction_,
+    EventInfoBattleGroundEnded(const BattleGround &battleGround_, uint32 winnerFaction_, int32 ratingChange_,
                                const ArenaTeam *alliance_, const ArenaTeam *horde_)
-    : EventInfoBattleGround(battleGround_, alliance_, horde_), winnerFaction(winnerFaction_) {}
+    : EventInfoBattleGround(battleGround_, alliance_, horde_), winnerFaction(winnerFaction_), ratingChange(ratingChange_) {}
 };
 
 class EventListenerBattleGround : public EventListener
